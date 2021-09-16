@@ -11,7 +11,7 @@ class Register extends Component {
             username: null,
             email: null,
             password: null,
-            restaurantname: null,
+            //restaurantname: null,
             zipcode: null,
             owner: false,
             message: ''
@@ -30,7 +30,10 @@ class Register extends Component {
 
     //send registration data to server for processing
     sendRestAPI = (data) => {
-        axios.post('http://localhost:5000/registertable', data)
+      
+        console.log("data"+data)
+
+        axios.post('http://localhost:5000/register', data)
             .then(res => {
                 if(res.data.message){
                     this.setState({message:res.data.message})
@@ -54,7 +57,7 @@ class Register extends Component {
             name: this.state.username,
             email: this.state.email,
             password: this.state.password,
-            restaurantname: "N/A",
+            //restaurantname: "N/A",
             zipcode: "N/A",
             owner: false
         }
@@ -63,11 +66,11 @@ class Register extends Component {
             name: this.state.username,
             email: this.state.email,
             password: this.state.password,
-            restaurantname: this.state.restaurantname,
+            //restaurantname: this.state.restaurantname,
             zipcode: this.state.zipcode,
             owner: true
         }
-
+        console.log(ownerData);
         if (!this.state.owner) {
             this.sendRestAPI(buyerData);
         } else {
@@ -83,25 +86,33 @@ class Register extends Component {
 
     render() {
         var ownerForm = null;
+        var userForm = null;
         var accountType = "Owner";
         if (this.state.owner) {
             ownerForm =
                 <div className='form-control'>
-                    Restaurant Name: <input type="text" name="restaurantname" maxlength="30" placeholder="Restaurant name" value={this.state.restaurantname} onChange={this.handleChange} required></input><br />
+                    Restaurant Name: <input type="text" name="username" maxlength="30" placeholder="Restaurant name" value={this.state.username} onChange={this.handleChange} required></input><br />
                     ZipCode: <input type="number" name="zipcode" maxlength="5" placeholder="5 digits" value={this.state.zipcode} onChange={this.handleChange} required></input>
                 </div>
             accountType = "User";
-        } 
+        } else{
+            userForm =
+            <div >
+            Name:<br/> <input type="text" name="username" placeholder="Your name" minlength="3" maxlength="30" value={this.state.username} onChange={this.handleChange} required></input><br />
+        </div>
+         accountType = "Owner";
+        }
 
         return (
             <div class="container">
                 <form onSubmit={this.handleSubmit}>
                 <h1>Let's get started</h1>
                 <div className='form-control'>
-                    Name: <input type="text" name="username" placeholder="Your name" minlength="3" maxlength="30" value={this.state.username} onChange={this.handleChange} required></input><br />
+                    {userForm}
+                    {ownerForm}
                     Email: <input type="email" name="email" placeholder="example@gmail.com" value={this.state.email} onChange={this.handleChange} required></input><br />
                     Password: <input type="password" name="password" placeholder="At least 6 characters" minlength="6" maxlength="16" id="password" value={this.state.password} onChange={this.handleChange} required></input><br />
-                    {ownerForm}
+                   
                     <div>
                     <Button>Register</Button> &nbsp;
                     <Button onClick={this.switchForm}>Sign Up as {accountType}</Button>
