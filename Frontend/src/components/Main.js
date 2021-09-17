@@ -8,6 +8,7 @@ import RestaurantProfile from './Profile/RestaurantProfile';
 import CustomerProfile from './Profile/CustomerProfile';
 import CustomerHome from './HomePage/CustomerHome';
 import RestaurantHome from './HomePage/RestaurantHome';
+import RestaurantMenu from './Menu/RestaurantMenu';
 
 class Main extends Component {
     render() {
@@ -20,7 +21,9 @@ class Main extends Component {
                     <Route path="/customerprofile" component={CustomerProfile} />
                     <Route path="/restaurantprofile" component={RestaurantProfile} />
                     <Route path="/customerhome" component={CustomerHome} />
+                    <Route path="/restaurantmenu" component={RestaurantMenu} />
                     <Route path="/restauranthome" component={RestaurantHome} />
+                    
                 </div>    
             </Router>
             

@@ -90,6 +90,7 @@ class CustomerHome extends Component {
             <Button>Add new Dish</Button>
             <br/>
             <Button>Update Profile</Button>
+            
             </div>
             </form>
         </div>
