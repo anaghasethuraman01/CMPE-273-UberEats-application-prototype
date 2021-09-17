@@ -22,7 +22,9 @@ class Login extends Component {
             restaurantname:null,
             zipcode:null,
             description:null,
-            timing:null
+            timing:null,
+            restaurantid:null,
+            status:null
         
         };
 
@@ -43,19 +45,29 @@ class Login extends Component {
     sendRestaurantAPI = (data) => {
         axios.defaults.withCredentials = true;
         axios.post('http://localhost:5000/restlogin', data)
+       
             .then(res => {   
-                 if(res.data.message){
-                    this.setState({ message: res.data.message })
-                }else{
-                   
-                    this.setState({phone:res.data['phone']});
-                    this.setState({email:res.data['email']});
-                    this.setState({restaurantname:res.data['restaurantname']});
-                    this.setState({ zipcode: res.data['zipcode']})
-                    this.setState({ timing: res.data['timing']})
-                    this.setState({ description: res.data['description']})
-                }
+                // console.log(res.data);
+                var data1 = res.data['result'];
                 
+                this.setState({username:data1['username']});
+                
+                this.setState({phone:data1['phone']});
+                this.setState({ zipcode: data1['zipcode']})
+                this.setState({ timing: data1['timing']})
+                this.setState({ description:data1['description']})
+                this.setState({restaurantid:res.data['userid']});
+                this.setState({status:res.data['status']});
+                
+                console.log(this.state.restaurantid)
+                console.log(this.state.status)
+                if(res.data.message){
+                    this.setState({ message: res.data.message });
+
+
+                }
+
+
                 console.log("Status Code : ", res.status);
                 if (res.status === 200) {
                     this.setState({ authFlag: true })
@@ -106,8 +118,19 @@ class Login extends Component {
     render() {
         let redirectVar = null;
         let redirectHome = null;
-        if (cookie.load('cookie')) {
+       
+        if(this.state.usertype === 'restaurant' && this.state.status==="notfound"){
+            localStorage.setItem("restaurantid",this.state.restaurantid);
             
+            localStorage.setItem("email",this.state.email);
+            localStorage.setItem("restaurantname",this.state.username);
+            localStorage.setItem("phone","Add");
+            localStorage.setItem("zipcode",this.state.zipcode);
+            localStorage.setItem("description","Add");
+            localStorage.setItem("timing","Add");
+            redirectHome = <Redirect to="/RestaurantProfile" />
+        }
+        if (cookie.load('cookie')) { 
             redirectHome = <Redirect to="/" />
 
         }
@@ -115,28 +138,29 @@ class Login extends Component {
 
           redirectVar = <Redirect to="/CustomerHome" />;
          
-       }else if(this.state.usertype === 'restaurant'){
+       }
+       if(this.state.usertype === 'restaurant' && this.state.status==="found"){
+       
+        localStorage.setItem("restaurantid",this.state.restaurantid);
         localStorage.setItem("email",this.state.email);
-        localStorage.setItem("restaurantname",this.state.restaurantname);
+        localStorage.setItem("restaurantname",this.state.username);
         localStorage.setItem("phone",this.state.phone);
         localStorage.setItem("zipcode",this.state.zipcode);
         localStorage.setItem("description",this.state.description);
         localStorage.setItem("timing",this.state.timing);
-       redirectVar = <Redirect to="/RestaurantHome" />;
-       if(this.state.phone == null || this.state.restaurantname == null || 
-        this.state.email == null || this.state.description == null||
-        this.state.zipcode == null||this.state.timing == null){
-        redirectVar = <Redirect to="/Login" />;
+        redirectVar = <Redirect to="/RestaurantHome" />;
+        
        }
-       }
-    
-    
-    
+
+
+
+
+
         return (
             <div>{redirectHome}
                 {redirectVar}
                 <div class="container">
-                <form onSubmit={this.handleSubmit}>
+                <form >
 
                     <h1>Welcome Back</h1>
                     <div className='form-control'>
@@ -150,7 +174,7 @@ class Login extends Component {
                         <option value="restaurant">Restaurant</option>
                     </select>
                     <br/>
-                    <div><Button>Login</Button></div>
+                    <div><Button onClick={this.handleSubmit}>Login</Button></div>
                     <div>New to Uber Eats? <Link to="/register">Create an account</Link></div>
                     <div>{this.state.message}</div>
                     </div>

@@ -30,9 +30,7 @@ class Register extends Component {
 
     //send registration data to server for processing
     sendRestAPI = (data) => {
-      
-        console.log("data"+data)
-
+      // console.log("data"+data)
         axios.post('http://localhost:5000/register', data)
             .then(res => {
                 if(res.data.message){
@@ -48,6 +46,7 @@ class Register extends Component {
                   console.log(error);
                 }
             );
+            window.location.href='/Login';
     }
 
     handleSubmit = (e) => {
