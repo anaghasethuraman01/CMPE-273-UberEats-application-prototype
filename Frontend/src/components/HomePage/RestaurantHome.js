@@ -22,8 +22,10 @@ class RestaurantHome extends Component {
       handleSubmit = (e) => {
         e.preventDefault();
         window.location.href='/RestaurantProfile';
-      
-
+      }
+      showMenu = (e) =>{
+        e.preventDefault();
+        window.location.href='/RestaurantMenu';
       }
     render(){
 
@@ -52,7 +54,9 @@ class RestaurantHome extends Component {
             Location Zip Code: {this.state.zipcode}
             <br/>
             <br/>
-            <Button >Update Profile</Button>
+            <Button>Update Profile</Button>
+            <br/>
+            <Button onClick = {this.showMenu}>Dishes Menu</Button>
             </div>
             </form>
         </div>
