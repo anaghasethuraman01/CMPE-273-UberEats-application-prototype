@@ -75,19 +75,19 @@ class RestaurantProfile extends Component {
           
          
         }
-        onClickHandler = (e) => {
-          e.preventDefault();
-          const data = new FormData(); 
-          data.append('file', this.state.selectedFile);
-          console.log(data)
-          console.log("****")
-          console.log(this.state.selectedFile)
-          axios.post("http://localhost:5000/upload", data) 
-        .then(res => { // then print response status
-          console.log(res)
+      //   onClickHandler = (e) => {
+      //     e.preventDefault();
+      //     const data = new FormData(); 
+      //     data.append('file', this.state.selectedFile);
+      //     console.log(data)
+      //     console.log("****")
+      //     console.log(this.state.selectedFile)
+      //     axios.post("http://localhost:5000/upload", data) 
+      //   .then(res => { // then print response status
+      //     console.log(res)
          
-        })
-      }
+      //   })
+      // }
 
     render(){
 
@@ -111,7 +111,7 @@ class RestaurantProfile extends Component {
             Location Zip Code: <input type="text" name="zipcode" defaultValue={this.state.zipcode} onChange={this.handleChange} ></input><br/>
             <input className="filefolder" type="file" name="file" onChange={this.onChangeHandler}/>
             
-            <button onClick={this.onClickHandler} >Add new Dish</button>
+           {/* <button onClick={this.onClickHandler} >Add new Dish</button> */}
             <br/>
             <Button onClick = {this.handleSubmit}>Update Profile</Button>
             

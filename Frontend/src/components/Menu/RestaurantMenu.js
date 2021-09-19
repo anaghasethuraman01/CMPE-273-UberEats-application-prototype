@@ -9,6 +9,7 @@ class RestaurantMenu extends Component {
         super(props);
   
         this.state = {
+          restaurantid:null,
           dishname:null,
           ingrediants:null,
           price:null,
@@ -35,15 +36,22 @@ class RestaurantMenu extends Component {
                   }
                   );
     }
-              
+    handleChange = (e) => {
+      e.preventDefault();
+      this.setState({ [e.target.name]: e.target.value });
+      console.log(this.state);
+  } 
       handleSubmit = (e) => {
+        e.preventDefault();
         const dishData = {
+            restaurantid:localStorage.getItem("restaurantid"),
             dishname:this.state.dishname,
             ingrediants:this.state.ingrediants,
             price:this.state.price,
             description:this.state.description,
             category:this.state.category
         }
+      console.log(dishData);
         this.sendDishAPI(dishData);
       }
       showMenu = (e) =>{
@@ -75,6 +83,8 @@ class RestaurantMenu extends Component {
             </select>
             <br/>
             <Button >Add new Dish</Button>
+            <br/>
+            <Button >View your Dishes</Button>
             </div>
             </form>
            
