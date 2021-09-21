@@ -1,9 +1,6 @@
-// import React, { Component } from 'react';
+
 
 import React, {Component} from 'react';
-// import { Redirect } from 'react-router';
-// import cookie from 'react-cookies';
-import axios from 'axios';
 import { Button } from 'reactstrap';
 
 
@@ -13,56 +10,27 @@ class CustomerHome extends Component {
         super(props);
   
         this.state = {
-          restaurantname: null,
-          zipcode:null,
-          description:null,
-          email:null,
-          phone: null,
-          cuisine: null,
-          dishes:null,
-          timing:null,
+          username: localStorage.getItem("username"),
+          email:localStorage.getItem("email"),
+          phone: localStorage.getItem("phone"),
+          dob:localStorage.getItem("dob"),
+          state:localStorage.getItem("state"),
+          city:localStorage.getItem("city"),
+          country:localStorage.getItem("country"),
+          nickname:localStorage.getItem("nickname"),
+          about:localStorage.getItem("about"),
+          favourites:null,
           loading: false,
           output: null
         }
-        this.state.email = localStorage.getItem("email");
-        this.state.restaurantname = localStorage.getItem("username");
-        //this.handleChange = this.handleChange.bind(this);
       }
-      sendRestAPI = (data) => {
-        axios.post('http://localhost:5000/getrestaurantdetails', data)
-            .then(res => {
-                if(res.data.message){
-                    this.setState({message:res.data.message})
-
-                }else{
-                    console.log("Hi react");
-                    this.setState({ restaurantname: res.data.username })
-                    this.setState({ description: res.data.description })
-                    this.setState({ zipcode: res.data.zipcode })
-                    this.setState({ timing: res.data.timing })
-                    this.setState({ description: res.data.description })
-                }
-                
-            }).catch(
-                (error) => {
-                  console.log(error);
-                }
-            );
-    }
       handleSubmit = (e) => {
         e.preventDefault();
-
-        const restuarantData = {
-            restaurantname: localStorage.getItem("restaurantname"),
-            email: localStorage.getItem("email"),
-            password: this.state.password,
-            zipcode: this.state.zipcode,
-            phone:this.state.phone,
-            description:this.state.description,
-            timing:this.state.timing
-        }
-        console.log(restuarantData);
-        this.sendRestAPI(restuarantData);
+        window.location.href='/CustomerProfile';
+      }
+      findFood = (e) => {
+        e.preventDefault();
+        window.location.href='/RestDashboard';
       }
       handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
@@ -72,25 +40,37 @@ class CustomerHome extends Component {
     return (
         <div class="container">
             <form onSubmit={this.handleSubmit}>
-            <h1>Welcome to Customer home</h1>
+            <h1>Welcome {this.state.username}</h1>
             <div className='form-control'>
-          
-            Description : <textarea type="text" name="description" defaultValue={this.state.description} onChange={this.handleChange}/>
             <br/>
-            Contact Details:  <br/>
+            About: {this.state.about}
+            <br/>
+            <br/>
+            NickName: {this.state.nickname}
+            <br/>
             <br/>
             Email: {this.state.email}
             <br/>
             <br/>
-            Phone: <input type="text" name="phone" defaultValue={this.state.phone} onChange={this.handleChange} ></input><br/>
-            Timings :  <br/>
-            <textarea type="text" name="timing" defaultValue={this.state.timing} onChange={this.handleChange}  />
+            Phone: {this.state.phone}
             <br/>
-            Location Zip Code: <input type="text" name="zipcode" defaultValue={this.state.zipcode} onChange={this.handleChange} required></input><br/>
-            <Button>Add new Dish</Button>
+            <br/>
+            DoB: {this.state.dob}
+            <br/>
+            <br/>
+            City: {this.state.city}
+            <br/>
+            <br/>
+            State: {this.state.state}
+            <br/>
+            <br/>
+            Country: {this.state.country}
+            <br/>
             <br/>
             <Button>Update Profile</Button>
-            
+            <br/>
+            <br/>
+            <Button onClick = {this.findFood}>Find Food</Button>
             </div>
             </form>
         </div>

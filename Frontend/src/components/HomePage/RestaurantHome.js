@@ -24,8 +24,8 @@ class RestaurantHome extends Component {
         window.location.href='/RestaurantProfile';
       }
       showMenu = (e) =>{
-        e.preventDefault();
-        window.location.href='/RestaurantMenu';
+          e.preventDefault();
+        window.location.href='/RestaurantProfile';
       }
     render(){
 
