@@ -9,6 +9,8 @@ import CustomerProfile from './Profile/CustomerProfile';
 import CustomerHome from './HomePage/CustomerHome';
 import RestaurantHome from './HomePage/RestaurantHome';
 import RestaurantMenu from './Menu/RestaurantMenu';
+import Dashboard from './Dashboard/Dashboard';
+import RestDashboard from './Dashboard/RestDashboard';
 
 class Main extends Component {
     render() {
@@ -16,6 +18,7 @@ class Main extends Component {
             <Router>       
                 <div >
                     <Route path="/" component={Navbar} />
+                    <Route path="/dashboard" component={Dashboard} />
                     <Route path="/register" component={Register} />
                     <Route path="/login" component={Login} />
                     <Route path="/customerprofile" component={CustomerProfile} />
@@ -23,6 +26,7 @@ class Main extends Component {
                     <Route path="/customerhome" component={CustomerHome} />
                     <Route path="/restaurantmenu" component={RestaurantMenu} />
                     <Route path="/restauranthome" component={RestaurantHome} />
+                    <Route path="/restdashboard" component={RestDashboard} />
                     
                 </div>    
             </Router>

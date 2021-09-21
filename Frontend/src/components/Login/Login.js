@@ -23,6 +23,7 @@ class Login extends Component {
             zipcode:null,
             description:null,
             timing:null,
+            userid:null,
             restaurantid:null,
             status:null
         
@@ -46,28 +47,27 @@ class Login extends Component {
         axios.defaults.withCredentials = true;
         axios.post('http://localhost:5000/restlogin', data)
        
-            .then(res => {   
-                // console.log(res.data);
-                var data1 = res.data['result'];
-                
-                this.setState({username:data1['username']});
-                
-                this.setState({phone:data1['phone']});
-                this.setState({ zipcode: data1['zipcode']})
-                this.setState({ timing: data1['timing']})
-                this.setState({ description:data1['description']})
-                this.setState({restaurantid:res.data['userid']});
-                this.setState({status:res.data['status']});
-                
-                console.log(this.state.restaurantid)
-                console.log(this.state.status)
+            .then(res => {  
                 if(res.data.message){
                     this.setState({ message: res.data.message });
-
-
+                } 
+                else{
+                  
+                    
+                    var data1 = res.data['result'];
+                    console.log(data1);
+                    this.setState({username:data1['username']});
+                    
+                    this.setState({phone:data1['phone']});
+                    this.setState({ zipcode: data1['zipcode']})
+                    this.setState({ timing: data1['timing']})
+                    this.setState({ description:data1['description']})
+                    this.setState({restaurantid:res.data['userid']});
+                    this.setState({status:res.data['status']});
+                    
+                    console.log(this.state.restaurantid)
+                    console.log(this.state.status)
                 }
-
-
                 console.log("Status Code : ", res.status);
                 if (res.status === 200) {
                     this.setState({ authFlag: true })
@@ -78,15 +78,29 @@ class Login extends Component {
     }
     sendCustomerAPI = (data) => {
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:5000/login', data)
+        axios.post('http://localhost:5000/custlogin', data)
             .then(res => {   
-
+                 console.log(res.data)
                  if(res.data.message){
                     this.setState({ message: res.data.message })
                 }else{
-                    console.log("in cust")
-                    this.setState({ username: res.data['USERNAME']})
-                    this.setState({email:res.data['EMAIL']})
+                    
+                    var data1 = res.data['result'];
+                    console.log(data1);
+                    this.setState({username:data1['username']});
+                    this.setState({dob:data1['dob']});
+                    this.setState({nickname:data1['nickname']});
+                    this.setState({phone:data1['phone']});
+                    this.setState({ state: data1['state']})
+                    this.setState({ city: data1['city']})
+                    this.setState({ country: data1['country']})
+                    this.setState({ about:data1['about']})
+                    this.setState({ owner:data1['owner']})
+                    this.setState({ userid:res.data['userid']});
+                    this.setState({status:res.data['status']});
+                    
+                    console.log(this.state.restaurantid)
+                    console.log(this.state.status)
                 }
                 
                 console.log("Status Code : ", res.status);
@@ -104,10 +118,11 @@ class Login extends Component {
             password: this.state.password,
             usertype:this.state.usertype
         }
-        console.log(credential.usertype)
+      
         if(credential.usertype === 'customer'){
-            this.sendCustomerAPI(credential);
+           this.sendCustomerAPI(credential);
         }else if(credential.usertype === 'restaurant'){
+          
             this.sendRestaurantAPI(credential);
         }else{
             alert("Provide valid user type");
@@ -118,10 +133,12 @@ class Login extends Component {
     render() {
         let redirectVar = null;
         let redirectHome = null;
-       
+        if (cookie.load('cookie')) { 
+            redirectHome = <Redirect to="/" />
+
+        }
         if(this.state.usertype === 'restaurant' && this.state.status==="notfound"){
             localStorage.setItem("restaurantid",this.state.restaurantid);
-            
             localStorage.setItem("email",this.state.email);
             localStorage.setItem("restaurantname",this.state.username);
             localStorage.setItem("phone","Add");
@@ -130,13 +147,36 @@ class Login extends Component {
             localStorage.setItem("timing","Add");
             redirectHome = <Redirect to="/RestaurantProfile" />
         }
-        if (cookie.load('cookie')) { 
-            redirectHome = <Redirect to="/" />
 
+        if( this.state.status==="notfound" && this.state.usertype === 'customer'){
+            localStorage.setItem("userid",this.state.userid);
+        localStorage.setItem("email",this.state.email);
+        localStorage.setItem("username",this.state.username);
+        localStorage.setItem("phone","Add");
+        localStorage.setItem("dob","Add");
+        localStorage.setItem("about","Add");
+        localStorage.setItem("nickname","Add");
+        localStorage.setItem("city","Add");
+        localStorage.setItem("state","Add");
+        localStorage.setItem("country","Add");
+            redirectHome = <Redirect to="/CustomerProfile" />
         }
-       if(this.state.usertype === 'customer' ){
-
-          redirectVar = <Redirect to="/CustomerHome" />;
+        
+       if( this.state.status==="found" && this.state.usertype === 'customer'){
+        localStorage.setItem("userid",this.state.userid);
+        localStorage.setItem("email",this.state.email);
+        localStorage.setItem("username",this.state.username);
+        localStorage.setItem("phone",this.state.phone);
+        localStorage.setItem("dob",this.state.dob);
+        localStorage.setItem("about",this.state.about);
+        localStorage.setItem("nickname",this.state.nickname);
+        localStorage.setItem("city",this.state.city);
+        localStorage.setItem("state",this.state.state);
+        localStorage.setItem("country",this.state.country);
+        //  const {history} = this.props;
+        // console.log("here");
+        // history.push('/customerhome');
+        redirectVar = <Redirect to="/CustomerHome" />;
          
        }
        if(this.state.usertype === 'restaurant' && this.state.status==="found"){
@@ -148,7 +188,9 @@ class Login extends Component {
         localStorage.setItem("zipcode",this.state.zipcode);
         localStorage.setItem("description",this.state.description);
         localStorage.setItem("timing",this.state.timing);
-        redirectVar = <Redirect to="/RestaurantHome" />;
+        const {history} = this.props;
+        history.push('/restauranthome');
+        //redirectVar = <Redirect to="/RestaurantHome" />;
         
        }
 
