@@ -33,12 +33,14 @@ class RestaurantProfile extends Component {
       sendRestAPI = (data) => {
         axios.post('http://localhost:5000/editrestuarant', data)
             .then(res => {
+              console.log(res.data);
                 if(res.data.message){
                     this.setState({message:res.data.message})
 
                 }else{
-                    this.setState({ message: res.data.username }) 
-                    this.setState({ username: res.data.username })
+                    //this.setState({ message: res.data.username }) 
+                    //this.setState({ username: res.data.username })
+                    //console.log(this.state.username);
                 }
                 
             }).catch(

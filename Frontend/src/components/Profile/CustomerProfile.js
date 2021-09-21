@@ -13,30 +13,44 @@ class CustomerProfile extends Component {
         super(props);
   
         this.state = {
-          restaurantname: null,
-          zipcode:null,
-          description:null,
-          email:null,
-          phone: null,
-          cuisine: null,
-          dishes:null,
-          timing:null,
-          loading: false,
-          output: null
+            userid:localStorage.getItem("userid"),
+            username:localStorage.getItem("username"),
+            email: localStorage.getItem("email"),
+            password: null,
+            about: localStorage.getItem("about"),
+            phone:localStorage.getItem("phone"),
+            nickname:localStorage.getItem("nickname"),
+            dob:localStorage.getItem("dob"),
+            state:localStorage.getItem("state"),
+            city:localStorage.getItem("city"),
+            country:localStorage.getItem("country"),
+            loading: false,
+            output: null
         }
-        this.state.email = localStorage.getItem("email");
-        this.state.username = localStorage.getItem("username");
-        //this.handleChange = this.handleChange.bind(this);
+        // this.state.email = localStorage.getItem("email");
+        // this.state.username = localStorage.getItem("username");
+        this.handleChange = this.handleChange.bind(this);
       }
       sendRestAPI = (data) => {
-        axios.post('http://localhost:5000/editrestuarant', data)
+        axios.post('http://localhost:5000/editcustomer', data)
             .then(res => {
+              console.log(res.data);
                 if(res.data.message){
                     this.setState({message:res.data.message})
 
                 }else{
-                    this.setState({ message: res.data.username }) 
-                    this.setState({ username: res.data.username })
+
+                    localStorage.setItem("username",res.data.username);
+                    localStorage.setItem("about",res.data.about);
+                    localStorage.setItem("dob",res.data.dob);
+                    localStorage.setItem("state",res.data.state);
+                    localStorage.setItem("city",res.data.city);
+                    localStorage.setItem("country",res.data.country);
+                    localStorage.setItem("nickname",res.data.nickname);
+                    localStorage.setItem("email",res.data.email);
+                    localStorage.setItem("phone",res.data.phone);
+                   
+                    window.location.href='/CustomerHome';
                 }
                 
             }).catch(
@@ -48,18 +62,24 @@ class CustomerProfile extends Component {
       handleSubmit = (e) => {
         e.preventDefault();
 
-        const restuarantData = {
-            restaurantname: this.state.restaurantname,
-            email: localStorage.getItem("email"),
+        const customerData = {
+            userid:localStorage.getItem("userid"),
+            username: this.state.username,
+            email:this.state.email ,
             password: this.state.password,
-            zipcode: this.state.zipcode,
+            about: this.state.about,
             phone:this.state.phone,
-            description:this.state.description,
-            timing:this.state.timing
+            nickname:this.state.nickname,
+            dob:this.state.dob,
+            state:this.state.state,
+            city:this.state.city,
+            country:this.state.country,
+
         }
-        console.log(restuarantData);
-        this.sendRestAPI(restuarantData);
+        console.log(customerData);
+       this.sendRestAPI(customerData);        
       }
+      
       handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
         }
@@ -70,19 +90,22 @@ class CustomerProfile extends Component {
             <form onSubmit={this.handleSubmit}>
             <h1>Customer Profile</h1>
             <div className='form-control'>
-           
-            Contact :  {this.state.username}<br/>
-            <br/>
-            Email: {this.state.email}
-            <br/>
-            <br/>
-            Phone: <input type="text" name="phone" defaultValue={this.state.phone} onChange={this.handleChange} required></input><br/>
+            Customer Name: <input type="text" name="username" value={this.state.username} onChange={this.handleChange} ></input><br/>
+            Nick Name: <input type="text" name="nickname" value={this.state.nickname} onChange={this.handleChange} ></input><br/>
+            About : <textarea type="text" name="about" defaultValue={this.state.about} onChange={this.handleChange}/>
           
             <br/>
-            Location Zip Code: <input type="text" name="zipcode" defaultValue={this.state.zipcode} onChange={this.handleChange} required></input><br/>
-            <Button>Add new Dish</Button>
+            Email:<input type="text" name="email" value= {this.state.email} onChange={this.handleChange} />
             <br/>
-            <Button>Update Profile</Button>
+           
+            Phone: <input type="text" name="phone" defaultValue={this.state.phone} onChange={this.handleChange} ></input><br/>
+            DoB: <input type="date" name="dob" defaultValue={this.state.dob} onChange={this.handleChange} ></input><br/>
+            State: <input type="text" name="state" defaultValue={this.state.state} onChange={this.handleChange} ></input><br/>
+            City: <input type="text" name="city" defaultValue={this.state.city} onChange={this.handleChange} ></input><br/>
+            Country: <input type="text" name="country" defaultValue={this.state.country} onChange={this.handleChange} ></input><br/>
+
+            <br/>
+            <Button onClick = {this.handleSubmit}>Update Profile</Button>
             </div>
             </form>
         </div>
