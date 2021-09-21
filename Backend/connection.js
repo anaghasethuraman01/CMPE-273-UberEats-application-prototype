@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 
 
-var connection = mysql.createConnection({
+var connection = mysql.createPool({
 	host: "database-1.cqtvbve6qkgo.us-east-2.rds.amazonaws.com",
 	user: "anagha",
 	password: "Anagha123",
@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
 	port: "3306",
 });
 
-connection.connect(function (err) {
+connection.getConnection(function (err) {
 	if (err) {
 		throw err;
 	} else {
