@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import axios from 'axios';
 import cookie from 'react-cookies';
-import { Button } from 'reactstrap';
-
+import { Button ,Form,Input} from 'reactstrap';
+import backendServer from "../../webConfig";
 class Login extends Component {
  
     constructor(props) {
@@ -25,7 +25,10 @@ class Login extends Component {
             timing:null,
             userid:null,
             restaurantid:null,
-            status:null
+            status:null,
+            city:null,
+            deliverytype:null,
+            days:null
         
         };
 
@@ -45,26 +48,27 @@ class Login extends Component {
 
     sendRestaurantAPI = (data) => {
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:5000/restlogin', data)
-       
+        axios.post(`${backendServer}/restlogin`, data)
+        
             .then(res => {  
+              
                 if(res.data.message){
                     this.setState({ message: res.data.message });
                 } 
-                else{
-                  
-                    
+                else{  
                     var data1 = res.data['result'];
-                    console.log(data1);
-                    this.setState({username:data1['username']});
                     
+                    this.setState({username:data1['username']});
                     this.setState({phone:data1['phone']});
                     this.setState({ zipcode: data1['zipcode']})
                     this.setState({ timing: data1['timing']})
                     this.setState({ description:data1['description']})
+                    this.setState({ city: data1['city']})
+                    this.setState({ days: data1['days']})
+                    this.setState({ deliverytype:data1['deliverytype']})
                     this.setState({restaurantid:res.data['userid']});
+                    this.setState({ owner:data1['owner']})
                     this.setState({status:res.data['status']});
-                    
                     console.log(this.state.restaurantid)
                     console.log(this.state.status)
                 }
@@ -78,8 +82,9 @@ class Login extends Component {
     }
     sendCustomerAPI = (data) => {
         axios.defaults.withCredentials = true;
-        axios.post('http://localhost:5000/custlogin', data)
+        axios.post(`${backendServer}/custlogin`, data)
             .then(res => {   
+                console.log("in login")
                  console.log(res.data)
                  if(res.data.message){
                     this.setState({ message: res.data.message })
@@ -137,6 +142,9 @@ class Login extends Component {
             redirectHome = <Redirect to="/" />
 
         }
+        // if(this.state.usertype === 'restaurant'){
+        //     redirectHome = <Redirect to="/RestaurantHome" />
+        // }
         if(this.state.usertype === 'restaurant' && this.state.status==="notfound"){
             localStorage.setItem("restaurantid",this.state.restaurantid);
             localStorage.setItem("email",this.state.email);
@@ -145,7 +153,11 @@ class Login extends Component {
             localStorage.setItem("zipcode",this.state.zipcode);
             localStorage.setItem("description","Add");
             localStorage.setItem("timing","Add");
-            redirectHome = <Redirect to="/RestaurantProfile" />
+            localStorage.setItem("city","Add");
+            localStorage.setItem("days","Add");
+            localStorage.setItem("deliverytype","Add");
+           
+            redirectHome = <Redirect to="/RestaurantHome" />
         }
 
         if( this.state.status==="notfound" && this.state.usertype === 'customer'){
@@ -159,10 +171,10 @@ class Login extends Component {
         localStorage.setItem("city","Add");
         localStorage.setItem("state","Add");
         localStorage.setItem("country","Add");
-            redirectHome = <Redirect to="/CustomerProfile" />
+            redirectHome = <Redirect to="/CustomerHome" />
         }
         
-       if( this.state.status==="found" && this.state.usertype === 'customer'){
+       if( this.state.status==="found" && this.state.usertype === 'customer' ){
         localStorage.setItem("userid",this.state.userid);
         localStorage.setItem("email",this.state.email);
         localStorage.setItem("username",this.state.username);
@@ -188,28 +200,27 @@ class Login extends Component {
         localStorage.setItem("zipcode",this.state.zipcode);
         localStorage.setItem("description",this.state.description);
         localStorage.setItem("timing",this.state.timing);
-        const {history} = this.props;
-        history.push('/restauranthome');
-        //redirectVar = <Redirect to="/RestaurantHome" />;
+        localStorage.setItem("city",this.state.city);
+        localStorage.setItem("deliverytype",this.state.deliverytype);
+        localStorage.setItem("days",this.state.days);
+        // const {history} = this.props;
+        // history.push('/restauranthome');
+        redirectVar = <Redirect to="/RestaurantHome" />;
         
        }
-
-
-
-
 
         return (
             <div>{redirectHome}
                 {redirectVar}
                 <div class="container">
-                <form >
+                <Form >
 
-                    <h1>Welcome Back</h1>
+                    <h1>Welcome to Uber Eats.</h1>
                     <div className='form-control'>
-                    Email: <input id="email" type="email" name="email" placeholder="example@gmail.com" 
-                    value={this.state.email} onChange={this.handleChange}required></input><br />
-                    Password: <input type="password" name="password" placeholder="At least 6 characters" minlength="6" maxlength="16"  
-                    value={this.state.password} onChange={this.handleChange} required></input><br />
+                    Email: <Input id="email" type="email" name="email" placeholder="example@gmail.com" 
+                    value={this.state.email} onChange={this.handleChange}required></Input>
+                    Password: <Input type="password" name="password" placeholder="At least 6 characters" minlength="6" maxlength="16"  
+                    value={this.state.password} onChange={this.handleChange} required></Input>
                     <select name="usertype" value={this.state.value} onChange={this.handleChange}>
                         <option value="">User type</option>
                         <option value="customer">Customer</option>
@@ -221,7 +232,7 @@ class Login extends Component {
                     <div>{this.state.message}</div>
                     </div>
                         
-                    </form>
+                    </Form>
                 </div>
             </div>
         )

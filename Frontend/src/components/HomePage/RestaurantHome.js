@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 // import cookie from 'react-cookies';
 import { Button } from 'reactstrap';
 
+//import 'bootstrap/dist/css/bootstrap.css';
 class RestaurantHome extends Component {
     
     constructor(props){
@@ -15,6 +16,9 @@ class RestaurantHome extends Component {
           email:localStorage.getItem("email"),
           phone: localStorage.getItem("phone"),
           timing:localStorage.getItem("timing"),
+          city:localStorage.getItem("city"),
+          deliverytype: localStorage.getItem("deliverytype"),
+          days:localStorage.getItem("days"),
           loading: false,
           output: null
         }
@@ -27,36 +31,49 @@ class RestaurantHome extends Component {
           e.preventDefault();
         window.location.href='/RestaurantProfile';
       }
+      profile = e => {
+        e.preventDefault();
+        const {history} = this.props;
+        history.push('/restaurantprofile'); 
+      }
+      menu = e => {
+        e.preventDefault();
+        const {history} = this.props;
+        history.push('/restaurantmenu'); 
+      }
+      orders = e => {
+        e.preventDefault();
+        const {history} = this.props;
+        history.push('/restaurantprofile'); 
+      }
+      addnewdish = e => {
+        e.preventDefault();
+        const {history} = this.props;
+        history.push('/restaurantmenu'); 
+      }
+      logout = e => {
+        e.preventDefault();
+        const {history} = this.props;
+        history.push('/login'); 
+      }
     render(){
 
     return (
       
         <div class="container">
             
-            <form onSubmit={this.handleSubmit}>
-            <h1>Welcome to {this.state.restaurantname}</h1>
-            <div className='form-control'>
+            <form>
+            <h1>Welcome {this.state.restaurantname} !</h1>
+            <div className='form-buttons'>
           
-            Description : {this.state.description}
-            <br/>
-            <br/>
-            Contact Details:  <br/>
-            <br/>
-            Email: {this.state.email}
-            <br/>
-            <br/>
-            Phone: {this.state.phone}
-            <br/>
-            <br/>
-            Timings :  {this.state.timing} <br/>
-      
-            <br/>
-            Location Zip Code: {this.state.zipcode}
-            <br/>
-            <br/>
-            <Button>Update Profile</Button>
-            <br/>
-            <Button onClick = {this.showMenu}>Dishes Menu</Button>
+            <Button className="btn" onClick={this.profile}>Profile</Button>
+
+            <Button className="btn" onClick={this.menu}>Menu</Button>
+
+            <Button className="btn" onClick={this.addnewdish}>Add New Dish</Button>
+
+            <Button className="btn" onClick={this.orders}>Orders</Button>
+            <Button className="btn" onClick={this.logout}>Logout</Button>
             </div>
             </form>
         </div>

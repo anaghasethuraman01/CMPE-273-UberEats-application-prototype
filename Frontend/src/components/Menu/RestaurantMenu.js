@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 // import cookie from 'react-cookies';
 import { Button } from 'reactstrap';
+import backendServer from "../../webConfig";
 
 class RestaurantMenu extends Component {
     
@@ -20,7 +21,7 @@ class RestaurantMenu extends Component {
 
       sendDishAPI = (data) => {
         // console.log("data"+data)
-          axios.post('http://localhost:5000/restaurantdish', data)
+          axios.post(`${backendServer}/restaurantdish`, data)
               .then(res => {
                   if(res.data.message){
                       this.setState({message:res.data.message})
@@ -54,6 +55,11 @@ class RestaurantMenu extends Component {
       console.log(dishData);
         this.sendDishAPI(dishData);
       }
+      goback = (e) =>{
+        e.preventDefault();
+        const {history} = this.props;
+        history.push('/restauranthome'); 
+      }
       showMenu = (e) =>{
         e.preventDefault();
         window.location.href='/RestaurantMenu';
@@ -64,7 +70,7 @@ class RestaurantMenu extends Component {
       
         <div class="container">
             
-            <form onSubmit={this.handleSubmit}>
+            <form >
             <h1>Dish Menu</h1>
             <div className='form-control'>
            
@@ -82,9 +88,11 @@ class RestaurantMenu extends Component {
                         <option value="beverages">Beverages</option>
             </select>
             <br/>
-            <Button >Add new Dish</Button>
+            <Button onClick={this.handleSubmit}>Add new Dish</Button>
             <br/>
             <Button >View your Dishes</Button>
+
+            <Button onClick = {this.goback}>Back</Button>
             </div>
             </form>
            

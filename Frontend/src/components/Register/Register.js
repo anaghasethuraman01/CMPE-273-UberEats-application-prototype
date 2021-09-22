@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Button } from 'reactstrap';
-
+import backendServer from "../../webConfig";
 class Register extends Component {
     constructor(props) {
         super(props);
@@ -31,7 +31,7 @@ class Register extends Component {
     //send registration data to server for processing
     sendRestAPI = (data) => {
       // console.log("data"+data)
-        axios.post('http://localhost:5000/register', data)
+        axios.post(`${backendServer}/register`, data)
             .then(res => {
                 if(res.data.message){
                     this.setState({message:res.data.message})
