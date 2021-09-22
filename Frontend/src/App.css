@@ -1,10 +1,13 @@
-.App {
+.form-buttons{
+  display: flex;
+  flex-direction: row;
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.btn{
+  font-size:large;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-left: 1rem;
 }
 .linkd{
   size: 100rem;
@@ -57,7 +60,64 @@ input {
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 2rem;
+  
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+.card-flip {
+  background-color: transparent;
+  width: 300px;
+  height: 300px;
+  border: 1px solid green;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
 
+/* This container is needed to position the front and back side */
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+/* Style the front side (fallback if image is missing) */
+.card-front {
+  background-color: white;
+  color: green;
+  border: 1px solid green;
+  margin: 0 auto;
+}
+
+/* Style the back side */
+.card-back {
+  background-color: white;
+  color: green;
+  border: 1px solid green;
+  transform: rotateY(180deg);
+  margin: 0 auto;
+  overflow: scroll;
+}
+.card-flip:hover .card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+  cursor: pointer;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
