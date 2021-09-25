@@ -19,7 +19,9 @@ class RestaurantProfile extends Component {
           deliverytype: localStorage.getItem("deliverytype"),
           days:localStorage.getItem("days"),
           loading: false,
-          output: null
+          output: null,
+          file:null,
+          fileName:null
         }
       }
       handleSubmit = (e) => {
@@ -32,7 +34,7 @@ class RestaurantProfile extends Component {
         const {history} = this.props;
         history.push('/restauranthome'); 
       }
-    render(){
+      render(){
 
     return (
       
@@ -40,8 +42,9 @@ class RestaurantProfile extends Component {
             
             <form >
             <h1>Welcome to {this.state.restaurantname}</h1>
+            
             <div className='form-control'>
-          
+      
             Description : {this.state.description}
             <br/>
             <br/>

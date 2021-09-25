@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 // import cookie from 'react-cookies';
 import axios from 'axios';
 import { Button } from 'reactstrap';
-
+import backendServer from "../../webConfig";
 
 class CustomerEditProfile extends Component {
     
@@ -24,6 +24,7 @@ class CustomerEditProfile extends Component {
             state:localStorage.getItem("state"),
             city:localStorage.getItem("city"),
             country:localStorage.getItem("country"),
+            profilepic:localStorage.getItem("profilepic"),
             loading: false,
             output: null
         }
@@ -32,7 +33,7 @@ class CustomerEditProfile extends Component {
         this.handleChange = this.handleChange.bind(this);
       }
       sendRestAPI = (data) => {
-        axios.post('http://localhost:5000/editcustomer', data)
+        axios.post(`${backendServer}/editcustomer`, data)
             .then(res => {
                 console.log("edit details");
               console.log(res.data);
@@ -62,7 +63,6 @@ class CustomerEditProfile extends Component {
     }
       handleSubmit = (e) => {
         e.preventDefault();
-
         const customerData = {
             userid:localStorage.getItem("userid"),
             username: this.state.username,
@@ -75,26 +75,61 @@ class CustomerEditProfile extends Component {
             state:this.state.state,
             city:this.state.city,
             country:this.state.country,
-
         }
        // console.log(customerData);
        this.sendRestAPI(customerData);        
       }
-      goback = (e) =>{
-        e.preventDefault();
-        const {history} = this.props;
-        history.push('/customerprofile'); 
-      }
+      // goback = (e) =>{
+      //   e.preventDefault();
+      //   const {history} = this.props;
+      //   history.push('/customerprofile'); 
+      // }
       handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
         }
+        goback = (e) =>{
+          
+          e.preventDefault();
+          const {history} = this.props;
+          history.push('/customerprofile'); 
+        }
+        saveFile = (e) => {
+          e.preventDefault();
+          this.setState({file:e.target.files[0]});
+          this.setState({fileName:e.target.files[0].name});
+          
+        };
+        uploadFile = (e) => {
+          e.preventDefault();
+          const formData = new FormData();
+          formData.append("file", this.state.file,this.state.fileName);
+          formData.append("userid", this.state.userid);
+          
+         // console.log(customerData);
+         this.sendImageAPI(formData);        
+        }
+        sendImageAPI = (data) => {
+          axios.post( `${backendServer}/custimageupload`, data)
+              .then(res => {
+              console.log(res.data);
+                 this.setState({profilepic:res.data});
+                localStorage.setItem("profilepic",res.data);
+                console.log(this.state.profilepic);
+              })
+            }
+     
     render(){
 
     return (
         <div class="container">
-            <form onSubmit={this.handleSubmit}>
+            <form >
             <h1>Customer Profile</h1>
+            Profile pic:
+            <input className="filefolder" type="file" onChange={this.saveFile} />
+          <button onClick={this.uploadFile}>Upload</button>  
+          <Button onClick = {this.goback}>Go Back</Button>
             <div className='form-control'>
+
             Customer Name: <input type="text" name="username" value={this.state.username} onChange={this.handleChange} ></input><br/>
             Nick Name: <input type="text" name="nickname" value={this.state.nickname} onChange={this.handleChange} ></input><br/>
             About : <textarea type="text" name="about" defaultValue={this.state.about} onChange={this.handleChange}/>
@@ -111,6 +146,8 @@ class CustomerEditProfile extends Component {
 
             <br/>
             <Button onClick = {this.handleSubmit}>Update Profile</Button>
+
+            <Button onClick = {this.goback}>Back</Button>
             </div>
             </form>
         </div>

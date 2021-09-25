@@ -39,7 +39,7 @@ class RestaurantHome extends Component {
       menu = e => {
         e.preventDefault();
         const {history} = this.props;
-        history.push('/restaurantmenu'); 
+        history.push('/alldishmenu'); 
       }
       orders = e => {
         e.preventDefault();

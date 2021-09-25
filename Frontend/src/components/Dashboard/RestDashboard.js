@@ -58,6 +58,33 @@ class RestDashboard extends Component {
               }
           });
   }
+
+
+  searchDishAPI = (data) => {
+    this.setState({status: "done"})
+    axios.defaults.withCredentials = true;
+    axios.post(`${backendServer}/restdishsearch`, data)
+        .then(res => {   
+            console.log("in rest search")
+             console.log(res.data)
+             if(res.data.message){
+                this.setState({ message: res.data.message })
+            }else{
+              
+              this.setState({
+                restaurants1 : res.data
+              });
+                
+            }
+            
+            console.log("Status Code : ", res.status);
+            if (res.status === 200) {
+                this.setState({ authFlag: true })
+            } else {
+                this.setState({ authFlag: false })
+            }
+        });
+}
       handleSubmit = (e) => {
         e.preventDefault();
         const credential = {
@@ -74,7 +101,7 @@ class RestDashboard extends Component {
           dish: this.state.dish
       }
      console.log(credential)
-    //  this.searchDishAPI(credential);
+      this.searchDishAPI(credential);
   
       }
       goback = (e) =>{

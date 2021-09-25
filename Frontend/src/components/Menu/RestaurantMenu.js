@@ -21,14 +21,14 @@ class RestaurantMenu extends Component {
 
       sendDishAPI = (data) => {
         // console.log("data"+data)
+        localStorage.setItem("dishname",data.dishname);
           axios.post(`${backendServer}/restaurantdish`, data)
               .then(res => {
                   if(res.data.message){
                       this.setState({message:res.data.message})
   
                   }else{
-                      this.setState({ message: res.data.username }) 
-                      this.setState({ username: res.data.username })
+                   
                   }
                   
               }).catch(
@@ -52,7 +52,7 @@ class RestaurantMenu extends Component {
             description:this.state.description,
             category:this.state.category
         }
-      console.log(dishData);
+    
         this.sendDishAPI(dishData);
       }
       goback = (e) =>{
@@ -64,6 +64,33 @@ class RestaurantMenu extends Component {
         e.preventDefault();
         window.location.href='/RestaurantMenu';
       }
+
+      saveFile = (e) => {
+        e.preventDefault();
+        this.setState({file:e.target.files[0]});
+        this.setState({fileName:e.target.files[0].name});
+        
+      };
+      uploadFile = (e) => {
+        e.preventDefault();
+        console.log(localStorage.getItem("restaurantid"));
+        const formData = new FormData();
+        formData.append("file", this.state.file,this.state.fileName);
+        formData.append("restaurantid", localStorage.getItem("restaurantid"));
+        formData.append("dishname",localStorage.getItem("dishname"))
+       // console.log(customerData);
+       this.sendImageAPI(formData);        
+      }
+
+      sendImageAPI = (data) => {
+        axios.post( `${backendServer}/dishimageupload`, data)
+            .then(res => {
+            console.log(res.data);
+              //  this.setState({profilepic:res.data});
+              // localStorage.setItem("profilepic",res.data);
+             // console.log(this.state.profilepic);
+            })
+          }
     render(){
 
     return (
@@ -90,7 +117,11 @@ class RestaurantMenu extends Component {
             <br/>
             <Button onClick={this.handleSubmit}>Add new Dish</Button>
             <br/>
-            <Button >View your Dishes</Button>
+            <br/>
+            <input className="filefolder" type="file" onChange={this.saveFile} required/>
+            <Button onClick={this.uploadFile}>Upload Dish Image</Button>  <br/> 
+            
+          
 
             <Button onClick = {this.goback}>Back</Button>
             </div>

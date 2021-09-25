@@ -86,7 +86,30 @@ class RestaurantEditProfile extends Component {
           const {history} = this.props;
           history.push('/restaurantprofile'); 
         }
-
+        saveFile = (e) => {
+          e.preventDefault();
+          this.setState({file:e.target.files[0]});
+          this.setState({fileName:e.target.files[0].name});
+          
+        };
+   
+         uploadFile = async (e) => {
+          const formData = new FormData();
+          formData.append("file", this.state.file,this.state.fileName);
+          formData.append("restaurantid", this.state.restaurantid);
+          console.log(formData);
+          try {
+            const res = await axios.post(
+              "http://localhost:5000/upload",
+              formData
+            );
+            console.log(res);
+          } catch (ex) {
+            console.log(ex);
+          }
+        };
+        
+     
         // onChangeHandler=event=>{
         //   this.setState({
         //     selectedFile: event.target.files[0],
@@ -110,11 +133,15 @@ class RestaurantEditProfile extends Component {
       // }
 
     render(){
-
+      //const imgLink = `http://localhost:5000/${profileData.picture}`;
     return (
         <div className="container">
             <form >
             <h1>Restuarant Profile</h1>
+
+            <input className="filefolder" type="file" onChange={this.saveFile} />
+          <button onClick={this.uploadFile}>Upload</button>
+         {/* <img src={imgLink} alt="helo" style={{ maxHeight: '180px', maxWidth: '180px' }} /> */}
             <div className='form-control'>
             Restaurant Name: <input type="text" name="restaurantname" value={this.state.restaurantname} onChange={this.handleChange} ></input><br/>
             Description : <textarea type="text" name="description" defaultValue={this.state.description} onChange={this.handleChange}/>
