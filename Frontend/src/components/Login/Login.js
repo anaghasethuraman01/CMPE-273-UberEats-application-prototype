@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import axios from 'axios';
 import cookie from 'react-cookies';
-import { Button ,Form,Input} from 'reactstrap';
+import { Button ,Input} from 'reactstrap';
 import backendServer from "../../webConfig";
 class Login extends Component {
  
@@ -28,7 +28,8 @@ class Login extends Component {
             status:null,
             city:null,
             deliverytype:null,
-            days:null
+            days:null,
+            profilepic:null,
         
         };
 
@@ -51,7 +52,7 @@ class Login extends Component {
         axios.post(`${backendServer}/restlogin`, data)
         
             .then(res => {  
-              
+                console.log(res.data['result']);
                 if(res.data.message){
                     this.setState({ message: res.data.message });
                 } 
@@ -67,7 +68,8 @@ class Login extends Component {
                     this.setState({ days: data1['days']})
                     this.setState({ deliverytype:data1['deliverytype']})
                     this.setState({restaurantid:res.data['userid']});
-                    this.setState({ owner:data1['owner']})
+                    this.setState({ owner:data1['owner']});
+                    
                     this.setState({status:res.data['status']});
                     console.log(this.state.restaurantid)
                     console.log(this.state.status)
@@ -101,6 +103,7 @@ class Login extends Component {
                     this.setState({ country: data1['country']})
                     this.setState({ about:data1['about']})
                     this.setState({ owner:data1['owner']})
+                    this.setState({ profilepic:data1['profilepic']})
                     this.setState({ userid:res.data['userid']});
                     this.setState({status:res.data['status']});
                     
@@ -156,6 +159,7 @@ class Login extends Component {
             localStorage.setItem("city","Add");
             localStorage.setItem("days","Add");
             localStorage.setItem("deliverytype","Add");
+            
            
             redirectHome = <Redirect to="/RestaurantHome" />
         }
@@ -171,6 +175,7 @@ class Login extends Component {
         localStorage.setItem("city","Add");
         localStorage.setItem("state","Add");
         localStorage.setItem("country","Add");
+        localStorage.setItem("profilepic",this.state.profilepic);
             redirectHome = <Redirect to="/CustomerHome" />
         }
         
@@ -185,6 +190,7 @@ class Login extends Component {
         localStorage.setItem("city",this.state.city);
         localStorage.setItem("state",this.state.state);
         localStorage.setItem("country",this.state.country);
+        localStorage.setItem("profilepic",this.state.profilepic);
         //  const {history} = this.props;
         // console.log("here");
         // history.push('/customerhome');
@@ -212,28 +218,43 @@ class Login extends Component {
         return (
             <div>{redirectHome}
                 {redirectVar}
-                <div class="container">
-                <Form >
 
-                    <h1>Welcome to Uber Eats.</h1>
-                    <div className='form-control'>
-                    Email: <Input id="email" type="email" name="email" placeholder="example@gmail.com" 
+                <div className="container">
+          <div className="login-form">
+            <div className="main-div">
+              <div className="panel">
+              <h1>Welcome to Uber Eats.</h1>
+                <p>Please enter your email and password.</p>
+              </div>
+
+              <div className="form-group">
+
+              Email: <Input className="form-control" id="email" type="email" name="email" placeholder="example@gmail.com" 
                     value={this.state.email} onChange={this.handleChange}required></Input>
-                    Password: <Input type="password" name="password" placeholder="At least 6 characters" minlength="6" maxlength="16"  
+               
+              </div>
+              <div className="form-group">
+                  
+              Password: <Input type="password" name="password" placeholder="At least 6 characters" minlength="6" maxlength="16"  
                     value={this.state.password} onChange={this.handleChange} required></Input>
-                    <select name="usertype" value={this.state.value} onChange={this.handleChange}>
+              </div>
+              <div className="form-group">
+              <select name="usertype" value={this.state.value} onChange={this.handleChange}>
                         <option value="">User type</option>
                         <option value="customer">Customer</option>
                         <option value="restaurant">Restaurant</option>
                     </select>
-                    <br/>
-                    <div><Button onClick={this.handleSubmit}>Login</Button></div>
-                    <div>New to Uber Eats? <Link to="/register">Create an account</Link></div>
-                    <div>{this.state.message}</div>
-                    </div>
-                        
-                    </Form>
-                </div>
+                  </div>
+              <div className="form-group">
+
+              <Button onClick={this.handleSubmit} className="btn btn-primary">Login</Button>
+              <h4>New to Uber Eats? <Link to="/register">Create an account</Link></h4>
+                <div><h2>{this.state.message}</h2></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
             </div>
         )
     }
