@@ -18,7 +18,7 @@ router.post('/', function(req,res){
 		console.log(result);
 		res.end(JSON.stringify(result));
 		console.log(JSON.stringify(result));	
-		//res.end(JSON.stringify(result));
+		res.end(JSON.stringify(result));
 	});  
 });
 module.exports = router;

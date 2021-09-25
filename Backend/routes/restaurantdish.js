@@ -29,7 +29,7 @@ router.post("/", (req, res) => {
 					//res.send({message:"Invalid credentials"})
 				} else {
 					console.log("USER ADDED");
-					res.send("Row added");
+					//res.send("Row added");
 				}
 			});
 });
