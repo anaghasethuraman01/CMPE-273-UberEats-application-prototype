@@ -1,5 +1,7 @@
+
 import React from 'react'
-//import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { Button } from 'reactstrap';
 const RestaurantInfo = ({ restaurant }) => {
 
    
@@ -17,6 +19,7 @@ const RestaurantInfo = ({ restaurant }) => {
                 <h1>{restaurant.timing}</h1>
                 <h1>{restaurant.phone}</h1>
                 <h1>{restaurant.email}</h1>
+                <h1><Button>Explore {restaurant.username}</Button></h1>
                     
                 </div>
             </div>

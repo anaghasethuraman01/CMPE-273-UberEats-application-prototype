@@ -109,11 +109,7 @@ class RestDashboard extends Component {
         const {history} = this.props;
         history.push('/customerhome'); 
       }
-      showAll = (e) => {
-        e.preventDefault();
-        window.location.href='/RestDashboard';
-       
-        }
+    
       handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
         }
@@ -164,7 +160,7 @@ class RestDashboard extends Component {
             <Button type="submit">Search</Button>
             </form>
             <form>
-            <Button type="submit" onClick={this.showAll}>Show All</Button>
+           
             <Button onClick = {this.goback}>Go To Home Page</Button>
             </form>
 

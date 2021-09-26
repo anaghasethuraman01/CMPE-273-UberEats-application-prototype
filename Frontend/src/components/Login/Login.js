@@ -239,7 +239,7 @@ class Login extends Component {
                     value={this.state.password} onChange={this.handleChange} required></Input>
               </div>
               <div className="form-group">
-              <select name="usertype" value={this.state.value} onChange={this.handleChange}>
+              <select className="usertype" name="usertype" value={this.state.value} onChange={this.handleChange}>
                         <option value="">User type</option>
                         <option value="customer">Customer</option>
                         <option value="restaurant">Restaurant</option>
