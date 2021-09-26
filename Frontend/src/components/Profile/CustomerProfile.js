@@ -63,47 +63,57 @@ class CustomerProfile extends Component {
       console.log("***"); 
       console.log(localStorage.getItem("profilepic"));
     return (
-        <div class="container">
-            <form>
-            <h1>Welcome {this.state.username}</h1>
-            <div className='form-control'>
-            <img src={imgLink} alt="helo" style={{ maxHeight: '180px', maxWidth: '180px' }} />
-             
-            <br/>
-            About: {this.state.about}
-            <br/>
-            <br/>
-            NickName: {this.state.nickname}
-            <br/>
-            <br/>
-            Email: {this.state.email}
-            <br/>
-            <br/>
-            Phone: {this.state.phone}
-            <br/>
-            <br/>
-            DoB: {this.state.dob}
-            <br/>
-            <br/>
-            City: {this.state.city}
-            <br/>
-            <br/>
-            State: {this.state.state}
-            <br/>
-            <br/>
-            Country: {this.state.country}
-            <br/>
-            <br/>
-            <Button onClick = {this.handleSubmit}>Update Profile</Button>
-            <br/>
 
 
-            <br/>
-            <Button onClick = {this.goback}>Back</Button>
-            </div>
-            </form>
-            
+      <div className="container">
+      <div className="login-form">
+        <div className="main-div">
+          <div className="panel">
+          <h1>Welcome {this.state.username}</h1>
+          </div>
+          <div className="form-group">
+
+          <img src={imgLink} alt="helo" style={{ maxHeight: '180px', maxWidth: '180px' }} />
+          
+          </div>
+          <div className="form-group">
+          <h4>About : {this.state.about}</h4>
+          </div>
+          <div className="form-group">
+          <h4>Call Me : {this.state.nickname}</h4>
+          </div>
+          <div className="form-group">
+          <h4>Email: {this.state.email}</h4>
+          </div>
+          <div className="form-group">
+            <h4> Phone: {this.state.phone}</h4>
+          
+          </div>
+          <div className="form-group">
+            <h4>  DoB: {this.state.dob}</h4>
+          
+          </div>
+          
+          <div className="form-group">
+            <h4> City: {this.state.city}</h4>
+          
+          </div>
+          <div className="form-group">
+            <h4> State: {this.state.state}</h4>
+          
+          </div>
+          <div className="form-group">
+            <h4> Country: {this.state.country}</h4>
+          
+          </div>
+         
+          <Button onClick = {this.handleSubmit} >Update Profile</Button>
+
+          <Button onClick = {this.goback}>Back</Button>
         </div>
+      </div>
+    </div>
+       
     )
     }
    

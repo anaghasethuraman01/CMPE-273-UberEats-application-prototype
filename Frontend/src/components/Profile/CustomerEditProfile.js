@@ -4,8 +4,9 @@ import React, {Component} from 'react';
 // import { Redirect } from 'react-router';
 // import cookie from 'react-cookies';
 import axios from 'axios';
-import { Button } from 'reactstrap';
+import { Button,Input } from 'reactstrap';
 import backendServer from "../../webConfig";
+import { CountryDropdown } from 'react-country-region-selector';
 
 class CustomerEditProfile extends Component {
     
@@ -61,6 +62,9 @@ class CustomerEditProfile extends Component {
                 }
             );
     }
+    selectCountry (val) {
+      this.setState({ country: val });
+    }
       handleSubmit = (e) => {
         e.preventDefault();
         const customerData = {
@@ -76,6 +80,7 @@ class CustomerEditProfile extends Component {
             city:this.state.city,
             country:this.state.country,
         }
+       
        // console.log(customerData);
        this.sendRestAPI(customerData);        
       }
@@ -121,35 +126,64 @@ class CustomerEditProfile extends Component {
     render(){
 
     return (
-        <div class="container">
-            <form >
-            <h1>Customer Profile</h1>
-            Profile pic:
-            <input className="filefolder" type="file" onChange={this.saveFile} />
-          <button onClick={this.uploadFile}>Upload</button>  
-          <Button onClick = {this.goback}>Go Back</Button>
-            <div className='form-control'>
+     
+         <div className="container">
+          <div className="login-form">
+            <div className="main-div">
+              <div className="panel">
+                <h2>Customer Profile</h2>
 
-            Customer Name: <input type="text" name="username" value={this.state.username} onChange={this.handleChange} ></input><br/>
-            Nick Name: <input type="text" name="nickname" value={this.state.nickname} onChange={this.handleChange} ></input><br/>
-            About : <textarea type="text" name="about" defaultValue={this.state.about} onChange={this.handleChange}/>
-          
-            <br/>
-            Email:<input type="text" name="email" value= {this.state.email} onChange={this.handleChange} />
-            <br/>
-           
-            Phone: <input type="text" name="phone" defaultValue={this.state.phone} onChange={this.handleChange} ></input><br/>
-            DoB: <input type="date" name="dob" defaultValue={this.state.dob} onChange={this.handleChange} ></input><br/>
-            State: <input type="text" name="state" defaultValue={this.state.state} onChange={this.handleChange} ></input><br/>
-            City: <input type="text" name="city" defaultValue={this.state.city} onChange={this.handleChange} ></input><br/>
-            Country: <input type="text" name="country" defaultValue={this.state.country} onChange={this.handleChange} ></input><br/>
+              </div>
 
-            <br/>
-            <Button onClick = {this.handleSubmit}>Update Profile</Button>
+              <div className="form-group">
 
-            <Button onClick = {this.goback}>Back</Button>
+              Profile pic:
+              <input className="filefolder" type="file" onChange={this.saveFile} />
+              <button onClick={this.uploadFile}>Upload</button>  
+              <Button onClick = {this.goback}>Go Back</Button>
+        
+              </div>
+              <div className="form-group">
+
+              Customer Name: <Input className="form-control" type="text" name="username" value={this.state.username} onChange={this.handleChange} ></Input>
+               
+              </div>
+              <div className="form-group">
+              Nick Name: <Input type="text" className="form-control" name="nickname" value={this.state.nickname} onChange={this.handleChange} ></Input>
+              </div>
+              <div className="form-group">
+              About : <textarea type="text" className="form-control" name="about" defaultValue={this.state.about} onChange={this.handleChange}/>
+              </div>
+              <div className="form-group">
+              Email:<Input type="text" className="form-control" name="email" value= {this.state.email} onChange={this.handleChange} />
+              </div>
+              <div className="form-group">
+              Phone: <Input type="text" className="form-control" name="phone" defaultValue={this.state.phone} onChange={this.handleChange} ></Input>
+              </div>
+              <div className="form-group">
+              DoB: <input type="date" className="form-date" name="dob" defaultValue={this.state.dob} onChange={this.handleChange} />
+              </div>
+              <div className="form-group">
+              State: <Input type="text" className="form-control" name="state" defaultValue={this.state.state} onChange={this.handleChange} ></Input>
+              </div>
+              <div className="form-group">
+              City: <Input type="text" className="form-control" name="city" defaultValue={this.state.city} onChange={this.handleChange} ></Input>
+              </div>
+              <div className="form-group">
+
+              <CountryDropdown className="form-control"
+                    value={this.state.country}
+                    onChange={(val) => this.selectCountry(val)} 
+                  />
+
+             
+              </div>
+             
+              <Button onClick = {this.handleSubmit}>Update Profile</Button>
+
+              <Button onClick = {this.goback}>Back</Button>
             </div>
-            </form>
+          </div>
         </div>
     )
     }

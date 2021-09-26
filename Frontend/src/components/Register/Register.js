@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Button } from 'reactstrap';
+import { Button ,Input} from 'reactstrap';
 import backendServer from "../../webConfig";
 class Register extends Component {
     constructor(props) {
@@ -89,38 +89,80 @@ class Register extends Component {
         var accountType = "Owner";
         if (this.state.owner) {
             ownerForm =
-                <div className='form-control'>
-                    Restaurant Name: <input type="text" name="username" maxlength="30" placeholder="Restaurant name" value={this.state.username} onChange={this.handleChange} required></input><br />
-                    ZipCode: <input type="number" name="zipcode" maxlength="5" placeholder="5 digits" value={this.state.zipcode} onChange={this.handleChange} required></input>
+            <div className="form-group">
+                <div >
+                    Restaurant Name: <Input className="form-control" type="text" name="username" maxlength="30" placeholder="Restaurant name" value={this.state.username} onChange={this.handleChange} required></Input>
+                    ZipCode: <Input  className="form-control" type="number" name="zipcode" maxlength="5" placeholder="5 digits" value={this.state.zipcode} onChange={this.handleChange} required></Input>
+                </div>
                 </div>
             accountType = "User";
         } else{
             userForm =
             <div >
-            Name:<br/> <input type="text" name="username" placeholder="Your name" minlength="3" maxlength="30" value={this.state.username} onChange={this.handleChange} required></input><br />
+            Name:<br/> <Input className="form-control" type="text" name="username" placeholder="Your name" minlength="3" maxlength="30" value={this.state.username} onChange={this.handleChange} required></Input>
         </div>
          accountType = "Owner";
         }
 
         return (
-            <div class="container">
-                <form onSubmit={this.handleSubmit}>
-                <h1>Let's get started</h1>
-                <div className='form-control'>
-                    {userForm}
-                    {ownerForm}
-                    Email: <input type="email" name="email" placeholder="example@gmail.com" value={this.state.email} onChange={this.handleChange} required></input><br />
-                    Password: <input type="password" name="password" placeholder="At least 6 characters" minlength="6" maxlength="16" id="password" value={this.state.password} onChange={this.handleChange} required></input><br />
+
+
+            <div>
+           
+            <div className="container">
+              <div className="login-form">
+                <div className="main-div">
+                  <div className="panel">
+                  <h1>Let's get started.</h1>
+                    <p>Please enter required details to register.</p>
+                  </div>
+                  {userForm}
+                  {ownerForm}
+                  <div className="form-group">
+
+                  Email: <Input   className="form-control" type="email" name="email" placeholder="example@gmail.com" value={this.state.email} onChange={this.handleChange} required></Input>
                    
-                    <div>
-                    <Button>Register</Button> &nbsp;
-                    <Button onClick={this.switchForm}>Sign Up as {accountType}</Button>
-                    </div><br />
-                    <div>Already have an account? <Link to="/login">Login</Link></div><br />
-                    <div> {this.state.message} </div>
-                    </div>
-                </form>
+                  </div>
+                  <div className="form-group">
+
+                  Password: <Input className="form-control" type="password" name="password" placeholder="At least 6 characters" minlength="6" maxlength="16" id="password" value={this.state.password} onChange={this.handleChange} required></Input>
+                    
+                  </div>
+                  <div className="form-group">
+                  <Button className="btn btn-primary" onClick={this.handleSubmit}>Register</Button> &nbsp;
+                <Button onClick={this.switchForm}>Sign Up as {accountType}</Button>
+                  </div>
+                  <h4>Already have an account? <Link to="/login">Login</Link></h4><br />
+                    <h2> {this.state.message} </h2>
+                 
+                  </div>
+                </div>
+              </div>
             </div>
+       
+
+
+
+
+
+            // <div class="container">
+            //     <form onSubmit={this.handleSubmit}>
+            //     <h1>Let's get started</h1>
+            //     <div className='form-control'>
+            //         {userForm}
+            //         {ownerForm}
+            //         Email: <input type="email" name="email" placeholder="example@gmail.com" value={this.state.email} onChange={this.handleChange} required></input><br />
+            //         Password: <input type="password" name="password" placeholder="At least 6 characters" minlength="6" maxlength="16" id="password" value={this.state.password} onChange={this.handleChange} required></input><br />
+                   
+            //         <div>
+            //         <Button>Register</Button> &nbsp;
+            //         <Button onClick={this.switchForm}>Sign Up as {accountType}</Button>
+            //         </div><br />
+            //         <div>Already have an account? <Link to="/login">Login</Link></div><br />
+            //         <div> {this.state.message} </div>
+            //         </div>
+            //     </form>
+            // </div>
         )
     }
 }

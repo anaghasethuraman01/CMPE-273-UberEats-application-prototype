@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 // import cookie from 'react-cookies';
-import { Button } from 'reactstrap';
+import { Button, Input } from 'reactstrap';
 import backendServer from "../../webConfig";
 
 class RestaurantMenu extends Component {
@@ -94,41 +94,55 @@ class RestaurantMenu extends Component {
     render(){
 
     return (
-      
-        <div class="container">
-            
-            <form >
-            <h1>Dish Menu</h1>
-            <div className='form-control'>
+
+      <div className="container">
+      <div className="login-form">
+        <div className="main-div">
+          <div className="panel">
+          <h1>Dish Details</h1>
+
+          </div>
+
+          <div className="form-group">
+          Dish Name: <Input className="form-control" type="text" name="dishname" defaultValue={this.state.dishname} onChange={this.handleChange} required/>
+          
+          </div>
+          <div className="form-group">
+
+          Ingrediants: <Input className="form-control" type="text" name="ingrediants" defaultValue={this.state.ingrediants} onChange={this.handleChange} required/>
            
-            Dish Name: <input type="text" name="dishname" defaultValue={this.state.dishname} onChange={this.handleChange} required></input><br/>
-            Ingrediants: <input type="text" name="ingrediants" defaultValue={this.state.ingrediants} onChange={this.handleChange} required></input><br/>
-            Price: <input type="text" name="price" defaultValue={this.state.price} onChange={this.handleChange} required></input><br/>
-            Description: <input type="text" name="description" defaultValue={this.state.description} onChange={this.handleChange} required></input><br/>
-            Category: 
-            <select name="category" value={this.state.value} onChange={this.handleChange}>
-                        <option value="">Category</option>
-                        <option value="appetizer">Appetizer</option>
-                        <option value="salads">Salads</option>
+          </div>
+          <div className="form-group">
+          
+          Price: <Input className="form-control" type="text" name="price" defaultValue={this.state.price} onChange={this.handleChange} required/>
+       
+          </div>
+          <div className="form-group">
+          Description: <Input className="form-control" type="text" name="description" defaultValue={this.state.description} onChange={this.handleChange} required/>
+          </div>
+          <div className="form-group">
+          Category: 
+             <select className="form-control" name="category" value={this.state.value} onChange={this.handleChange}>
+                         <option value="">Category</option>
+                       <option value="appetizer">Appetizer</option>
+                      <option value="salads">Salads</option>
                         <option value="maincourse">Main Course</option>
-                        <option value="desserts">Desserts</option>
+                  <option value="desserts">Desserts</option>
                         <option value="beverages">Beverages</option>
             </select>
-            <br/>
-            <Button onClick={this.handleSubmit}>Add new Dish</Button>
-            <br/>
-            <br/>
-            <input className="filefolder" type="file" onChange={this.saveFile} required/>
-            <Button onClick={this.uploadFile}>Upload Dish Image</Button>  <br/> 
-            
-          
-
-            <Button onClick = {this.goback}>Back</Button>
-            </div>
-            </form>
-           
-    
+          </div>
+          <div className="form-group">
+          <Button onClick={this.handleSubmit}>Add new Dish</Button>
+          </div>
+          <div className="form-group">
+          <Input className="filefolder" type="file" onChange={this.saveFile} required/>
+            <Button onClick={this.uploadFile}>Upload Dish Image</Button>
+          </div>
+          <Button onClick = {this.goback}>Back</Button>
         </div>
+      </div>
+    </div>
+
     )
     }
    

@@ -1,23 +1,26 @@
 import React from 'react'
 //import { Link } from 'react-router-dom';
-const DishInfo = ({ restaurant }) => {
+import { Button } from 'reactstrap';
+import backendServer from "../../webConfig";
+const DishInfo = ({ dish }) => {
 
-   
+    const imgLink =`${backendServer}/${dish.dishimage}`;
     return (
         <>
         <div className='card-flip'>
             <div className='card-inner'>
                 <div className='card-front'>
-                    <h1>{restaurant.username}</h1>
-                    <h1>{restaurant.description}</h1>
-                    <h1>{restaurant.zipcode}</h1>
+                    <h1>{dish.dishname}</h1>
+                    <img src={imgLink} alt="helo" style={{ maxHeight: '180px', maxWidth: '180px' }} />
+                   
                    
                 </div>
                 <div className='card-back'>
-                <h1>{restaurant.timing}</h1>
-                <h1>{restaurant.phone}</h1>
-                <h1>{restaurant.email}</h1>
-                    
+                <h1>${dish.price}</h1>
+                <h1>{dish.description}</h1>
+                <h1>{dish.category}</h1>
+                <h4> <Button>Add more images</Button></h4>
+
                 </div>
             </div>
             

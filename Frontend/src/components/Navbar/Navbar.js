@@ -7,29 +7,27 @@ import { Redirect } from "react-router";
 class Navbar extends Component {
   constructor(props) {
     super(props);
-    this.handleLogout = this.handleLogout.bind(this);
+   
   }
   //handle logout to destroy the cookie
-  handleLogout = () => {
-    cookie.remove("cookie", { path: "/" });
-  };
+  // handleLogout = () => {
+  //   cookie.remove("cookie", { path: "/" });
+  // };
   render() {
     //if Cookie is set render Logout Button
     
     
     let redirectVar = null;
-    if (cookie.load("cookie")) {
-      redirectVar = <Redirect to="/login" />;
-    } else {
-      redirectVar = <Redirect to="/login" />;
-    }
+    // if (!cookie.load("cookie")) {
+    //   redirectVar = <Redirect to="/login" />;
+    // }
     return (
       <div>
         {redirectVar}
         <nav className="navbar navbar-inverse">
           <div className="container-fluid">
             <div className="navbar-header">
-              <a className="navbar-brand">Uber Ears</a>
+              <div className="navbar-brand">Uber Eats</div>
             </div>
             {/* <ul className="nav navbar-nav">
               <li className="active">

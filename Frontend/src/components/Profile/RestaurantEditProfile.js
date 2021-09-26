@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 // import { Redirect } from 'react-router';
 // import cookie from 'react-cookies';
 import axios from 'axios';
-import { Button } from 'reactstrap';
+import { Button,Input } from 'reactstrap';
 
 
 class RestaurantEditProfile extends Component {
@@ -135,48 +135,60 @@ class RestaurantEditProfile extends Component {
     render(){
       //const imgLink = `http://localhost:5000/${profileData.picture}`;
     return (
-        <div className="container">
-            <form >
-            <h1>Restuarant Profile</h1>
 
-            <input className="filefolder" type="file" onChange={this.saveFile} />
-          <button onClick={this.uploadFile}>Upload</button>
-         {/* <img src={imgLink} alt="helo" style={{ maxHeight: '180px', maxWidth: '180px' }} /> */}
-            <div className='form-control'>
-            Restaurant Name: <input type="text" name="restaurantname" value={this.state.restaurantname} onChange={this.handleChange} ></input><br/>
-            Description : <textarea type="text" name="description" defaultValue={this.state.description} onChange={this.handleChange}/>
+      <div className="container">
+      <div className="login-form">
+        <div className="main-div">
+          <div className="panel">
+            <h2>Restuarant Profile</h2>
+
+          </div>
+
+          <div className="form-group">
+          Restaurant Name: <Input className="form-control" type="text" name="restaurantname" value={this.state.restaurantname} onChange={this.handleChange} ></Input>
           
-            <br/>
-            Email:<input type="text" name="email" value= {this.state.email} onChange={this.handleChange} />
-            <br/>
-           
-            Phone: <input type="text" name="phone" defaultValue={this.state.phone} onChange={this.handleChange} ></input><br/>
-            Timings :  <br/>
-            <textarea type="text" name="timing" defaultValue={this.state.timing} onChange={this.handleChange}  />
-            <br/>
-            Days :  <br/>
-            <textarea type="text" name="days" defaultValue={this.state.days} onChange={this.handleChange}  />
-            <br/>
-            Mode of Delivery :
-            <select name="deliverytype" value={this.state.value} onChange={this.handleChange}>
-                        <option value="">Select delivery type</option>
-                        <option value="pickup">Pick Up</option>
-                        <option value="delivery">Delivery</option>
+          </div>
+          <div className="form-group">
+          Description : <textarea className="form-control" type="text" name="description" defaultValue={this.state.description} onChange={this.handleChange}/>
+         
+          </div>
+         
+          <div className="form-group">
+          Email:<Input type="text" className="form-control" name="email" value= {this.state.email} onChange={this.handleChange} />
+          </div>
+          <div className="form-group">
+          Phone: <Input type="text" className="form-control" name="phone" defaultValue={this.state.phone} onChange={this.handleChange} ></Input>
+          </div>
+          <div className="form-group">
+
+          Timings : 
+             <textarea className="form-control" type="text" name="timing" defaultValue={this.state.timing} onChange={this.handleChange}  />
+          </div>
+          <div className="form-group">
+          Days :  
+             <textarea className="form-control" type="text" name="days" defaultValue={this.state.days} onChange={this.handleChange}  />
+          </div>
+          <div className="form-group">
+              Mode of Delivery :
+            <select className="form-control" name="deliverytype" value={this.state.value} onChange={this.handleChange}>
+              <option value="">Select delivery type</option>
+              <option value="pickup">Pick Up</option>
+              <option value="delivery">Delivery</option>
             </select>
-            City :  <br/>
-            <textarea type="text" name="city" defaultValue={this.state.city} onChange={this.handleChange}  />
-            <br/>
-            Location Zip Code: <input type="text" name="zipcode" defaultValue={this.state.zipcode} onChange={this.handleChange} ></input><br/>
-            <input className="filefolder" type="file" name="file" onChange={this.onChangeHandler}/>
-            
-           {/* <button onClick={this.onClickHandler} >Add new Dish</button> */}
-            <br/>
-            <Button onClick = {this.handleSubmit}>Update Profile</Button>
-            <Button onClick = {this.goback}>Back</Button>
-            
-            </div>
-            </form>
+          </div>
+          <div className="form-group">
+          City: <Input type="text"  className="form-control" name="city" defaultValue={this.state.city} onChange={this.handleChange} ></Input>
+          </div>
+          <div className="form-group">
+          Location Zip Code: <Input type="text" name="zipcode" defaultValue={this.state.zipcode} onChange={this.handleChange} ></Input>
+          </div>
+         
+          <Button onClick = {this.handleSubmit}>Update Profile</Button>
+
+          <Button onClick = {this.goback}>Back</Button>
         </div>
+      </div>
+    </div>
     )
     }
    
