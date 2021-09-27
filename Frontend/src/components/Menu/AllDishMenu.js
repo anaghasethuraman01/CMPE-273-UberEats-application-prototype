@@ -23,10 +23,10 @@ class AllDishMenu extends Component {
       }
  
       componentDidMount(){
-        const credential = {
+        const restaurantid = {
           restaurantid: this.state.restaurantid
       };
-        axios.post(`${backendServer}/getmenurestaurant`,credential)
+        axios.post(`${backendServer}/getmenurestaurant`,restaurantid)
                 .then((response) => {
                   console.log(response.data)
                   this.setState({status: "notdone"})

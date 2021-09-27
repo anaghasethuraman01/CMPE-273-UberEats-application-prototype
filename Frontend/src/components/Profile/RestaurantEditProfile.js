@@ -50,7 +50,9 @@ class RestaurantEditProfile extends Component {
                   localStorage.setItem("deliverytype",res.data.deliverytype);
                   localStorage.setItem("city",res.data.city);
                   localStorage.setItem("days",res.data.days);
-                   window.location.href='/RestaurantProfile';
+                  const {history} = this.props;
+                  history.push('/restaurantprofile'); 
+                   //window.location.href='/RestaurantProfile';
                 }
                 
             }).catch(

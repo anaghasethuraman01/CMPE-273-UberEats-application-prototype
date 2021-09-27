@@ -10,10 +10,11 @@ import RestaurantEditProfile from './Profile/RestaurantEditProfile';
 import CustomerProfile from './Profile/CustomerProfile';
 import CustomerHome from './HomePage/CustomerHome';
 import RestaurantHome from './HomePage/RestaurantHome';
-import RestaurantMenu from './Menu/RestaurantMenu';
+import AddRestaurantMenu from './Menu/AddRestaurantMenu';
 import RestDashboard from './Dashboard/RestDashboard';
 import CustomerEditProfile from './Profile/CustomerEditProfile';
 import AllDishMenu from './Menu/AllDishMenu';
+import SingleRestDashboard from './Dashboard/SingleRestDashboard';
 //import 'bootstrap/dist/css/bootstrap.css';
 class Main extends Component {
     render() {
@@ -26,12 +27,13 @@ class Main extends Component {
                     <Route path="/customerprofile" component={CustomerProfile} />
                     <Route path="/restaurantprofile" component={RestaurantProfile} />
                     <Route path="/customerhome" component={CustomerHome} />
-                    <Route path="/restaurantmenu" component={RestaurantMenu} />
+                    <Route path="/addrestaurantmenu" component={AddRestaurantMenu} />
                     <Route path="/restauranthome" component={RestaurantHome} />
                     <Route path="/restdashboard" component={RestDashboard} />
                     <Route path="/restauranteditprofile" component={RestaurantEditProfile} />
                     <Route path="/customereditprofile" component={CustomerEditProfile} />
                     <Route path="/alldishmenu" component={AllDishMenu} />
+                    <Route path="/singlerestdashboard" component={SingleRestDashboard} />
                 </div>    
             </Router>
             

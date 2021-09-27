@@ -53,7 +53,9 @@ class CustomerEditProfile extends Component {
                     localStorage.setItem("email",res.data.email);
                     localStorage.setItem("phone",res.data.phone);
                    console.log(res.data.dob)
-                     window.location.href='/CustomerProfile';
+                   const {history} = this.props;
+                   history.push('/customerprofile'); 
+                   //  window.location.href='/CustomerProfile';
                 }
                 
             }).catch(

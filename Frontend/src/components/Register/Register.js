@@ -46,7 +46,9 @@ class Register extends Component {
                   console.log(error);
                 }
             );
-            window.location.href='/Login';
+            const {history} = this.props;
+            history.push('/login'); 
+          
     }
 
     handleSubmit = (e) => {
