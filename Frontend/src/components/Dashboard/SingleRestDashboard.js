@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import { Button } from 'reactstrap';
+import {Card, ListGroup, ListGroupItem} from 'react-bootstrap';
 import axios from 'axios';
 //import { Link } from 'react-router-dom';
-import RestaurantInfo from './RestaurantInfo';
+// import RestaurantInfo from './RestaurantInfo';
 import backendServer from "../../webConfig";
 class SingleRestDashboard extends Component {
     
@@ -10,163 +11,104 @@ class SingleRestDashboard extends Component {
         super(props);
   
         this.state = {
-          zipcode:null,
+          restaurantid : localStorage.getItem("restid"),
+          description:null,
           restaurantname:null,
           query : null,
           dish:null,
           status:"notdone",
-          restaurants :[],
-          restaurants1 :[]
+          dishes :[],
+          restaurants:[]
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+      
       }
 
       componentDidMount(){
-        axios.get(`${backendServer}/getrestaurant`)
-                .then((response) => {
-                  this.setState({status: "notdone"})
-                  //console.log(response.data);
+        const restaurantid = {
+          restaurantid: this.state.restaurantid
+      };
+        axios.post(`${backendServer}/getrestaurantdishes`,restaurantid)
+                .then((response) => { 
+                  
                 //update the state with the response data
                 this.setState({
-                  restaurants : this.state.restaurants.concat(response.data) 
+                  dishes : this.state.dishes.concat(response.data) 
                 });
+               // console.log(this.state.dishes);
             });
+
+            axios.post(`${backendServer}/getrestaurantdetails`,restaurantid)
+            .then((response) => { 
+            //update the state with the response data
+            console.log(response.data);
+            this.setState({
+              restaurants : this.state.restaurants.concat(response.data) 
+            });
+            //console.log(this.state.restaurant);
+        });    
+
     }
-    searchRestaurantAPI = (data) => {
-      this.setState({status: "done"})
-      axios.defaults.withCredentials = true;
-      axios.post(`${backendServer}/restsearch`, data)
-          .then(res => {   
-              console.log("in rest search")
-               console.log(res.data)
-               if(res.data.message){
-                  this.setState({ message: res.data.message })
-              }else{
-                
-                this.setState({
-                  restaurants1 : res.data
-                });
-                  
-              }
-              
-              console.log("Status Code : ", res.status);
-              if (res.status === 200) {
-                  this.setState({ authFlag: true })
-              } else {
-                  this.setState({ authFlag: false })
-              }
-          });
-  }
 
-
-  searchDishAPI = (data) => {
-    this.setState({status: "done"})
-    axios.defaults.withCredentials = true;
-    axios.post(`${backendServer}/restdishsearch`, data)
-        .then(res => {   
-            console.log("in rest search")
-             console.log(res.data)
-             if(res.data.message){
-                this.setState({ message: res.data.message })
-            }else{
-              
-              this.setState({
-                restaurants1 : res.data
-              });
-                
-            }
-            
-            console.log("Status Code : ", res.status);
-            if (res.status === 200) {
-                this.setState({ authFlag: true })
-            } else {
-                this.setState({ authFlag: false })
-            }
-        });
-}
-      handleSubmit = (e) => {
-        e.preventDefault();
-        const credential = {
-          query: this.state.query
-      }
-     
-      this.searchRestaurantAPI(credential);
-  
-      }
-
-      handleDishSubmit = (e) => {
-        e.preventDefault();
-        const credential = {
-          dish: this.state.dish
-      }
-     console.log(credential)
-      this.searchDishAPI(credential);
-  
-      }
       goback = (e) =>{
         e.preventDefault();
         const {history} = this.props;
-        history.push('/customerhome'); 
+        history.push('/restdashboard'); 
       }
     
-      handleChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
-        }
+     
     render(){
-      var beforeSearch = null;
-      var afterSearch = null;
+      
+      var restaurantdetails = null;
+        var searchresults = null;
 
-      if (this.state.status === "done"){
-        afterSearch =
+        searchresults = 
         <div className='card-list'>
-        {this.state.restaurants1.filter(restaurant => restaurant.username).map(restaurant=>
-        
-         <RestaurantInfo restaurant = {restaurant} key={ restaurant.restaurantid }/>
-        )
-        }
+        {this.state.dishes.map(dish=>
 
-      </div>
-    }
-      else{
-        beforeSearch =
-            
-        <div className='card-list'>
-        {this.state.restaurants.filter(restaurant => restaurant.username).map(restaurant=>
-        
-         <RestaurantInfo restaurant = {restaurant} key={ restaurant.restaurantid }/>
-        )
-        }
-      </div>
-      }
+
+         <div >
+      <Card style={{ width: '18rem' }}>
+  <Card.Img style={{ width: '18rem' }} variant="top" src={`${backendServer}/${dish.dishimage}`} />
+  <Card.Body>
+    <Card.Title>{dish.dishname}</Card.Title>
+  </Card.Body>
+  <ListGroup className="list-group-flush">
+    <ListGroupItem>Contains : {dish.ingrediants} </ListGroupItem>
+    <ListGroupItem>Price :  $ {dish.price}</ListGroupItem>
+  
+  </ListGroup>
+  
+</Card>
+                 
+                    
+              </div>
+       
     
-   
-   
+       )
+       }
 
+     </div>
+        
+        restaurantdetails = 
+        <div>
+        {this.state.restaurants.map(restaurant=>
+        <p>{restaurant.description}</p>
+
+       )
+       }
+        </div>
+   
     return (
        
         <div class="container">
-             <h1>List of All Restaurants</h1>
-            <form onSubmit={this.handleSubmit}>
-            <label>Search using city : </label>
-            <input type = "text" name="query"
-            value= {this.state.query} onChange={this.handleChange} required></input>
-            <Button type="submit">Search</Button>
-            </form>
-            <form onSubmit={this.handleDishSubmit}>
-            <label>Search using dish : </label>
-            <input type = "text" name="dish"
-            value= {this.state.dish} onChange={this.handleChange} required></input>
-            <Button type="submit">Search</Button>
-            </form>
-            <form>
+            <h1>Menu</h1>
            
-            <Button onClick = {this.goback}>Go To Home Page</Button>
+            {restaurantdetails}
+            <form>
+            <Button onClick = {this.goback}>Go To Restaurants Page</Button>
+        
             </form>
-
-            {beforeSearch}
-            {afterSearch}
-            
+            {searchresults}
         </div>
     )
     }

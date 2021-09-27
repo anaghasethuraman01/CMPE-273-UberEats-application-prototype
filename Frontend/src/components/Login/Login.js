@@ -175,7 +175,7 @@ class Login extends Component {
         localStorage.setItem("city","Add");
         localStorage.setItem("state","Add");
         localStorage.setItem("country","Add");
-        localStorage.setItem("profilepic",this.state.profilepic);
+        localStorage.setItem("profilepic","");
             redirectHome = <Redirect to="/CustomerHome" />
         }
         

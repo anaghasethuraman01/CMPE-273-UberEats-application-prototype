@@ -23,14 +23,14 @@ class RestaurantHome extends Component {
           output: null
         }
       }
-      handleSubmit = (e) => {
-        e.preventDefault();
-        window.location.href='/RestaurantProfile';
-      }
-      showMenu = (e) =>{
-          e.preventDefault();
-        window.location.href='/RestaurantProfile';
-      }
+      // handleSubmit = (e) => {
+      //   e.preventDefault();
+      //   window.location.href='/RestaurantProfile';
+      // }
+      // showMenu = (e) =>{
+      //     e.preventDefault();
+      //   window.location.href='/RestaurantProfile';
+      // }
       profile = e => {
         e.preventDefault();
         const {history} = this.props;
@@ -49,7 +49,7 @@ class RestaurantHome extends Component {
       addnewdish = e => {
         e.preventDefault();
         const {history} = this.props;
-        history.push('/restaurantmenu'); 
+        history.push('/addrestaurantmenu'); 
       }
       logout = e => {
         e.preventDefault();

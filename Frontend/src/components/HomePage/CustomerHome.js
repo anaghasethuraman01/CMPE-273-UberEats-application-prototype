@@ -24,14 +24,14 @@ class CustomerHome extends Component {
             output: null
           }
       }
-      handleSubmit = (e) => {
-        e.preventDefault();
-        window.location.href='/RestaurantProfile';
-      }
-      showMenu = (e) =>{
-          e.preventDefault();
-        window.location.href='/RestaurantProfile';
-      }
+      // handleSubmit = (e) => {
+      //   e.preventDefault();
+      //   window.location.href='/RestaurantProfile';
+      // }
+      // showMenu = (e) =>{
+      //     e.preventDefault();
+      //   window.location.href='/RestaurantProfile';
+      // }
       profile = e => {
         e.preventDefault();
         const {history} = this.props;
