@@ -1,3 +1,4 @@
+//edit restaurant profile
 const express = require("express");
 const router = express.Router();
 var mysql = require("mysql");

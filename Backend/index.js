@@ -1,9 +1,7 @@
 const app = require('./app');
 const express = require("express");
 
-
 app.use(express.static('uploads'));
-
 
 const restlogin = require("./routes/restlogin");
 const custlogin = require("./routes/custlogin");
@@ -16,9 +14,10 @@ const getmenurestaurant = require("./routes/getmenurestaurant");
 const restaurantdish = require("./routes/restaurantdish");
 const editcustomer = require("./routes/editcustomer");
 const custimageupload = require("./routes/custimageupload");
+const restimageupload = require("./routes/restimageupload");
 const dishimageupload = require("./routes/dishimageupload");
-
-
+const getrestaurantdishes = require("./routes/getrestaurantdishes");
+const getrestaurantdetails = require("./routes/getrestaurantdetails");
 
 app.use("/restlogin", restlogin);
 app.use("/custlogin", custlogin);
@@ -32,64 +31,9 @@ app.use("/restaurantdish", restaurantdish);
 app.use("/editcustomer", editcustomer);
 app.use("/custimageupload", custimageupload);
 app.use("/dishimageupload", dishimageupload);
-
-
-
-// var mysql = require("mysql");
-// const connection = require('./connection.js');
-
-// var bodyParser = require("body-parser");
-// const express = require("express");
-
-// app.use(express.static('uploads'));
-// const multer = require('multer');
-
-// var storage = multer.diskStorage({
-//     destination: (req, file, callBack) => {
-//         console.log(req.body);
-//         callBack(null,'./uploads')     // './public/images/' directory name where save the file
-//     },
-//     filename: (req, file, callBack) => {
-//         callBack(null, new Date().toISOString()+file.originalname);
-//     }
-// })
-// var upload = multer({
-//     storage: storage
-// });
-
-
-// app.post("/custimageupload", upload.single('file'), (req, res) => {
-// 	const img = req.file.filename;
-// 	const userid = req.body.userid;
-// 	console.log(img);
-//     if (!req.file) {
-//         console.log("No file upload");
-//     } else {
-//         const img = req.file.filename;
-// 		let sql = "UPDATE userdetails SET profilepic = "+mysql.escape(img) +
-//                "  WHERE USERID = "+mysql.escape(userid);
-// 			   connection.query(sql, (error, result) => {
-// 				if(error){
-// 					console.log(error.message);
-// 				}else{
-// 					//localStorage.setItem("profile",mysql.escape(img))
-// 					//console.log(req.file.filename);
-// 					res.send(req.file.filename);
-
-// 				}
-//             });
-
-//     }
-// });
-
-
-
-
-
-
-
-
-
+app.use("/getrestaurantdishes", getrestaurantdishes);
+app.use("/getrestaurantdetails", getrestaurantdetails);
+app.use("/restimageupload",restimageupload);
 
 
 const port = process.env.PORT || 5000;
