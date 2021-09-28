@@ -93,7 +93,7 @@ input {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 2rem;
-  
+
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
@@ -105,7 +105,13 @@ input {
   border: 1px solid green;
   perspective: 1000px; /* Remove this if you don't want the 3D effect */
 }
-
+.card-flip-rest {
+  background-color: transparent;
+  width: 182px;
+  height: 255px;
+  border: 2px solid green;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
 /* This container is needed to position the front and back side */
 .card-inner {
   position: relative;

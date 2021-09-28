@@ -30,6 +30,7 @@ class Login extends Component {
             deliverytype:null,
             days:null,
             profilepic:null,
+            restprofilepic:null,
         
         };
 
@@ -69,6 +70,7 @@ class Login extends Component {
                     this.setState({ deliverytype:data1['deliverytype']})
                     this.setState({restaurantid:res.data['userid']});
                     this.setState({ owner:data1['owner']});
+                    this.setState({ restprofilepic:data1['profilepic']})
                     
                     this.setState({status:res.data['status']});
                     console.log(this.state.restaurantid)
@@ -159,7 +161,7 @@ class Login extends Component {
             localStorage.setItem("city","Add");
             localStorage.setItem("days","Add");
             localStorage.setItem("deliverytype","Add");
-            
+            localStorage.setItem("restprofilepic","");
            
             redirectHome = <Redirect to="/RestaurantHome" />
         }
@@ -209,6 +211,7 @@ class Login extends Component {
         localStorage.setItem("city",this.state.city);
         localStorage.setItem("deliverytype",this.state.deliverytype);
         localStorage.setItem("days",this.state.days);
+        localStorage.setItem("restprofilepic",this.state.restprofilepic);
         // const {history} = this.props;
         // history.push('/restauranthome');
         redirectVar = <Redirect to="/RestaurantHome" />;

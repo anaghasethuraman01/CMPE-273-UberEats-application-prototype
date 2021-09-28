@@ -15,6 +15,7 @@ import RestDashboard from './Dashboard/RestDashboard';
 import CustomerEditProfile from './Profile/CustomerEditProfile';
 import AllDishMenu from './Menu/AllDishMenu';
 import SingleRestDashboard from './Dashboard/SingleRestDashboard';
+import AddToCart from './Dashboard/AddToCart';
 //import 'bootstrap/dist/css/bootstrap.css';
 class Main extends Component {
     render() {
@@ -34,6 +35,7 @@ class Main extends Component {
                     <Route path="/customereditprofile" component={CustomerEditProfile} />
                     <Route path="/alldishmenu" component={AllDishMenu} />
                     <Route path="/singlerestdashboard" component={SingleRestDashboard} />
+                    <Route path="/addtocart" component={AddToCart} />
                 </div>    
             </Router>
             

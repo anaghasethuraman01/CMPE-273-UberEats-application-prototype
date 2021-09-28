@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Button } from 'reactstrap';
 import axios from 'axios';
-//import { Link } from 'react-router-dom';
+import {Card, ListGroup, ListGroupItem} from 'react-bootstrap';
 import DishInfo from './DishInfo';
 import backendServer from "../../webConfig";
 class AllDishMenu extends Component {
@@ -53,7 +53,20 @@ class AllDishMenu extends Component {
         <div className='card-list'>
         {this.state.dishes.filter(dish => dish.dishname).map(dish=>
         
-         <DishInfo dish = {dish} key={ dish.dishid }/>
+          <div >
+          <Card style={{ width: '18rem' }}>
+          <Card.Img style={{ width: '18rem' }} variant="top" src={`${backendServer}/${dish.dishimage}`} />
+          <Card.Body>
+          <Card.Title>{dish.dishname}</Card.Title>
+          <ListGroup className="list-group-flush">
+            <ListGroupItem> ${dish.price} </ListGroupItem>
+            <ListGroupItem> {dish.category}</ListGroupItem>
+         
+          </ListGroup>
+          
+          </Card.Body>
+          </Card>                           
+        </div>
         )
         }
       </div>

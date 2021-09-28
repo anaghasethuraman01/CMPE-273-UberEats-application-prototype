@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
 import { Button } from 'reactstrap';
 import axios from 'axios';
+import React, {Component} from 'react';
+import {Card, ListGroup, ListGroupItem} from 'react-bootstrap';
 //import { Link } from 'react-router-dom';
-import RestaurantInfo from './RestaurantInfo';
+
 import backendServer from "../../webConfig";
 class RestDashboard extends Component {
     
@@ -11,7 +12,7 @@ class RestDashboard extends Component {
   
         this.state = {
           zipcode:null,
-          restaurantname:null,
+          restid:null,
           query : null,
           dish:null,
           status:"notdone",
@@ -94,7 +95,15 @@ class RestDashboard extends Component {
       this.searchRestaurantAPI(credential);
   
       }
-
+      navigatetorestaurant = (val)=>{
+       
+        console.log(val);
+       //  window.location.href='/SingleRestDashboard';
+       localStorage.setItem("restid",val)
+       const {history} = this.props;
+       console.log(history);
+       history.push('/singlerestdashboard'); 
+    }
       handleDishSubmit = (e) => {
         e.preventDefault();
         const credential = {
@@ -116,13 +125,28 @@ class RestDashboard extends Component {
     render(){
       var beforeSearch = null;
       var afterSearch = null;
-
+     
       if (this.state.status === "done"){
         afterSearch =
         <div className='card-list'>
-        {this.state.restaurants1.filter(restaurant => restaurant.username).map(restaurant=>
-        
-         <RestaurantInfo restaurant = {restaurant} key={ restaurant.restaurantid }/>
+        {this.state.restaurants1.map(restaurant=>
+       
+         <div className='card-flip'>
+         <div className='card-inner'>
+             <div className='card-front'>
+            
+                 <h1>{restaurant.username}</h1>
+                 <h1>{restaurant.zipcode}</h1>
+                
+             </div>
+             <div className='card-back'>
+             <h1>{restaurant.timing}</h1>
+             <h1>{restaurant.phone}</h1>
+             <h1>{restaurant.email}</h1>
+             <h1><Button onClick={this.navigatetorestaurant}>Explore {restaurant.username}</Button></h1>
+             </div>
+         </div>
+     </div>
         )
         }
 
@@ -132,9 +156,43 @@ class RestDashboard extends Component {
         beforeSearch =
             
         <div className='card-list'>
-        {this.state.restaurants.filter(restaurant => restaurant.username).map(restaurant=>
+        {this.state.restaurants.map(restaurant=>
+
+
+        <div >
+          <Card style={{ width: '18rem' }}>
+          <Card.Img style={{ width: '18rem' }} variant="top" src={`${backendServer}/${restaurant.profilepic}`} />
+          <Card.Body>
+          <Card.Title>{restaurant.username}</Card.Title>
         
-         <RestaurantInfo restaurant = {restaurant} key={ restaurant.restaurantid }/>
+          <ListGroup className="list-group-flush">
+            <ListGroupItem> {restaurant.phone} </ListGroupItem>
+            <ListGroupItem> {restaurant.email}</ListGroupItem>
+            <Button onClick={() => { this.navigatetorestaurant(restaurant.restaurantid) }}>Explore </Button>
+          </ListGroup>
+          </Card.Body>
+          </Card>                           
+        </div>
+
+
+      //     <div className='card-flip'>
+      //     <div className='card-inner'>
+      //         <div className='card-front'>
+      //             <h1>{restaurant.username}</h1>
+      //             <h1>{restaurant.zipcode}</h1>
+                 
+      //         </div>
+      //         <div className='card-back'>
+      //         <h1>{restaurant.restaurantid}</h1>
+      //         <h1>{restaurant.phone}</h1>
+      //         <h1>{restaurant.email}</h1>
+
+      //         <h1><Button onClick={() => { this.navigatetorestaurant(restaurant.restaurantid) }}>Explore {restaurant.username}</Button></h1>
+                  
+      //         </div>
+      //     </div>  
+      // </div>
+        
         )
         }
       </div>
@@ -153,6 +211,7 @@ class RestDashboard extends Component {
             value= {this.state.query} onChange={this.handleChange} required></input>
             <Button type="submit">Search</Button>
             </form>
+            <br/>
             <form onSubmit={this.handleDishSubmit}>
             <label>Search using dish : </label>
             <input type = "text" name="dish"

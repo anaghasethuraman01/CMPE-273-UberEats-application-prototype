@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 // import cookie from 'react-cookies';
 import { Button} from 'reactstrap';
-
+import backendServer from "../../webConfig";
 class RestaurantProfile extends Component {
     
     constructor(props){
@@ -18,6 +18,7 @@ class RestaurantProfile extends Component {
           city:localStorage.getItem("city"),
           deliverytype: localStorage.getItem("deliverytype"),
           days:localStorage.getItem("days"),
+          restprofilepic:localStorage.getItem("restprofilepic"),
           loading: false,
           output: null,
           file:null,
@@ -35,7 +36,9 @@ class RestaurantProfile extends Component {
         history.push('/restauranthome'); 
       }
       render(){
-
+const imgLink = `${backendServer}/${localStorage.getItem("restprofilepic")}`;
+ console.log("***"); 
+      console.log(localStorage.getItem("restprofilepic"));
     return (
       
 
@@ -44,6 +47,11 @@ class RestaurantProfile extends Component {
         <div className="main-div">
           <div className="panel">
           <h1>Welcome to {this.state.restaurantname}</h1>
+          </div>
+          <div className="form-group">
+
+          <img src={imgLink} alt="helo" style={{ maxHeight: '180px', maxWidth: '180px' }} />
+          
           </div>
           <div className="form-group">
 

@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 // import cookie from 'react-cookies';
 import axios from 'axios';
 import { Button,Input } from 'reactstrap';
-
+import backendServer from "../../webConfig";
 
 class RestaurantEditProfile extends Component {
     
@@ -95,47 +95,26 @@ class RestaurantEditProfile extends Component {
           
         };
    
-         uploadFile = async (e) => {
+ uploadFile = (e) => {
+          e.preventDefault();
           const formData = new FormData();
           formData.append("file", this.state.file,this.state.fileName);
           formData.append("restaurantid", this.state.restaurantid);
-          console.log(formData);
-          try {
-            const res = await axios.post(
-              "http://localhost:5000/upload",
-              formData
-            );
-            console.log(res);
-          } catch (ex) {
-            console.log(ex);
-          }
-        };
-        
-     
-        // onChangeHandler=event=>{
-        //   this.setState({
-        //     selectedFile: event.target.files[0],
-        //     loaded: 0,
-        //   })
           
-         
-        // }
-      //   onClickHandler = (e) => {
-      //     e.preventDefault();
-      //     const data = new FormData(); 
-      //     data.append('file', this.state.selectedFile);
-      //     console.log(data)
-      //     console.log("****")
-      //     console.log(this.state.selectedFile)
-      //     axios.post("http://localhost:5000/upload", data) 
-      //   .then(res => { // then print response status
-      //     console.log(res)
-         
-      //   })
-      // }
-
+         // console.log(customerData);
+         this.sendImageAPI(formData);        
+        }
+     sendImageAPI = (data) => {
+          axios.post( `${backendServer}/restimageupload`, data)
+              .then(res => {
+              console.log(res.data);
+                 this.setState({profilepic:res.data});
+                localStorage.setItem("restprofilepic",res.data);
+                console.log(this.state.profilepic);
+              })
+            }
     render(){
-      //const imgLink = `http://localhost:5000/${profileData.picture}`;
+    
     return (
 
       <div className="container">
@@ -145,7 +124,14 @@ class RestaurantEditProfile extends Component {
             <h2>Restuarant Profile</h2>
 
           </div>
+ <div className="form-group">
 
+              Profile pic:
+              <input className="filefolder" type="file" onChange={this.saveFile} />
+              <button onClick={this.uploadFile}>Upload</button>  
+              <Button onClick = {this.goback}>Go Back</Button>
+        
+              </div>
           <div className="form-group">
           Restaurant Name: <Input className="form-control" type="text" name="restaurantname" value={this.state.restaurantname} onChange={this.handleChange} ></Input>
           

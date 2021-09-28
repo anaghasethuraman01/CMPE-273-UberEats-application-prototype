@@ -55,7 +55,11 @@ class SingleRestDashboard extends Component {
         history.push('/restdashboard'); 
       }
     
-     
+     addtocart = (e) =>{
+        e.preventDefault();
+        const {history} = this.props;
+        history.push('/addtocart'); 
+     }
     render(){
       
       var restaurantdetails = null;
@@ -64,26 +68,20 @@ class SingleRestDashboard extends Component {
         searchresults = 
         <div className='card-list'>
         {this.state.dishes.map(dish=>
-
-
          <div >
-      <Card style={{ width: '18rem' }}>
-  <Card.Img style={{ width: '18rem' }} variant="top" src={`${backendServer}/${dish.dishimage}`} />
-  <Card.Body>
-    <Card.Title>{dish.dishname}</Card.Title>
-  </Card.Body>
-  <ListGroup className="list-group-flush">
-    <ListGroupItem>Contains : {dish.ingrediants} </ListGroupItem>
-    <ListGroupItem>Price :  $ {dish.price}</ListGroupItem>
-  
-  </ListGroup>
-  
-</Card>
-                 
-                    
-              </div>
+          <Card style={{ width: '18rem' }}>
+          <Card.Img style={{ width: '18rem' }} variant="top" src={`${backendServer}/${dish.dishimage}`} />
+          <Card.Body>
+          <Card.Title>{dish.dishname}</Card.Title>
+          </Card.Body>
+          <ListGroup className="list-group-flush">
+            <ListGroupItem>Contains : {dish.ingrediants} </ListGroupItem>
+            <ListGroupItem>Price :  $ {dish.price}</ListGroupItem>
+              <Button onClick={this.addtocart}>Add to cart </Button>
+          </ListGroup>
+          </Card>                           
+          </div>
        
-    
        )
        }
 
