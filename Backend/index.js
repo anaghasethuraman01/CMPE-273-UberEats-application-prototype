@@ -18,6 +18,7 @@ const restimageupload = require("./routes/restimageupload");
 const dishimageupload = require("./routes/dishimageupload");
 const getrestaurantdishes = require("./routes/getrestaurantdishes");
 const getrestaurantdetails = require("./routes/getrestaurantdetails");
+const restsearchonsubmit = require("./routes/restsearchonsubmit");
 
 app.use("/restlogin", restlogin);
 app.use("/custlogin", custlogin);
@@ -34,7 +35,7 @@ app.use("/dishimageupload", dishimageupload);
 app.use("/getrestaurantdishes", getrestaurantdishes);
 app.use("/getrestaurantdetails", getrestaurantdetails);
 app.use("/restimageupload",restimageupload);
-
+app.use("/restsearchonsubmit",restsearchonsubmit);
 
 const port = process.env.PORT || 5000;
 var server = app.listen(port, () => {
