@@ -1,10 +1,14 @@
 import { Button } from "reactstrap";
 import axios from "axios";
 import React, { Component } from "react";
-import { Card, ListGroup, ListGroupItem, Form } from "react-bootstrap";
+import { Card, ListGroup, ListGroupItem, Form} from "react-bootstrap";
 //import { Link } from 'react-router-dom';
+import {BiCartAlt} from 'react-icons/bi';
+import {MdFavoriteBorder} from 'react-icons/md';
+import {IoIosRestaurant} from 'react-icons/io';
 
 import backendServer from "../../webConfig";
+import ReactTooltip from 'react-tooltip';
 class RestDashboard extends Component {
 	constructor(props) {
 		super(props);
@@ -19,6 +23,7 @@ class RestDashboard extends Component {
 			deliverytype: null,
 			restaurants: [],
 			restaurants1: [],
+			//favourites : []
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,7 +32,8 @@ class RestDashboard extends Component {
 	componentDidMount() {
 		axios.get(`${backendServer}/getrestaurant`).then((response) => {
 			this.setState({ status: "notdone" });
-			//console.log(response.data);
+			
+			console.log(response.data);
 			//update the state with the response data
 			this.setState({
 				restaurants: this.state.restaurants.concat(response.data),
@@ -38,8 +44,6 @@ class RestDashboard extends Component {
 		this.setState({ status: "done" });
 		axios.defaults.withCredentials = true;
 		axios.post(`${backendServer}/restsearch`, data).then((res) => {
-			console.log("in rest search");
-			console.log(res.data);
 			if (res.data.message) {
 				this.setState({ message: res.data.message });
 			} else {
@@ -61,8 +65,8 @@ class RestDashboard extends Component {
 		this.setState({ status: "done" });
 		axios.defaults.withCredentials = true;
 		axios.post(`${backendServer}/restdishsearch`, data).then((res) => {
-			console.log("in rest search");
-			console.log(res.data);
+			// console.log("in rest search");
+			// console.log(res.data);
 			if (res.data.message) {
 				this.setState({ message: res.data.message });
 			} else {
@@ -105,11 +109,12 @@ class RestDashboard extends Component {
 		this.searchDishAPI(credential);
 	};
 	searchRestaurantOnSubmit = (data) => {
+		console.log("here")
 		this.setState({ status: "done" });
 		axios.defaults.withCredentials = true;
 		axios.post(`${backendServer}/restsearchonsubmit`, data).then((res) => {
 			console.log("in rest search");
-			console.log(res.data);
+			//console.log(res.data);
 			if (res.data.message) {
 				this.setState({ message: res.data.message });
 			} else {
@@ -129,17 +134,17 @@ class RestDashboard extends Component {
 
 	fullSearchSubmit = (e) => {
 		e.preventDefault();
-		console.log("i am here");
-		const dish = this.state.dish;
 		const city = this.state.city;
-		console.log(this.state.foodtype);
-		console.log(this.state.deliverytype);
-		if (city != null || dish != null) {
+		const foodtype = this.state.foodtype;
+		const deliverytype =this.state.deliverytype;
+		console.log(foodtype)
+		if (city != null || foodtype != null || deliverytype != null) {
 			const values = {
-				dish: dish,
 				city: city,
+				foodtype:foodtype,
+				deliverytype:deliverytype
 			};
-			//this.searchRestaurantOnSubmit(values);
+			this.searchRestaurantOnSubmit(values);
 		}
 	};
 	goback = (e) => {
@@ -151,7 +156,28 @@ class RestDashboard extends Component {
 	handleChange = (e) => {
 		this.setState({ [e.target.name]: e.target.value });
 	};
+	addToFavourites = (restid) =>{
+		const customerid = localStorage.getItem("userid");	
+		const favourites = {
+			customerid : customerid,
+			restid:restid	
+			};
+		this.addToFavouritesTable(favourites);	
+	}
+	addToFavouritesTable = (data) => {
+		axios.defaults.withCredentials = true;
+		axios.post(`${backendServer}/addtofavourites`, data).then((res) => {
+			console.log("Status Code : ", res.status);
+			if (res.status === 200) {
+				this.setState({ authFlag: true });
+			} else {
+				this.setState({ authFlag: false });
+			}
+		});
+	};
 	render() {
+		
+		console.log(this.state.favourites)
 		var beforeSearch = null;
 		var afterSearch = null;
 
@@ -161,7 +187,7 @@ class RestDashboard extends Component {
 					{this.state.restaurants1.map((restaurant) => (
 						<div>
 							<Card style={{ width: "18rem" }}>
-								<Card.Img
+							<Card.Img
 									style={{ width: "18rem" }}
 									variant="top"
 									src={`${backendServer}/${restaurant.profilepic}`}
@@ -171,21 +197,30 @@ class RestDashboard extends Component {
 									<ListGroup className="list-group-flush">
 										<ListGroupItem> {restaurant.phone} </ListGroupItem>
 										<ListGroupItem> {restaurant.email}</ListGroupItem>
-										<Button
+										<ReactTooltip />
+										<Button data-tip="Explore"
 											onClick={() => {
 												this.navigatetorestaurant(restaurant.restaurantid);
 											}}
 										>
-											Explore{" "}
+										<IoIosRestaurant/>
 										</Button>
+										
+                      					<Button className="cardbtn" data-tip="Add To Favourites"
+										  onClick={() => {
+												this.addToFavourites(restaurant.restaurantid);
+											}}
+											>
+											<MdFavoriteBorder/></Button>
 									</ListGroup>
 								</Card.Body>
-							</Card>
+							</Card> 
 						</div>
 					))}
 				</div>
 			);
 		} else {
+			
 			beforeSearch = (
 				<div className="card-list">
 					{this.state.restaurants.map((restaurant) => (
@@ -201,13 +236,22 @@ class RestDashboard extends Component {
 									<ListGroup className="list-group-flush">
 										<ListGroupItem> {restaurant.phone} </ListGroupItem>
 										<ListGroupItem> {restaurant.email}</ListGroupItem>
-										<Button
+										
+										<Button data-tip="Explore"
 											onClick={() => {
 												this.navigatetorestaurant(restaurant.restaurantid);
 											}}
 										>
-											Explore{" "}
+											<IoIosRestaurant/>
 										</Button>
+										<ReactTooltip />
+										
+                      					<Button className="cardbtn" data-tip="Add To Favourites"
+										  onClick={() => {
+												this.addToFavourites(restaurant.restaurantid);
+											}}
+											>
+											<MdFavoriteBorder/></Button>
 									</ListGroup>
 								</Card.Body>
 							</Card>
@@ -219,71 +263,49 @@ class RestDashboard extends Component {
 		return (
 			<div class="container">
 				<h1>List of All Restaurants</h1>
-				<form onSubmit={this.handleSubmit}>
-					<label>Search using city : </label>
-					<input
+				<form >
+					City:
+					<input className="form-group"
 						type="text"
 						name="city"
 						value={this.state.city}
 						onChange={this.handleChange}
 						required
 					></input>
-					<Button type="submit">Search</Button>
+					
 				</form>
-				<br />
+			
 				<form onSubmit={this.handleDishSubmit}>
-					<label>Search using dish : </label>
-					<input
+					Dish Name:
+					<input className="form-group"
 						type="text"
 						name="dish"
 						value={this.state.dish}
 						onChange={this.handleChange}
 						required
 					></input>
-					<Button onClick={this.handleDishSubmit} type="submit">
+					{/* <Button onClick={this.handleDishSubmit} type="submit">
 						Search
-					</Button>
+					</Button> */}
 				</form>
-			
-          <div>
-			    <input
-						type="radio"
-						value="Veg"
-						name="foodtype"
-						onChange={this.handleChange}
-					/>
-					Veg
-					<input 
-						type="radio"
-						value="Non-veg"
-						name="foodtype"
-						onChange={this.handleChange}
-					/>
-					Non-Veg
-					<input
-						type="radio"
-						value="Vegan"
-						name="foodtype"
-						onChange={this.handleChange}
-					/>
-					Vegan
-				</div>
-				<div>
-					<input
-						type="radio"
-						value="pickup"
-						name="deliverytype"
-						onChange={this.handleChange}
-					/>
-					Pickup
-					<input
-						type="radio"
-						value="delivery"
-						name="deliverytype"
-						onChange={this.handleChange}
-					/>
-					Delivery
-				</div>
+			<div>
+
+              Food Type :
+            	<select className="form-group" name="foodtype" name="foodtype"  value={this.state.foodtype} onChange={this.handleChange} >
+              	<option value="">All</option> 
+              	<option value="Veg" >Veg</option>
+              	<option value="Non-veg"  >Non-veg</option>
+              	<option value="Vegan" >Vegan</option>
+            	</select>
+         	 </div>
+		<div>
+             Mode of Delivery :
+            <select className="form-group" name="deliverytype" value={this.state.deliverytype} onChange={this.handleChange}>
+              <option value="">All</option> 
+              <option value="Pick Up">Pick Up</option>
+              <option value="Delivery">Delivery</option>
+            </select>
+         	 </div>
 				<div>
 					<form>
 						<Button onClick={this.fullSearchSubmit} type="submit">

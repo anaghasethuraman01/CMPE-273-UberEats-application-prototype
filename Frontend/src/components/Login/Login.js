@@ -5,6 +5,8 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import { Button ,Input} from 'reactstrap';
 import backendServer from "../../webConfig";
+import validator from 'validator';
+import {Row,Col,Container} from 'react-bootstrap';
 class Login extends Component {
  
     constructor(props) {
@@ -28,6 +30,7 @@ class Login extends Component {
             status:null,
             city:null,
             deliverytype:null,
+            foodtype:null,
             days:null,
             profilepic:null,
             restprofilepic:null,
@@ -68,6 +71,7 @@ class Login extends Component {
                     this.setState({ city: data1['city']})
                     this.setState({ days: data1['days']})
                     this.setState({ deliverytype:data1['deliverytype']})
+                    this.setState({ foodtype:data1['foodtype']})
                     this.setState({restaurantid:res.data['userid']});
                     this.setState({ owner:data1['owner']});
                     this.setState({ restprofilepic:data1['profilepic']})
@@ -121,8 +125,24 @@ class Login extends Component {
                 }
             });
     }
+     validateLogin = () => {
+           let isValid = true;
+        
+        if(this.state.email === null ||this.state.password === null  ){
+        alert("Fields cannot be empty");
+           isValid = false;
+        }else
+        {if (!validator.isEmail(this.state.email)) {
+        alert('Enter valid Email!')
+        isValid = false;
+        }
+        } 
+        
+        return isValid;
+     }
     handleSubmit = (e) => {
         e.preventDefault();
+        if (this.validateLogin() === true) {
         const credential = {
             email: this.state.email,
             password: this.state.password,
@@ -136,6 +156,7 @@ class Login extends Component {
             this.sendRestaurantAPI(credential);
         }else{
             alert("Provide valid user type");
+        }
         }
         
     }
@@ -161,7 +182,8 @@ class Login extends Component {
             localStorage.setItem("city","Add");
             localStorage.setItem("days","Add");
             localStorage.setItem("deliverytype","Add");
-            localStorage.setItem("restprofilepic","");
+            localStorage.setItem("foodtype","Add");
+            localStorage.setItem("restprofilepic","Add");
            
             redirectHome = <Redirect to="/RestaurantHome" />
         }
@@ -177,7 +199,7 @@ class Login extends Component {
         localStorage.setItem("city","Add");
         localStorage.setItem("state","Add");
         localStorage.setItem("country","Add");
-        localStorage.setItem("profilepic","");
+        localStorage.setItem("profilepic","Add");
             redirectHome = <Redirect to="/CustomerHome" />
         }
         
@@ -210,6 +232,7 @@ class Login extends Component {
         localStorage.setItem("timing",this.state.timing);
         localStorage.setItem("city",this.state.city);
         localStorage.setItem("deliverytype",this.state.deliverytype);
+        localStorage.setItem("foodtype",this.state.foodtype);
         localStorage.setItem("days",this.state.days);
         localStorage.setItem("restprofilepic",this.state.restprofilepic);
         // const {history} = this.props;
@@ -219,16 +242,20 @@ class Login extends Component {
        }
 
         return (
-            <div>{redirectHome}
+            // <Container fluid="md">
+            // <Row>
+            // <Col>
+            
+            <div >{redirectHome}
                 {redirectVar}
 
-                <div className="container">
-          <div className="login-form">
+            <div className="container">
+            <div className="login-form">
             <div className="main-div">
-              <div className="panel">
-              <h1>Welcome to Uber Eats.</h1>
+            <div className="panel">
+                <h1>Welcome to Uber Eats.</h1>
                 <p>Please enter your email and password.</p>
-              </div>
+            </div>
 
               <div className="form-group">
 
@@ -258,7 +285,11 @@ class Login extends Component {
             </div>
           </div>
         </div>
-            </div>
+        </div>
+        
+        // </Col>
+        // </Row>
+        // </Container>
         )
     }
 }

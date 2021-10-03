@@ -124,11 +124,11 @@ class AddRestaurantMenu extends Component {
           Category: 
              <select className="form-control" name="category" value={this.state.value} onChange={this.handleChange}>
                          <option value="">Category</option>
-                       <option value="appetizer">Appetizer</option>
+                       <option value="Appetizer">Appetizer</option>
                       <option value="salads">Salads</option>
-                        <option value="maincourse">Main Course</option>
-                  <option value="desserts">Desserts</option>
-                        <option value="beverages">Beverages</option>
+                        <option value="Main Course">Main Course</option>
+                  <option value="Desserts">Desserts</option>
+                        <option value="Beverages">Beverages</option>
             </select>
           </div>
           <div className="form-group">

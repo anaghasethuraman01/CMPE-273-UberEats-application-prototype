@@ -5,6 +5,7 @@ import axios from 'axios';
 //import { Link } from 'react-router-dom';
 // import RestaurantInfo from './RestaurantInfo';
 import backendServer from "../../webConfig";
+import {BiCartAlt} from 'react-icons/bi';
 class SingleRestDashboard extends Component {
     
     constructor(props){
@@ -12,6 +13,7 @@ class SingleRestDashboard extends Component {
   
         this.state = {
           restaurantid : localStorage.getItem("restid"),
+          restaurantname:null,
           description:null,
           restaurantname:null,
           query : null,
@@ -40,11 +42,14 @@ class SingleRestDashboard extends Component {
             axios.post(`${backendServer}/getrestaurantdetails`,restaurantid)
             .then((response) => { 
             //update the state with the response data
-            console.log(response.data);
+            //console.log(response.data);
             this.setState({
               restaurants : this.state.restaurants.concat(response.data) 
             });
-            //console.log(this.state.restaurant);
+            this.setState({
+              restaurantname : response.data[0].username
+            });
+            
         });    
 
     }
@@ -74,10 +79,12 @@ class SingleRestDashboard extends Component {
           <Card.Body>
           <Card.Title>{dish.dishname}</Card.Title>
           </Card.Body>
+          
           <ListGroup className="list-group-flush">
             <ListGroupItem>Contains : {dish.ingrediants} </ListGroupItem>
             <ListGroupItem>Price :  $ {dish.price}</ListGroupItem>
-              <Button onClick={this.addtocart}>Add to cart </Button>
+           
+            <Button className="cardbtn" data-tip="Add To Cart"><BiCartAlt/></Button>
           </ListGroup>
           </Card>                           
           </div>
@@ -99,7 +106,7 @@ class SingleRestDashboard extends Component {
     return (
        
         <div class="container">
-            <h1>Menu</h1>
+            <h1>{this.state.restaurantname}</h1>
            
             {restaurantdetails}
             <form>

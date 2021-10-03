@@ -27,8 +27,10 @@ class Navbar extends Component {
         <nav className="navbar navbar-inverse">
           <div className="container-fluid">
             <div className="navbar-header">
+             
               <div className="navbar-brand">Uber Eats</div>
             </div>
+            
             {/* <ul className="nav navbar-nav">
               <li className="active">
                 <Link to="/home">Home</Link>

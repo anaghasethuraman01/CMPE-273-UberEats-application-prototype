@@ -2,14 +2,20 @@ import React, {Component} from 'react';
 
 // import cookie from 'react-cookies';
 import { Button } from 'reactstrap';
-
-//import 'bootstrap/dist/css/bootstrap.css';
+import axios from "axios";
+import { Card, ListGroup, ListGroupItem, Form ,Offcanvas} from "react-bootstrap";
+import backendServer from "../../webConfig";
+import {BiCartAlt} from 'react-icons/bi';
+import {IoIosRestaurant} from 'react-icons/io';
+import {MdFavoriteBorder} from 'react-icons/md';
+import { Navbar,Container,Nav,Col,Row} from "react-bootstrap";
 class CustomerHome extends Component {
     
     constructor(props){
         super(props);
   
         this.state = {
+            customerid : localStorage.getItem("userid"),
             username: localStorage.getItem("username"),
             email:localStorage.getItem("email"),
             phone: localStorage.getItem("phone"),
@@ -21,21 +27,89 @@ class CustomerHome extends Component {
             about:localStorage.getItem("about"),
             favourites:null,
             loading: false,
-            output: null
+            output: null,
+            restaurants: [],
+            restaurants1: [],
+            favrestaurants: [],
           }
       }
-      // handleSubmit = (e) => {
-      //   e.preventDefault();
-      //   window.location.href='/RestaurantProfile';
-      // }
-      // showMenu = (e) =>{
-      //     e.preventDefault();
-      //   window.location.href='/RestaurantProfile';
-      // }
+    componentDidMount() {
+    const city = this.state.city;
+    const customerid = this.state.customerid;
+
+    if(customerid){
+      const val = {
+        customerid:customerid
+      }
+     
+      axios.post(`${backendServer}/getfavouriterestaurant`,val).then((response) => {
+        //this.setState({ status: "notdone" });
+        
+        console.log(response.data.length);
+        if(response.data.length > 0){
+          this.setState({ favourites: "found" });
+        }
+        //update the state with the response data
+        this.setState({
+          favrestaurants: this.state.favrestaurants.concat(response.data),
+        });
+      });
+
+    }
+    //console.log(city);
+    if(city!="null" && city != "Add" ){
+      const data = {
+			city: city,
+		  };
+      axios.post(`${backendServer}/getrestaurantwithcity`,data).then((response) => {
+        //this.setState({ status: "notdone" });
+        //console.log(response.data);
+        //update the state with the response data
+        this.setState({
+          restaurants: this.state.restaurants.concat(response.data),
+        });
+      });
+    }else if(city == "null" || city == "Add" ) {
+      axios.get(`${backendServer}/getrestaurant`).then((response) => {
+			//this.setState({ status: "notdone" });
+			//console.log(response.data);
+			//update the state with the response data
+			this.setState({
+				restaurants1: this.state.restaurants1.concat(response.data),
+			});
+		});
+    }
+
+	}
+  addToFavourites = (restid) =>{
+		const customerid = localStorage.getItem("userid");	
+		const favourites = {
+			customerid : customerid,
+			restid:restid	
+			};
+		this.addToFavouritesTable(favourites);	
+    //this.componentDidMount();
+	}
+  	addToFavouritesTable = (data) => {
+		axios.defaults.withCredentials = true;
+		axios.post(`${backendServer}/addtofavourites`, data).then((res) => {
+			console.log("Status Code : ", res.status);
+			if (res.status === 200) {
+				this.setState({ authFlag: true });
+			} else {
+				this.setState({ authFlag: false });
+			}
+		});
+	}
       profile = e => {
         e.preventDefault();
         const {history} = this.props;
         history.push('/customerprofile'); 
+      }
+      showfavourites = e => {
+        e.preventDefault();
+        const {history} = this.props;
+        history.push('/favourites'); 
       }
       findfood = e => {
         e.preventDefault();
@@ -47,33 +121,202 @@ class CustomerHome extends Component {
         const {history} = this.props;
         history.push('/restaurantprofile'); 
       }
-      
+      navigatetorestaurant = (val) => {
+        console.log(val);
+        //  window.location.href='/SingleRestDashboard';
+        localStorage.setItem("restid", val);
+        const { history } = this.props;
+        console.log(history);
+        history.push("/singlerestdashboard");
+	    };
       logout = e => {
         e.preventDefault();
         const {history} = this.props;
         history.push('/login'); 
       }
     render(){
+      var beforeSearch = null;
+      var afterSearch = null;
+      var favouriterest = null;
+      //console.log("city",this.state.city)
+      if(this.state.city == "null" || this.state.city == "Add"){
+          beforeSearch = ( 
+          <div>
+          <h1>All Restaurants</h1>
+          <div className="card-list">
+          
+            {this.state.restaurants1.map((restaurant) => (
+              <div>
+                <Card style={{ width: "18rem" }}>
+                  <Card.Img
+                    style={{ width: "18rem" }}
+                    variant="top"
+                    src={`${backendServer}/${restaurant.profilepic}`}
+                  />
+                  <Card.Body>
+                    <Card.Title>{restaurant.username}</Card.Title>
+                    <ListGroup className="list-group-flush">
+                      <ListGroupItem> {restaurant.phone} </ListGroupItem>
+                      <ListGroupItem> {restaurant.email}</ListGroupItem>
+                      <div className ="form-buttons">
+                      <Button data-tip="Explore"
+											onClick={() => {
+												this.navigatetorestaurant(restaurant.restaurantid);
+											}}
+										>
+										<IoIosRestaurant/>
+										</Button>
+                     
+                     <Button className="cardbtn" data-tip="Add To Favourites"
+										  onClick={() => {
+												this.addToFavourites(restaurant.restaurantid);
+											}}
+											>
+											<MdFavoriteBorder/></Button>
+                      </div>
+                    </ListGroup>
+                   
+                  </Card.Body>
+                </Card>
+              </div>
+            ))}
+          </div>
+          </div>
+        );
+      }
+      else{
+        
+          afterSearch = (
+            <div>
+            <h1> Restaurants Near You</h1>
+            <div className="card-list">
+            
+              {this.state.restaurants.map((restaurant) => (
+                <div>
+                  <Card style={{ width: "18rem" }}>
+                    <Card.Img
+                      style={{ width: "18rem" }}
+                      variant="top"
+                      src={`${backendServer}/${restaurant.profilepic}`}
+                    />
+                    <Card.Body>
+                    <Card.Title>{restaurant.username}</Card.Title>
+                    <ListGroup className="list-group-flush">
+                      <ListGroupItem> {restaurant.phone} </ListGroupItem>
+                      <ListGroupItem> {restaurant.email}</ListGroupItem>
+                      <div className ="form-buttons">
+                     <Button data-tip="Explore"
+											onClick={() => {
+												this.navigatetorestaurant(restaurant.restaurantid);
+											}}
+										>
+										<IoIosRestaurant/>
+										</Button>  
+                      <Button className="cardbtn" data-tip="Add To Favourites"
+										  onClick={() => {
+												this.addToFavourites(restaurant.restaurantid);
+											}}
+											>
+											<MdFavoriteBorder/></Button>
+                      </div>
+                    </ListGroup>
+                   
+                  </Card.Body>
+                </Card>
+              </div>
+            ))}
+          </div>
+          </div>
+        );
+      }
+
+
+      if(this.state.favourites == "found"){
+         favouriterest = ( 
+          <div>
+          <h1>Your Favourites</h1>
+          <div className="card-list">
+          
+            {this.state.favrestaurants.map((restaurant) => (
+              <div>
+                <Card style={{ width: "18rem" }}>
+                  <Card.Img
+                    style={{ width: "18rem" }}
+                    variant="top"
+                    src={`${backendServer}/${restaurant.profilepic}`}
+                  />
+                  <Card.Body>
+                    <Card.Title>{restaurant.username}</Card.Title>
+                    <ListGroup className="list-group-flush">
+                      <ListGroupItem> {restaurant.phone} </ListGroupItem>
+                      <ListGroupItem> {restaurant.email}</ListGroupItem>
+                      <div className ="form-buttons">
+                      <Button  
+                        onClick={() => {
+                          this.navigatetorestaurant(restaurant.restaurantid);
+                        }}
+                      >
+                        Explore
+                      </Button>
+                      <Button className="cardbtn"><BiCartAlt/></Button>
+                      </div>
+                    </ListGroup>
+                   
+                  </Card.Body>
+                </Card>
+              </div>
+            ))}
+          </div>
+          </div>
+        );
+      }
+     
+     
 
     return (
       
-        <div class="container">
+      
+
+        <div className="container">
             
-            <form>
+            <form >
             <h1>Welcome {this.state.username} !</h1>
+            <>
+            {/* <Row>
+          <Col xs={2}>
+  <Navbar bg="dark" variant="dark">
+    <Container>
+    <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+    <Nav className="col-md-12 d-none d-md-block bg-primary sidebar">
+      <Nav.Link href="#home">Home</Nav.Link>
+      <Nav.Link href="#features">Features</Nav.Link>
+      <Nav.Link href="#pricing">Pricing</Nav.Link>
+    </Nav>
+    </Container>
+  </Navbar>
+  
+    </Col>
+    </Row> */}
+      </>
             <div className='form-buttons'>
           
             <Button className="btn" onClick={this.profile}>Profile</Button>
 
             <Button className="btn" onClick={this.findfood}>Find Food</Button>
 
-          
             <Button className="btn" onClick={this.orders}>Orders</Button>
+
+            <Button className="btn" onClick={this.showfavourites}>Favourites</Button>
 
             <Button className="btn" onClick={this.logout}>Logout</Button>
             </div>
             </form>
+              
+              {beforeSearch}
+              {afterSearch}
+             
         </div>
+      
     )
     }
    
