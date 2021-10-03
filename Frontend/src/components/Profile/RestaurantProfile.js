@@ -17,6 +17,7 @@ class RestaurantProfile extends Component {
           timing:localStorage.getItem("timing"),
           city:localStorage.getItem("city"),
           deliverytype: localStorage.getItem("deliverytype"),
+          foodtype:localStorage.getItem("foodtype"),
           days:localStorage.getItem("days"),
           restprofilepic:localStorage.getItem("restprofilepic"),
           loading: false,
@@ -36,8 +37,8 @@ class RestaurantProfile extends Component {
         history.push('/restauranthome'); 
       }
       render(){
-const imgLink = `${backendServer}/${localStorage.getItem("restprofilepic")}`;
- console.log("***"); 
+      const imgLink = `${backendServer}/${localStorage.getItem("restprofilepic")}`;
+      console.log("***"); 
       console.log(localStorage.getItem("restprofilepic"));
     return (
       
@@ -50,7 +51,7 @@ const imgLink = `${backendServer}/${localStorage.getItem("restprofilepic")}`;
           </div>
           <div className="form-group">
 
-          <img src={imgLink} alt="helo" style={{ maxHeight: '180px', maxWidth: '180px' }} />
+          <img src={imgLink} alt="No image added. Add Image" style={{ maxHeight: '180px', maxWidth: '180px' }} />
           
           </div>
           <div className="form-group">
@@ -76,6 +77,10 @@ const imgLink = `${backendServer}/${localStorage.getItem("restprofilepic")}`;
           </div>
           <div className="form-group">
             <h4> Delivery Type: {this.state.deliverytype}</h4>
+          
+          </div>
+            <div className="form-group">
+            <h4> Food Type: {this.state.foodtype}</h4>
           
           </div>
           <div className="form-group">

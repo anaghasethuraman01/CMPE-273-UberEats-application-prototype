@@ -20,20 +20,22 @@ class RestaurantEditProfile extends Component {
           email:localStorage.getItem("email"),
           phone: localStorage.getItem("phone"),
           deliverytype: localStorage.getItem("deliverytype"),
+          foodtype:localStorage.getItem("foodtype"),
           days: localStorage.getItem("days"),
           city: localStorage.getItem("city"),
           dishes:null,
           timing:localStorage.getItem("timing"),
           loading: false,
           output: null,
-          selectedFile : null
+          selectedFile : null,
+          restprofilepic:null,
           
         }
     
         this.handleChange = this.handleChange.bind(this);
       }
       sendRestAPI = (data) => {
-        axios.post('http://localhost:5000/editrestaurant', data)
+        axios.post(`${backendServer}/editrestaurant`, data)
             .then(res => {
               // console.log("here");
               // console.log(res.data);
@@ -48,11 +50,11 @@ class RestaurantEditProfile extends Component {
                   localStorage.setItem("timing",res.data.timing);
                   localStorage.setItem("description",res.data.description);
                   localStorage.setItem("deliverytype",res.data.deliverytype);
+                  localStorage.setItem("foodtype",res.data.foodtype);
                   localStorage.setItem("city",res.data.city);
                   localStorage.setItem("days",res.data.days);
                   const {history} = this.props;
                   history.push('/restaurantprofile'); 
-                   //window.location.href='/RestaurantProfile';
                 }
                 
             }).catch(
@@ -65,6 +67,7 @@ class RestaurantEditProfile extends Component {
         e.preventDefault();
 
         const restuarantData = {
+
             restaurantid: localStorage.getItem("restaurantid"),
             restaurantname: this.state.restaurantname,
             email: this.state.email,
@@ -75,7 +78,9 @@ class RestaurantEditProfile extends Component {
             timing:this.state.timing,
             city:this.state.city,
             deliverytype:this.state.deliverytype,
-            days:this.state.days
+            foodtype:this.state.foodtype,
+            days:this.state.days,
+            restprofilepic:localStorage.getItem("restprofilepic"),
         }
        
         this.sendRestAPI(restuarantData);
@@ -108,7 +113,7 @@ class RestaurantEditProfile extends Component {
           axios.post( `${backendServer}/restimageupload`, data)
               .then(res => {
               console.log(res.data);
-                 this.setState({profilepic:res.data});
+                this.setState({profilepic:res.data});
                 localStorage.setItem("restprofilepic",res.data);
                 console.log(this.state.profilepic);
               })
@@ -158,10 +163,20 @@ class RestaurantEditProfile extends Component {
           </div>
           <div className="form-group">
               Mode of Delivery :
-            <select className="form-control" name="deliverytype" value={this.state.value} onChange={this.handleChange}>
-              <option value="">Select delivery type</option>
-              <option value="pickup">Pick Up</option>
-              <option value="delivery">Delivery</option>
+            <select className="form-control" name="deliverytype" value={this.state.deliverytype} onChange={this.handleChange}>
+              <option value="">Select delivery type</option> 
+              {/* <option value="Pick Up and Delivery">Pick Up and Delivery</option> */}
+              <option value="Pick Up">Pick Up</option>
+              <option value="Delivery">Delivery</option>
+            </select>
+          </div>
+           <div className="form-group">
+              Food Type :
+            <select className="form-control" name="foodtype" name="foodtype"  value={this.state.foodtype} onChange={this.handleChange} >
+              <option value="">Select food type</option> 
+              <option value="Veg" >Veg</option>
+              <option value="Non-veg"  >Non-veg</option>
+              <option value="Vegan" >Vegan</option>
             </select>
           </div>
           <div className="form-group">

@@ -25,7 +25,7 @@ class CustomerEditProfile extends Component {
             state:localStorage.getItem("state"),
             city:localStorage.getItem("city"),
             country:localStorage.getItem("country"),
-            profilepic:localStorage.getItem("profilepic"),
+            profilepic:null,
             loading: false,
             output: null
         }
@@ -81,6 +81,7 @@ class CustomerEditProfile extends Component {
             state:this.state.state,
             city:this.state.city,
             country:this.state.country,
+            profilepic:localStorage.getItem("profilepic")
         }
        
        // console.log(customerData);

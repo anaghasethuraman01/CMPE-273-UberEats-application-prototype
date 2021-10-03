@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Button ,Input} from 'reactstrap';
 import backendServer from "../../webConfig";
+import validator from 'validator';
 class Register extends Component {
     constructor(props) {
         super(props);
@@ -51,6 +52,22 @@ class Register extends Component {
           
     }
 
+     validateCustRegister = () => {
+           let isValid = true;
+        
+        if(this.state.name === null ||this.state.email === null ||this.state.password === null  ){
+        alert("Fields cannot be empty");
+           isValid = false;
+        }else
+        {if (!validator.isEmail(this.state.email)) {
+        alert('Enter valid Email!')
+        isValid = false;
+        }
+        } 
+        
+        return isValid;
+     }
+
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -73,7 +90,11 @@ class Register extends Component {
         }
         console.log(ownerData);
         if (!this.state.owner) {
+
+
+             if (this.validateCustRegister() === true) {           
             this.sendRestAPI(buyerData);
+             }
         } else {
             this.sendRestAPI(ownerData);
         }

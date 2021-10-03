@@ -73,7 +73,7 @@ class CustomerProfile extends Component {
           </div>
           <div className="form-group">
 
-          <img src={imgLink} alt="helo" style={{ maxHeight: '180px', maxWidth: '180px' }} />
+          <img src={imgLink} alt="No image added. Add Image." style={{ maxHeight: '180px', maxWidth: '180px' }} />
           
           </div>
           <div className="form-group">
