@@ -5,7 +5,7 @@ var mysql = require("mysql");
 const connection = require('../connection.js');
 
 router.post('/', function(req,res){
-    console.log("Inside Dish Search");   
+    //console.log("Inside Dish Search");   
 	const dish = req.body.dish;
     console.log(dish);
     res.writeHead(200,{
@@ -14,7 +14,7 @@ router.post('/', function(req,res){
 	 let sql1 = "SELECT restaurantid FROM restaurantdishes WHERE dishname = "
      +mysql.escape(dish) ;
      let query = connection.query(sql1, (error, result) => {
-        console.log(result.body);
+        //console.log(result.body);
     if (error) {
                 res.send({ error: error });
         }
@@ -25,15 +25,13 @@ router.post('/', function(req,res){
             rest.push(item);  
          }  
      }
-     console.log(rest);	
-     var newrest=[]
-     var restfinal =[{"restdetailid":"","restaurantid":"","username":"","email":"","phone":"","zipcode":"","description":"","timing":"","deliverytype":"","foodtype":"","city":"","days":""}];
-
+     //console.log(rest);	
+     
      let sql2 = "SELECT * FROM restaurant WHERE restaurantid IN ("
          + mysql.escape(rest) + " ) " ;
          console.log(sql2);
          let query = connection.query(sql2, (error, result1) => {
-             console.log(result1);
+             //console.log(result1);
              if (error) {
                     res.send({ error: error });
                 }else{

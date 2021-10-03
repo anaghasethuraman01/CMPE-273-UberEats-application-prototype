@@ -5,7 +5,7 @@ var mysql = require("mysql");
 const connection = require('../connection.js');
 
 router.post('/', function(req,res){
-    console.log("Inside Search");   
+    //console.log("Inside Search");   
 	const city = req.body.city;
     res.writeHead(200,{
         'Content-Type' : 'application/json'
@@ -16,7 +16,7 @@ router.post('/', function(req,res){
     if (error) {
                 res.send({ error: error });
         }
-		console.log(result);
+		//console.log(result);
 		res.end(JSON.stringify(result));
 		
 	});  

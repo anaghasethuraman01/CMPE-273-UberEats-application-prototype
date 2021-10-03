@@ -50,7 +50,7 @@ router.post("/", (req, res) => {
             let sql = "INSERT INTO userdetails SET ?";
             let q = connection.query(sql, post, (error, result3) => {
             if (error) {
-                console.log(result3[0]);
+                //console.log(result3[0]);
                 console.log(error.message);
                         //res.send({message:"Invalid credentials"})
             } else {
@@ -58,8 +58,8 @@ router.post("/", (req, res) => {
                     console.log("USER ADDED");
                     let sql = "SELECT * FROM userdetails  WHERE USERID = " + mysql.escape(userid);
                         connection.query(sql, (error, result5) => {
-                            console.log(sql);
-                            console.log(result5[0]);
+                            // console.log(sql);
+                            // console.log(result5[0]);
                         if (error) {
                             console.log("Connection Error!");
                         }else{

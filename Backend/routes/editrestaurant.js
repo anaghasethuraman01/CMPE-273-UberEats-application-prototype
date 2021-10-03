@@ -16,6 +16,8 @@ router.post("/", (req, res) => {
    const city =  req.body.city;
    const days =  req.body.days;
    const deliverytype =  req.body.deliverytype;
+   const foodtype =  req.body.foodtype;
+   const profilepic = req.body.restprofilepic;
    let sql1 = "SELECT * FROM restaurant  WHERE RESTAURANTID = " + mysql.escape(restaurantid);
    connection.query(sql1, (error, result1) => {
        if (error) {
@@ -42,7 +44,9 @@ router.post("/", (req, res) => {
            timing :timing,
            city:city,
            deliverytype:deliverytype,
-           days:days	
+           days:days,
+           foodtype:foodtype,
+           profilepic:profilepic	
        };
        
          console.log(post);
