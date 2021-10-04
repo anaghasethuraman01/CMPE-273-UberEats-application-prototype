@@ -18,17 +18,7 @@ router.post("/", (req, res) => {
 			console.log("already added as favourites");
 		} 
         else {
-			// console.log("Favourites ADDED");
-			// res.send("Row added");
-            // let sql1 = "UPDATE userdetails SET favourite = 1"+
-            //    "  WHERE USERID = "+mysql.escape(customerid);
-            // connection.query(sql1, favourite, (error, result1) => {
-            //     if (error) {
-            //         console.log("error");
-            //     } else{
-            //          console.log("updated");
-            //     }
-            //    });
+            
             console.log("Favourites added");
 		}
 	});	

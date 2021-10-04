@@ -5,7 +5,7 @@ var mysql = require("mysql");
 const connection = require('../connection.js');
 
 router.post('/', function(req,res){
-    console.log("Inside Rest Dishes ");   
+    // console.log("Inside Rest Dishes ");   
     const restid = req.body.restaurantid;     
     res.writeHead(200,{
         'Content-Type' : 'application/json'

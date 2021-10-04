@@ -18,29 +18,68 @@ input[type=radio] {
     height: 1em;
    
 }
+.btngrp{
+   display: flex;
+  flex-direction: row;
+  text-align: center;
+}
 .cardbtn{
   text-align: center;
   border: none;
   color: black;
   display: inline-block;
-  width: 18%;
+  width: 40%;
   font-size: xx-small;
+  background-color: white;
 }
-/* .navbar-brand{
+.navbar-brand{
   background-color: #282c34;
   color: white;
   width: 88rem;
-} */
+
+}
 .listgroup{
   width: 10rem;
+}
+.favbtn{
+  width: 12rem;
+}
+.detailsincard{
+   font-size: medium;
+}
+/* .card{
+  display: flex;
+  flex-direction: row;
+  width: auto;
+} */
+.ubereats{
+  font-size: 150%;
+}
+
+.cardbtn2{
+  text-align: center;
+  border: none;
+  color: white;
+  display: inline-block;
+  width: 75%;
+  background-color: black;
+}
+.cartleft {
+  position: absolute;
+  right: 25px;
+  top: 6px;
+  margin-bottom: 6rem;
+  margin-top: 1rem;
+  padding-top: 0rem;
+  
 }
 .cardbtn1{
   text-align: center;
   border: none;
   color: black;
   display: inline-block;
-  width: 18%;
-  font-size: xx-small;
+  width: 65%;
+  background-color: white;
 }
 .btn{
   font-size:large;

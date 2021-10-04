@@ -6,6 +6,8 @@ import { Card, ListGroup, ListGroupItem, Form } from "react-bootstrap";
 import {BiCartAlt} from 'react-icons/bi';
 import {MdFavoriteBorder} from 'react-icons/md';
 import {IoIosRestaurant} from 'react-icons/io';
+import {RiPhoneFill} from 'react-icons/ri';
+import {IoMail} from 'react-icons/io5';
 
 import backendServer from "../../webConfig";
 import ReactTooltip from 'react-tooltip';
@@ -104,6 +106,7 @@ class Favourites extends Component {
                 
                     {this.state.favrestaurants.map((restaurant) => (
                     <div>
+						
                         <Card style={{ width: "18rem" }}>
                         <Card.Img
                             style={{ width: "18rem" }}
@@ -111,20 +114,21 @@ class Favourites extends Component {
                             src={`${backendServer}/${restaurant.profilepic}`}
                         />
                         <Card.Body>
-                            <Card.Title>{restaurant.username}</Card.Title>
-                            <ListGroup className="list-group-flush">
-                            <ListGroupItem> {restaurant.phone} </ListGroupItem>
-                            <ListGroupItem> {restaurant.email}</ListGroupItem>
-                            <div className ="form-buttons">
-                            <Button  
+                            <Card.Title className = "detailsincard">{restaurant.username}</Card.Title>
+                            <ListGroup >
+                            <ListGroupItem className = "detailsincard"><RiPhoneFill/> : {restaurant.phone} </ListGroupItem>
+                            <ListGroupItem className = "detailsincard"><IoMail/>{restaurant.email}</ListGroupItem>
+							<ListGroupItem>
+                           <ReactTooltip />
+                            <Button  className="cardbtn1" data-tip="Explore"
                                 onClick={() => {
                                 this.navigatetorestaurant(restaurant.restaurantid);
                                 }}
-                            >
-                                Explore
+                            > 
+                            <IoIosRestaurant/>
                             </Button>
-                            <Button className="cardbtn"><BiCartAlt/></Button>
-                            </div>
+                           
+							</ListGroupItem>
                             </ListGroup>
                         
                         </Card.Body>

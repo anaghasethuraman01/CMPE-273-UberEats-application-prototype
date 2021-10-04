@@ -22,7 +22,8 @@ const getrestaurantdetails = require("./routes/getrestaurantdetails");
 const restsearchonsubmit = require("./routes/restsearchonsubmit");
 const addtofavourites = require("./routes/addtofavourites");
 const getfavouriterestaurant = require("./routes/getfavouriterestaurant");
-
+const addtocarttable = require("./routes/addtocarttable");
+const getcartitem = require("./routes/getcartitem");
 
 app.use("/restlogin", restlogin);
 app.use("/custlogin", custlogin);
@@ -43,6 +44,8 @@ app.use("/restimageupload",restimageupload);
 app.use("/restsearchonsubmit",restsearchonsubmit);
 app.use("/addtofavourites",addtofavourites);
 app.use("/getfavouriterestaurant",getfavouriterestaurant);
+app.use("/addtocarttable",addtocarttable);
+app.use("/getcartitem",getcartitem);
 
 const port = process.env.PORT || 5000;
 var server = app.listen(port, () => {

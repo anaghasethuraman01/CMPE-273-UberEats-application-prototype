@@ -1,14 +1,16 @@
 import { Button } from "reactstrap";
 import axios from "axios";
 import React, { Component } from "react";
-import { Card, ListGroup, ListGroupItem, Form} from "react-bootstrap";
+import { Card, ListGroup, ListGroupItem, Col} from "react-bootstrap";
 //import { Link } from 'react-router-dom';
 import {BiCartAlt} from 'react-icons/bi';
 import {MdFavoriteBorder} from 'react-icons/md';
 import {IoIosRestaurant} from 'react-icons/io';
-
 import backendServer from "../../webConfig";
 import ReactTooltip from 'react-tooltip';
+import {RiPhoneFill} from 'react-icons/ri';
+import {IoMail} from 'react-icons/io5';
+import AddToCart from './AddToCart';
 class RestDashboard extends Component {
 	constructor(props) {
 		super(props);
@@ -187,24 +189,27 @@ class RestDashboard extends Component {
 					{this.state.restaurants1.map((restaurant) => (
 						<div>
 							<Card style={{ width: "18rem" }}>
-							<Card.Img
+							<Card.Img 
 									style={{ width: "18rem" }}
-									variant="top"
+									variant="bottom"
 									src={`${backendServer}/${restaurant.profilepic}`}
 								/>
 								<Card.Body>
-									<Card.Title>{restaurant.username}</Card.Title>
+									<Card.Title className = "detailsincard">{restaurant.username}</Card.Title>
 									<ListGroup className="list-group-flush">
-										<ListGroupItem> {restaurant.phone} </ListGroupItem>
-										<ListGroupItem> {restaurant.email}</ListGroupItem>
-										<ReactTooltip />
-										<Button data-tip="Explore"
+										  <ListGroupItem className = "detailsincard"><RiPhoneFill/>: {restaurant.phone} </ListGroupItem>
+                      					  <ListGroupItem className = "detailsincard"><IoMail/>{restaurant.email}</ListGroupItem>
+									</ListGroup>
+									<ReactTooltip />
+									<div className="btngrp">
+										<Button data-tip="Explore" className="cardbtn"
 											onClick={() => {
 												this.navigatetorestaurant(restaurant.restaurantid);
 											}}
 										>
 										<IoIosRestaurant/>
 										</Button>
+										<ReactTooltip />
 										
                       					<Button className="cardbtn" data-tip="Add To Favourites"
 										  onClick={() => {
@@ -212,7 +217,7 @@ class RestDashboard extends Component {
 											}}
 											>
 											<MdFavoriteBorder/></Button>
-									</ListGroup>
+											</div>
 								</Card.Body>
 							</Card> 
 						</div>
@@ -222,27 +227,30 @@ class RestDashboard extends Component {
 		} else {
 			
 			beforeSearch = (
+				
 				<div className="card-list">
 					{this.state.restaurants.map((restaurant) => (
-						<div>
-							<Card style={{ width: "18rem" }}>
+						<div >
+							
+							<Card  style={{ width: "18rem" }}>
+								
 								<Card.Img
 									style={{ width: "18rem" }}
 									variant="top"
 									src={`${backendServer}/${restaurant.profilepic}`}
 								/>
 								<Card.Body>
-									<Card.Title>{restaurant.username}</Card.Title>
+									<Card.Title className = "detailsincard">{restaurant.username}</Card.Title>
 									<ListGroup className="list-group-flush">
-										<ListGroupItem> {restaurant.phone} </ListGroupItem>
-										<ListGroupItem> {restaurant.email}</ListGroupItem>
-										
-										<Button data-tip="Explore"
+									  <ListGroupItem className = "detailsincard"><RiPhoneFill/>: {restaurant.phone} </ListGroupItem>
+                      				  <ListGroupItem className = "detailsincard"><IoMail/>{restaurant.email}</ListGroupItem>
+										<div className="btngrp">
+										<Button data-tip="Explore" className="cardbtn"
 											onClick={() => {
 												this.navigatetorestaurant(restaurant.restaurantid);
 											}}
 										>
-											<IoIosRestaurant/>
+										<IoIosRestaurant/>
 										</Button>
 										<ReactTooltip />
 										
@@ -252,6 +260,7 @@ class RestDashboard extends Component {
 											}}
 											>
 											<MdFavoriteBorder/></Button>
+											</div>
 									</ListGroup>
 								</Card.Body>
 							</Card>
@@ -262,6 +271,7 @@ class RestDashboard extends Component {
 		}
 		return (
 			<div class="container">
+				<AddToCart/>
 				<h1>List of All Restaurants</h1>
 				<form >
 					City:

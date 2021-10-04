@@ -3,9 +3,11 @@ import { Button } from 'reactstrap';
 import {Card, ListGroup, ListGroupItem} from 'react-bootstrap';
 import axios from 'axios';
 //import { Link } from 'react-router-dom';
-// import RestaurantInfo from './RestaurantInfo';
+import ReactTooltip from 'react-tooltip';
 import backendServer from "../../webConfig";
 import {BiCartAlt} from 'react-icons/bi';
+import AddToCart from './AddToCart';
+
 class SingleRestDashboard extends Component {
     
     constructor(props){
@@ -60,11 +62,38 @@ class SingleRestDashboard extends Component {
         history.push('/restdashboard'); 
       }
     
-     addtocart = (e) =>{
-        e.preventDefault();
-        const {history} = this.props;
-        history.push('/addtocart'); 
+     addtocart = (restid,dishid,dishname,dishprice) =>{
+       const cartvalue = {
+         customerid : localStorage.getItem("userid"),
+         restaurantid : restid,
+         dishid:dishid,
+         dishname:dishname,
+         dishprice:dishprice   
+       }
+       this.addToCart(cartvalue);
      }
+
+    addToCart = (data) => {
+      axios.defaults.withCredentials = true;
+      axios.post(`${backendServer}/addtocarttable`, data).then((res) => {
+          console.log("in add to cart");
+          //console.log(res.data);
+          // if (res.data.message) {
+          //   this.setState({ message: res.data.message });
+          // } else {
+          //   this.setState({
+          //     restaurants1: res.data,
+          //   });
+          // }
+
+          // console.log("Status Code : ", res.status);
+          // if (res.status === 200) {
+          //   this.setState({ authFlag: true });
+          // } else {
+          //   this.setState({ authFlag: false });
+          // }
+      });
+	};
     render(){
       
       var restaurantdetails = null;
@@ -83,8 +112,12 @@ class SingleRestDashboard extends Component {
           <ListGroup className="list-group-flush">
             <ListGroupItem>Contains : {dish.ingrediants} </ListGroupItem>
             <ListGroupItem>Price :  $ {dish.price}</ListGroupItem>
-           
-            <Button className="cardbtn" data-tip="Add To Cart"><BiCartAlt/></Button>
+           	<ReactTooltip />
+            <Button className="cardbtn2" data-tip="Add To Cart"
+            onClick={() => {
+												this.addtocart(this.state.restaurantid,dish.dishid,dish.dishname,dish.price);
+											}}>
+              <BiCartAlt/></Button>
           </ListGroup>
           </Card>                           
           </div>
@@ -104,8 +137,9 @@ class SingleRestDashboard extends Component {
         </div>
    
     return (
-       
+      
         <div class="container">
+           <AddToCart/>
             <h1>{this.state.restaurantname}</h1>
            
             {restaurantdetails}
