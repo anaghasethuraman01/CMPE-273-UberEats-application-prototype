@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import ReactTooltip from 'react-tooltip';
 // import cookie from 'react-cookies';
 import { Button } from 'reactstrap';
 import axios from "axios";
@@ -8,6 +8,9 @@ import backendServer from "../../webConfig";
 import {BiCartAlt} from 'react-icons/bi';
 import {IoIosRestaurant} from 'react-icons/io';
 import {MdFavoriteBorder} from 'react-icons/md';
+import {RiPhoneFill} from 'react-icons/ri';
+import {IoMail} from 'react-icons/io5';
+import AddToCart from '../Dashboard/AddToCart';
 import { Navbar,Container,Nav,Col,Row} from "react-bootstrap";
 class CustomerHome extends Component {
     
@@ -154,26 +157,27 @@ class CustomerHome extends Component {
                     src={`${backendServer}/${restaurant.profilepic}`}
                   />
                   <Card.Body>
-                    <Card.Title>{restaurant.username}</Card.Title>
+                    <Card.Title className = "detailsincard">{restaurant.username}</Card.Title>
                     <ListGroup className="list-group-flush">
-                      <ListGroupItem> {restaurant.phone} </ListGroupItem>
-                      <ListGroupItem> {restaurant.email}</ListGroupItem>
-                      <div className ="form-buttons">
-                      <Button data-tip="Explore"
+                      <ListGroupItem className = "detailsincard"><RiPhoneFill/>: {restaurant.phone} </ListGroupItem>
+                      <ListGroupItem className = "detailsincard"><IoMail/>{restaurant.email}</ListGroupItem>
+                      <div className="btngrp">
+										<Button data-tip="Explore" className="cardbtn"
 											onClick={() => {
 												this.navigatetorestaurant(restaurant.restaurantid);
 											}}
 										>
 										<IoIosRestaurant/>
 										</Button>
-                     
-                     <Button className="cardbtn" data-tip="Add To Favourites"
+										<ReactTooltip />
+										
+                      <Button className="cardbtn" data-tip="Add To Favourites"
 										  onClick={() => {
 												this.addToFavourites(restaurant.restaurantid);
 											}}
 											>
 											<MdFavoriteBorder/></Button>
-                      </div>
+											</div>
                     </ListGroup>
                    
                   </Card.Body>
@@ -192,33 +196,35 @@ class CustomerHome extends Component {
             <div className="card-list">
             
               {this.state.restaurants.map((restaurant) => (
-                <div>
-                  <Card style={{ width: "18rem" }}>
+                <div >
+                  <Card >
                     <Card.Img
                       style={{ width: "18rem" }}
                       variant="top"
                       src={`${backendServer}/${restaurant.profilepic}`}
                     />
                     <Card.Body>
-                    <Card.Title>{restaurant.username}</Card.Title>
+                    <Card.Title className = "detailsincard">{restaurant.username}</Card.Title>
                     <ListGroup className="list-group-flush">
-                      <ListGroupItem> {restaurant.phone} </ListGroupItem>
-                      <ListGroupItem> {restaurant.email}</ListGroupItem>
-                      <div className ="form-buttons">
-                     <Button data-tip="Explore"
+                       <ListGroupItem className = "detailsincard"><RiPhoneFill/>: {restaurant.phone} </ListGroupItem>
+                      <ListGroupItem className = "detailsincard"><IoMail/>{restaurant.email}</ListGroupItem>
+                      <div className="btngrp">
+										<Button data-tip="Explore" className="cardbtn"
 											onClick={() => {
 												this.navigatetorestaurant(restaurant.restaurantid);
 											}}
 										>
 										<IoIosRestaurant/>
-										</Button>  
+										</Button>
+										<ReactTooltip />
+										
                       <Button className="cardbtn" data-tip="Add To Favourites"
 										  onClick={() => {
 												this.addToFavourites(restaurant.restaurantid);
 											}}
 											>
 											<MdFavoriteBorder/></Button>
-                      </div>
+											</div>
                     </ListGroup>
                    
                   </Card.Body>
@@ -239,7 +245,7 @@ class CustomerHome extends Component {
           
             {this.state.favrestaurants.map((restaurant) => (
               <div>
-                <Card style={{ width: "18rem" }}>
+                <Card >
                   <Card.Img
                     style={{ width: "18rem" }}
                     variant="top"
@@ -278,25 +284,10 @@ class CustomerHome extends Component {
       
 
         <div className="container">
-            
+            <AddToCart/>
             <form >
             <h1>Welcome {this.state.username} !</h1>
             <>
-            {/* <Row>
-          <Col xs={2}>
-  <Navbar bg="dark" variant="dark">
-    <Container>
-    <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-    <Nav className="col-md-12 d-none d-md-block bg-primary sidebar">
-      <Nav.Link href="#home">Home</Nav.Link>
-      <Nav.Link href="#features">Features</Nav.Link>
-      <Nav.Link href="#pricing">Pricing</Nav.Link>
-    </Nav>
-    </Container>
-  </Navbar>
-  
-    </Col>
-    </Row> */}
       </>
             <div className='form-buttons'>
           

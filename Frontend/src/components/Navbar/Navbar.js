@@ -28,7 +28,7 @@ class Navbar extends Component {
           <div className="container-fluid">
             <div className="navbar-header">
              
-              <div className="navbar-brand">Uber Eats</div>
+              <div className=" navbar-brand "><h1 className="ubereats"><span style={{ color:"white"}}>Uber</span> <span style={{ color:"green" }}>Eats</span></h1></div>
             </div>
             
             {/* <ul className="nav navbar-nav">
