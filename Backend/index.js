@@ -41,7 +41,7 @@ app.use("/editcustomer", editcustomer);
 app.use("/custimageupload", custimageupload);
 app.use("/dishimageupload", dishimageupload);
 app.use("/getrestaurantdishes", getrestaurantdishes);
-app.use("/getrestaurantdetails", getrestaurantdetails);
+app.use("/getrestaurantdetails", getrestaurantdetails);  
 app.use("/restimageupload",restimageupload);
 app.use("/restsearchonsubmit",restsearchonsubmit);
 app.use("/addtofavourites",addtofavourites);
@@ -54,6 +54,6 @@ app.use("/placeorder",placeorder);
 const port = process.env.PORT || 5000;
 var server = app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
-});
+});  
 
 module.exports = app;
