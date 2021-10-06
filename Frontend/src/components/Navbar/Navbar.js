@@ -2,13 +2,30 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import cookie from "react-cookies";
 import { Redirect } from "react-router";
+import AddToCart from '../Dashboard/AddToCart';
 
+import {
+ 
+  Button,
+
+} from 'react-bootstrap';
 //create the Navbar Component
 class Navbar extends Component {
   constructor(props) {
     super(props);
-   
+   this.state = {
+      openModal: false,
+    };
   }
+// viewCart = (e) => {
+//     e.preventDefault();
+//     this.setState({ openModal: true });
+//   }
+//    closeModal = () => {
+//      this.setState({ openModal: false });
+//     //  const {history} = this.props;
+//     //  history.push('/checkout');
+//   }
   //handle logout to destroy the cookie
   // handleLogout = () => {
   //   cookie.remove("cookie", { path: "/" });
@@ -16,7 +33,16 @@ class Navbar extends Component {
   render() {
     //if Cookie is set render Logout Button
     
-    
+    const userNameSessionVal = localStorage.getItem('userid');
+    let sessionAvail = null;
+    if (userNameSessionVal != null && userNameSessionVal !== undefined && userNameSessionVal !== "") {
+      sessionAvail = (
+        <div className = "cartitems">
+          <AddToCart />
+         
+        </div>
+      );
+    }
     let redirectVar = null;
     // if (!cookie.load("cookie")) {
     //   redirectVar = <Redirect to="/login" />;
@@ -29,8 +55,10 @@ class Navbar extends Component {
             <div className="navbar-header">
              
               <div className=" navbar-brand "><h1 className="ubereats"><span style={{ color:"white"}}>Uber</span> <span style={{ color:"green" }}>Eats</span></h1></div>
-            </div>
+            {sessionAvail}
             
+            </div>
+           
             {/* <ul className="nav navbar-nav">
               <li className="active">
                 <Link to="/home">Home</Link>

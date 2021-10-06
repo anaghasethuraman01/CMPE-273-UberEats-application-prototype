@@ -124,16 +124,19 @@ class CustomerHome extends Component {
         const {history} = this.props;
         history.push('/restaurantprofile'); 
       }
-      navigatetorestaurant = (val) => {
-        console.log(val);
+      navigatetorestaurant = (val1,val2) => {
+        console.log(val1);
+        console.log(val2);
         //  window.location.href='/SingleRestDashboard';
-        localStorage.setItem("restid", val);
+        localStorage.setItem("restid", val1);
+        localStorage.setItem("restname", val2);
         const { history } = this.props;
         console.log(history);
         history.push("/singlerestdashboard");
 	    };
       logout = e => {
         e.preventDefault();
+        localStorage.setItem("userid","");
         const {history} = this.props;
         history.push('/login'); 
       }
@@ -164,7 +167,7 @@ class CustomerHome extends Component {
                       <div className="btngrp">
 										<Button data-tip="Explore" className="cardbtn"
 											onClick={() => {
-												this.navigatetorestaurant(restaurant.restaurantid);
+												this.navigatetorestaurant(restaurant.restaurantid,restaurant.username);
 											}}
 										>
 										<IoIosRestaurant/>
@@ -211,7 +214,7 @@ class CustomerHome extends Component {
                       <div className="btngrp">
 										<Button data-tip="Explore" className="cardbtn"
 											onClick={() => {
-												this.navigatetorestaurant(restaurant.restaurantid);
+												this.navigatetorestaurant(restaurant.restaurantid,restaurant.username);
 											}}
 										>
 										<IoIosRestaurant/>
@@ -259,7 +262,7 @@ class CustomerHome extends Component {
                       <div className ="form-buttons">
                       <Button  
                         onClick={() => {
-                          this.navigatetorestaurant(restaurant.restaurantid);
+                          this.navigatetorestaurant(restaurant.restaurantid,restaurant.username);
                         }}
                       >
                         Explore

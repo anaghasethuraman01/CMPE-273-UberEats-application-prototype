@@ -5,12 +5,15 @@ var mysql = require("mysql");
 const connection = require('../connection.js');
 
 router.post("/", (req, res) => {
-    customerid = req.body.userid;
-    let sql = "SELECT * FROM placeorder WHERE customerid = " +mysql.escape(customerid);
-     connection.query(sql,(error, result) => {
-         console.log(result)
+    const customerid = req.body.customerid;
+    const restaurantid = req.body.restaurantid;
+    console.log(req.body);
+    let sql = "SELECT * FROM placeorder where customerid = "+mysql.escape(customerid);
+    console.log(sql);
+    connection.query(sql,(error, result) => {
+//console.log(result)
          if(result.length == 0 ){
-             console.log("Cant place order");
+             console.log("Cart is empty");
          }else{
             res.end(JSON.stringify(result));
         }

@@ -6,7 +6,6 @@ import  Navbar  from './Navbar/Navbar';
 import '../App.css';
 import RestaurantProfile from './Profile/RestaurantProfile';
 import RestaurantEditProfile from './Profile/RestaurantEditProfile';
-
 import CustomerProfile from './Profile/CustomerProfile';
 import CustomerHome from './HomePage/CustomerHome';
 import RestaurantHome from './HomePage/RestaurantHome';
@@ -17,6 +16,7 @@ import AllDishMenu from './Menu/AllDishMenu';
 import SingleRestDashboard from './Dashboard/SingleRestDashboard';
 import AddToCart from './Dashboard/AddToCart';
 import Favourites from './Dashboard/Favourites';
+import CheckOut from './Dashboard/Checkout';
 //import 'bootstrap/dist/css/bootstrap.css';
 class Main extends Component {
     render() {
@@ -38,6 +38,7 @@ class Main extends Component {
                     <Route path="/singlerestdashboard" component={SingleRestDashboard} />
                     <Route path="/addtocart" component={AddToCart} />
                     <Route path="/favourites" component={Favourites} />
+                    <Route path="/checkout" component={CheckOut}/>
                 </div>    
             </Router>
             

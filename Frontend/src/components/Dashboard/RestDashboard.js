@@ -28,7 +28,7 @@ class RestDashboard extends Component {
 			//favourites : []
 		};
 		this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+		//this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	componentDidMount() {
@@ -42,74 +42,75 @@ class RestDashboard extends Component {
 			});
 		});
 	}
-	searchRestaurantAPI = (data) => {
-		this.setState({ status: "done" });
-		axios.defaults.withCredentials = true;
-		axios.post(`${backendServer}/restsearch`, data).then((res) => {
-			if (res.data.message) {
-				this.setState({ message: res.data.message });
-			} else {
-				this.setState({
-					restaurants1: res.data,
-				});
-			}
+	// searchRestaurantAPI = (data) => {
+	// 	this.setState({ status: "done" });
+	// 	axios.defaults.withCredentials = true;
+	// 	axios.post(`${backendServer}/restsearch`, data).then((res) => {
+	// 		if (res.data.message) {
+	// 			this.setState({ message: res.data.message });
+	// 		} else {
+	// 			this.setState({
+	// 				restaurants1: res.data,
+	// 			});
+	// 		}
 
-			console.log("Status Code : ", res.status);
-			if (res.status === 200) {
-				this.setState({ authFlag: true });
-			} else {
-				this.setState({ authFlag: false });
-			}
-		});
-	};
+	// 		console.log("Status Code : ", res.status);
+	// 		if (res.status === 200) {
+	// 			this.setState({ authFlag: true });
+	// 		} else {
+	// 			this.setState({ authFlag: false });
+	// 		}
+	// 	});
+	// };
 
-	searchDishAPI = (data) => {
-		this.setState({ status: "done" });
-		axios.defaults.withCredentials = true;
-		axios.post(`${backendServer}/restdishsearch`, data).then((res) => {
-			// console.log("in rest search");
-			// console.log(res.data);
-			if (res.data.message) {
-				this.setState({ message: res.data.message });
-			} else {
-				this.setState({
-					restaurants1: res.data,
-				});
-			}
+	// searchDishAPI = (data) => {
+	// 	this.setState({ status: "done" });
+	// 	axios.defaults.withCredentials = true;
+	// 	axios.post(`${backendServer}/restdishsearch`, data).then((res) => {
+	// 		// console.log("in rest search");
+	// 		// console.log(res.data);
+	// 		if (res.data.message) {
+	// 			this.setState({ message: res.data.message });
+	// 		} else {
+	// 			this.setState({
+	// 				restaurants1: res.data,
+	// 			});
+	// 		}
 
-			console.log("Status Code : ", res.status);
-			if (res.status === 200) {
-				this.setState({ authFlag: true });
-			} else {
-				this.setState({ authFlag: false });
-			}
-		});
-	};
-	handleSubmit = (e) => {
-		e.preventDefault();
-		console.log(this.state.city);
-		const credential = {
-			city: this.state.city,
-		};
+	// 		console.log("Status Code : ", res.status);
+	// 		if (res.status === 200) {
+	// 			this.setState({ authFlag: true });
+	// 		} else {
+	// 			this.setState({ authFlag: false });
+	// 		}
+	// 	});
+	// };
+	// handleSubmit = (e) => {
+	// 	e.preventDefault();
+	// 	console.log(this.state.city);
+	// 	const credential = {
+	// 		city: this.state.city,
+	// 	};
 
-		this.searchRestaurantAPI(credential);
-	};
+	// 	this.searchRestaurantAPI(credential);
+	// };
+
 	navigatetorestaurant = (val) => {
-		console.log(val);
-		//  window.location.href='/SingleRestDashboard';
+	 	console.log(val);
+	// 	//  window.location.href='/SingleRestDashboard';
 		localStorage.setItem("restid", val);
 		const { history } = this.props;
 		console.log(history);
 		history.push("/singlerestdashboard");
 	};
-	handleDishSubmit = (e) => {
-		e.preventDefault();
-		const credential = {
-			dish: this.state.dish,
-		};
-		console.log(credential);
-		this.searchDishAPI(credential);
-	};
+	// handleDishSubmit = (e) => {
+	// 	e.preventDefault();
+	// 	const credential = {
+	// 		dish: this.state.dish,
+	// 	};
+	// 	console.log(credential);
+	// 	this.searchDishAPI(credential);
+	// };
 	searchRestaurantOnSubmit = (data) => {
 		console.log("here")
 		this.setState({ status: "done" });
@@ -139,12 +140,14 @@ class RestDashboard extends Component {
 		const city = this.state.city;
 		const foodtype = this.state.foodtype;
 		const deliverytype =this.state.deliverytype;
+		const dish = this.state.dish;
 		console.log(foodtype)
-		if (city != null || foodtype != null || deliverytype != null) {
+		if (city != null || foodtype != null || deliverytype != null ||dish != null ) {
 			const values = {
 				city: city,
 				foodtype:foodtype,
-				deliverytype:deliverytype
+				deliverytype:deliverytype,
+				dish:dish
 			};
 			this.searchRestaurantOnSubmit(values);
 		}
@@ -270,52 +273,57 @@ class RestDashboard extends Component {
 			);
 		}
 		return (
-			<div class="container">
+			<div >
 				<AddToCart/>
-				<h1>List of All Restaurants</h1>
-				<form >
-					City:
-					<input className="form-group"
-						type="text"
-						name="city"
-						value={this.state.city}
-						onChange={this.handleChange}
-						required
-					></input>
-					
-				</form>
+				<h1 className="container">List of All Restaurants</h1>
+				<div className="cartitems">
+					<form >
+						City:
+						<input className="form-group"
+							type="text"
+							name="city"
+							value={this.state.city}
+							onChange={this.handleChange}
+							required
+						></input>
+						
+					</form>
+					<br/>
+					<form >
+						Dish Name:
+						<input className="form-group"
+							type="text"
+							name="dish"
+							value={this.state.dish}
+							onChange={this.handleChange}
+							required
+						></input>
+						{/* <Button onClick={this.handleDishSubmit} type="submit">
+							Search
+						</Button> */}
+					</form>
+				
+					<br/>
+					</div>
+			<div className="cartitems">	
 			
-				<form onSubmit={this.handleDishSubmit}>
-					Dish Name:
-					<input className="form-group"
-						type="text"
-						name="dish"
-						value={this.state.dish}
-						onChange={this.handleChange}
-						required
-					></input>
-					{/* <Button onClick={this.handleDishSubmit} type="submit">
-						Search
-					</Button> */}
-				</form>
-			<div>
 
               Food Type :
-            	<select className="form-group" name="foodtype" name="foodtype"  value={this.state.foodtype} onChange={this.handleChange} >
+            	<select className="form-group1" name="foodtype" name="foodtype"  value={this.state.foodtype} onChange={this.handleChange} >
               	<option value="">All</option> 
               	<option value="Veg" >Veg</option>
               	<option value="Non-veg"  >Non-veg</option>
               	<option value="Vegan" >Vegan</option>
             	</select>
-         	 </div>
-		<div>
+         	
              Mode of Delivery :
-            <select className="form-group" name="deliverytype" value={this.state.deliverytype} onChange={this.handleChange}>
+            <select className="form-group1" name="deliverytype" value={this.state.deliverytype} onChange={this.handleChange}>
               <option value="">All</option> 
               <option value="Pick Up">Pick Up</option>
               <option value="Delivery">Delivery</option>
             </select>
-         	 </div>
+         	
+			  </div>
 				<div>
 					<form>
 						<Button onClick={this.fullSearchSubmit} type="submit">
@@ -327,9 +335,12 @@ class RestDashboard extends Component {
 						<Button onClick={this.goback}>Go To Home Page</Button>
 					</form>
 				</div>
+				<div className="container">
 				{beforeSearch}
 				{afterSearch}
+				</div>
 			</div>
+			
 		);
 	}
 }

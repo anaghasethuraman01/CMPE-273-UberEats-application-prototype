@@ -14,10 +14,14 @@
 }
 input[type=radio] {
   
-    width: 2.5em;
-    height: 1em;
+    width:0.8em;
+    height: 0.5em;
    
 }
+/* .radiobtn{
+   width: 2.5em;
+   
+} */
 .btngrp{
    display: flex;
   flex-direction: row;
@@ -64,6 +68,15 @@ input[type=radio] {
   width: 75%;
   background-color: black;
 }
+.cartitems{
+    display: flex;
+    flex-direction: row;
+}
+.cartitem{
+  padding-left: 6.5rem;
+   
+}
+
 .cartleft {
   position: absolute;
   right: 25px;
@@ -90,6 +103,13 @@ input[type=radio] {
 .login-form .form-group {
   margin-bottom:10px;
 }
+.form-group1{
+  margin-left:1px;
+  width: 7%;
+}
+.logout{
+  color: white;
+}
 .linkd{
   size: 100rem;
   right: 1150%;
@@ -99,7 +119,15 @@ input[type=radio] {
   flex-direction: column;
   width: 50%;
   margin: 0 auto;
+}
 
+.container1{
+  position: absolute;
+  right: 20px;
+  
+  color: green;
+  width: 25%;
+  text-align: center;
 }
 
 select{

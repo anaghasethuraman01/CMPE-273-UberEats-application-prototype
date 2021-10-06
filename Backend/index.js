@@ -24,7 +24,9 @@ const addtofavourites = require("./routes/addtofavourites");
 const getfavouriterestaurant = require("./routes/getfavouriterestaurant");
 const addtocarttable = require("./routes/addtocarttable");
 const getcartitem = require("./routes/getcartitem");
-
+const handleneworder = require("./routes/handleneworder");
+const getorderaddress = require("./routes/getorderaddress");
+const placeorder = require("./routes/placeorder");
 app.use("/restlogin", restlogin);
 app.use("/custlogin", custlogin);
 app.use("/register", register);
@@ -46,7 +48,9 @@ app.use("/addtofavourites",addtofavourites);
 app.use("/getfavouriterestaurant",getfavouriterestaurant);
 app.use("/addtocarttable",addtocarttable);
 app.use("/getcartitem",getcartitem);
-
+app.use("/handleneworder",handleneworder);
+app.use("/getorderaddress",getorderaddress);
+app.use("/placeorder",placeorder);
 const port = process.env.PORT || 5000;
 var server = app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
