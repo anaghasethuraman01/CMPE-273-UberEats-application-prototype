@@ -22,9 +22,11 @@ class CustomerOrder extends Component {
       dishname:null,
       status :null,
       customerorders : [],
+      customerordersearch : [],
       orderstatusmsg:null,
       receiptdetails:[],
-      orderstatus:null
+      orderstatus:null,
+      ordermsg:null
   
     }
      //this.handleCheckout = this.handleCheckout.bind(this);
@@ -60,7 +62,6 @@ class CustomerOrder extends Component {
             const val = {
                 customerid:customerid
             }
-  
            
           axios.post(`${backendServer}/getitemsfromorders`,val).then((response) => {
               
@@ -72,25 +73,50 @@ class CustomerOrder extends Component {
                 customerorders: this.state.customerorders.concat(response.data),
                 });
                 console.log(this.state.customerorders)
-                
+                console.log(this.state.orderstatusmsg)
             });
 
         }
        
 	}
 searchOrder = (ordersearch) => {
-
+    axios.post(`${backendServer}/handleordersearch`,ordersearch).then((response) => {
+                    if(response.data.length > 0){
+                        this.setState({ ordermsg: "searchdone" });
+                        this.setState({ orderstatusmsg: "notfound" });
+                    }
+                    // //update the state with the response data
+                     this.setState({
+                      customerorders: this.state.customerorders.concat(response.data),
+                      });
+                      console.log(this.state.customerorders)
+                    
+    });
 }
-handleordersearch = (val) =>{
+handleordersearch = (e) =>{
+  e.preventDefault();
+   this.setState({
+        customerorders: []
+    });
+  
   const ordersearch = {
-    orderstatus : val
+    orderstatus : this.state.orderstatus,
+    customerid : this.state.customerid
   }
+ 
+ if(this.state.orderstatus === "All"){
+   this.componentDidMount();
+ }
   this.searchOrder(ordersearch);
 }
-
+handleChange = (e) => {
+		this.setState({ [e.target.name]: e.target.value });
+	};
     render(){
-    
+        
        	var orderlist = null;
+         var searchorderlist = null;
+         
               if(this.state.orderstatusmsg == "found") {
                 orderlist = ( 
                 <div>
@@ -99,7 +125,6 @@ handleordersearch = (val) =>{
                 
                     {this.state.customerorders.map((customerorder) => (
                     <div>
-                    
                       <Table>
                         <thead>
                         <tr className="form-control-order">
@@ -113,14 +138,47 @@ handleordersearch = (val) =>{
                         </tr>
                       </thead>
                       </Table>
-                       
-                      
                     </div>
                     ))}
                 </div>
                 </div>
                 );
             }
+            if(this.state.ordermsg == "searchdone" ){
+              console.log("here")
+                orderlist = ( 
+                <div>
+                    <h1> Your Orders </h1>
+                <div>
+                
+                    {this.state.customerorders.map((customerorder1) => (
+                    <div>
+                      <Table>
+                        <thead>
+                        <tr className="form-control-order">
+                          <th>{customerorder1.restaurantname}  <h4>{customerorder1.orderstatus}</h4>  </th>
+                          <th>{customerorder1.totalorderquantity} items for ${customerorder1.totalorderprice} . {customerorder1.datetime}.</th>
+                          <th><Button 
+                           onClick={() => {
+                                this.viewreceipt(customerorder.orderid);
+                                }}>View Receipt</Button></th>   
+                        </tr>
+                      </thead>
+                      </Table>
+                       </div>
+                    ))}
+                </div>
+                </div>
+                )
+            }
+            // else{
+            //    orderlist = ( 
+            //     <div>
+            //         <h1> No Orders </h1>
+            //     </div>
+            //    )
+
+            // }
      
     return (
         <div className="container" >
@@ -128,8 +186,8 @@ handleordersearch = (val) =>{
            
            <form >
 						 Order Type :
-            	<select  name="orderstatus"   value={this.state.orderstatus}  >
-              	<option value="">All</option> 
+            	<select  name="orderstatus"   value={this.state.orderstatus}  onChange={this.handleChange}>
+              	<option value="All">All</option> 
               	<option value="Order Received" >Order Received</option>
               	<option value="Preparing"  >Preparing</option>
               	<option value="On the way" >On the way</option>
@@ -138,9 +196,9 @@ handleordersearch = (val) =>{
                 <option value="Picked up" >Picked up</option>
             	</select>
 						<Button 
-             onClick={() => {
-                  this.handleordersearch(customerorder.orderstatus);
-              }}>
+             onClick={
+                  this.handleordersearch
+              }>
             
 							Search
 						</Button>
@@ -149,7 +207,8 @@ handleordersearch = (val) =>{
 
           <br/><br/><br/>
           <div> {orderlist} </div> 
-           <Button onClick={this.goback}>Home Page</Button>
+         
+          <Button onClick={this.goback}>Home Page</Button>
                        <div>
          <Modal size="md-down"
           aria-labelledby="contained-modal-title-vcenter"

@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-
+import {Card, ListGroup, ListGroupItem} from 'react-bootstrap';
 // import cookie from 'react-cookies';
 import { Button } from 'reactstrap';
-
+import axios from 'axios';
+import backendServer from "../../webConfig";
 //import 'bootstrap/dist/css/bootstrap.css';
 class RestaurantHome extends Component {
     
@@ -10,6 +11,7 @@ class RestaurantHome extends Component {
         super(props);
   
         this.state = {
+          restaurantid : localStorage.getItem("restaurantid"),
           restaurantname: localStorage.getItem("restaurantname"),
           zipcode:localStorage.getItem("zipcode"),
           description:localStorage.getItem("description"),
@@ -20,7 +22,9 @@ class RestaurantHome extends Component {
           deliverytype: localStorage.getItem("deliverytype"),
           days:localStorage.getItem("days"),
           loading: false,
-          output: null
+          output: null,
+          restaurantdishes:[],
+          statusmsg:null
         }
       }
       // handleSubmit = (e) => {
@@ -57,7 +61,54 @@ class RestaurantHome extends Component {
         const {history} = this.props;
         history.push('/login'); 
       }
+      componentDidMount(){
+        const data = {
+          restaurantid : this.state.restaurantid
+        }
+         axios.post(`${backendServer}/getrestaurantwithid`,data).then((response) => {
+          //  console.log(response.data.length)
+           if(response.data.length > 0){
+             this.setState({
+               statusmsg: "dishesfound"
+             })
+           }
+           this.setState({
+          restaurantdishes: this.state.restaurantdishes.concat(response.data),
+            });   
+            // console.log(this.state.statusmsg)
+            // console.log(this.state.restaurantdishes)
+         })
+          
+        // 
+
+      }
     render(){
+      var disheslist = null;
+      if(this.state.statusmsg == "dishesfound"){
+        
+        disheslist = (
+        <div className='card-list'>
+        {this.state.restaurantdishes.filter(dish => dish.dishname).map(dish=>
+        
+          <div >
+          <Card >
+          <Card.Img style={{ width: '18rem' }} variant="top" src={`${backendServer}/${dish.dishimage}`} />
+          <Card.Body>
+          <Card.Title>{dish.dishname}</Card.Title>
+          <ListGroup className="list-group-flush">
+            <ListGroupItem> ${dish.price} </ListGroupItem>
+            <ListGroupItem> {dish.category}</ListGroupItem>
+          </ListGroup>
+          
+          </Card.Body>
+          </Card>                           
+        </div>
+        
+        )
+      }
+      </div>
+        )
+        }
 
     return (
       
@@ -76,6 +127,7 @@ class RestaurantHome extends Component {
             <Button className="btn" onClick={this.orders}>Orders</Button>
             <Button className="btn-logout" onClick={this.logout}>Logout</Button>
             </div>
+            {disheslist}
             </form>
         </div>
     )

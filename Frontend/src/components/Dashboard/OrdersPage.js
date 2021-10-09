@@ -25,7 +25,9 @@ class OrdersPage extends Component {
       orderstatusmsg:null,
       updatestatus:false,
       orderstatus:null,
-      orderid:null
+      orderid:null,
+      ordermsg:null,
+      ordermodetype:null
       
   
     }
@@ -75,7 +77,7 @@ handleChangeOrderType = (e) => {
      orderid : valid,
      ordertype : otype
    }
-   console.log(ordertypedata)
+   //console.log(ordertypedata)
   this.updateOrderStatus(ordertypedata);
    
  }
@@ -89,17 +91,49 @@ handleChange = (e, orderid) => {
     this.setState({ restaurantorders: orders });
   }
 
-
- 
  updateOrderStatus = (ordertypedata)=>{
    console.log(ordertypedata)
     axios.post(`${backendServer}/updateordertype`, ordertypedata)
             .then(res => {
-
+                console.log("Order type updated")
             })
             
  }
-  
+handleordersearch = (e) => {
+  e.preventDefault();
+   this.setState({
+      restaurantorders: []
+    });
+    const ordersearch = {
+    ordermodetype : this.state.ordermodetype,
+    restaurantid : this.state.restaurantid
+    }
+ 
+    if(this.state.ordermodetype === "All"){
+      this.componentDidMount();
+    }
+    this.searchOrder(ordersearch);
+
+}
+
+searchOrder = (ordersearch) => {
+    axios.post(`${backendServer}/handleordermodesearch`,ordersearch).then((response) => {
+                    if(response.data.length > 0){
+                        this.setState({ ordermsg: "searchdone" });
+                        this.setState({ orderstatusmsg: "notfound" });
+                    }
+                    // //update the state with the response data
+                     this.setState({
+                      restaurantorders: this.state.restaurantorders.concat(response.data),
+                      });
+                      console.log(this.state.restaurantorders)
+                    
+    });
+}
+
+ handleChangeOrder = (e) => {
+		this.setState({ [e.target.name]: e.target.value });
+	};
     render(){
       
        	var orderlist = null;
@@ -111,9 +145,7 @@ handleChange = (e, orderid) => {
                 <div>
                 
                     {this.state.restaurantorders.map((customerorder) => (
-                      // this.setState({
-                      //   orderstatus : customerorder.orderstatus
-                      // })
+                      
                     <div>
                     
                       <Table>
@@ -122,10 +154,7 @@ handleChange = (e, orderid) => {
                           <th>Customer Name : {customerorder.customername} </th>
         
                           <th>Date : {customerorder.datetime} . <br/> Total Items : {customerorder.totalorderquantity} item(s).<br/> Total Price : ${customerorder.totalorderprice}</th>
-                         
                           <th>Order Status : {customerorder.orderstatus} </th>
-
-
                           <th>{
                             customerorder.ordertype == "Pick Up" && (
                               <form >
@@ -181,14 +210,97 @@ handleChange = (e, orderid) => {
                 </div>
                 );
             }
+            if(this.state.ordermsg == "searchdone"){
+              orderlist = ( 
+                <div>
+                    <h1>  Orders Received </h1>
+                    <br/>
+                <div>
+                
+                    {this.state.restaurantorders.map((customerorder) => (
+                      
+                    <div>
+                    
+                      <Table>
+                        <thead>
+                        <tr className="form-control-order">
+                          <th>Customer Name : {customerorder.customername} </th>
+        
+                          <th>Date : {customerorder.datetime} . <br/> Total Items : {customerorder.totalorderquantity} item(s).<br/> Total Price : ${customerorder.totalorderprice}</th>
+                          <th>Order Status : {customerorder.orderstatus} </th>
+                          <th>{
+                            customerorder.ordertype == "Pick Up" && (
+                              <form >
+                              Status Type :
+                                <select  name="orderstatus"  value={this.state.orderstatus} onChange={(e) => { this.handleChange(e, customerorder.orderid)}} >
+                                  <option value="Order Received" >Order Received</option>
+                                  <option value="Preparing">Preparing</option>
+                                  <option value="Pick up Ready" >Pick up Ready</option>
+                                  <option value="Picked up" >Picked up</option>
+                                </select>
+                              <Button 
+                               type="submit" 
+                                onClick={() => {
+                                this.updatestatusfn(customerorder.orderid,customerorder.orderstatus);
+                                }}>
+                                Update
+                              </Button>
+                            </form>
+                            )
+                            }  
+                            {
+                            customerorder.ordertype == "Delivery" && (
+                              <form >
+                              Status Type :
+                                <select  name="orderstatus"   value={this.state.orderstatus} onChange={(e) => { this.handleChange(e, customerorder.orderid)}} >
+                                  <option value="Order Received" >Order Received</option>
+                                  <option value="Preparing"  >Preparing</option>
+                                  <option value="On the way" >On the way</option>
+                                  <option value="Delivered" >Delivered</option>
+                                 
+                                </select>
+                                 <Button 
+                               type="submit" 
+                                onClick={() => {
+                                this.updatestatusfn(customerorder.orderid,customerorder.orderstatus);
+                                }}>
+                                Update
+                              </Button>
+                            </form>
+                            )
+                            }  
+                          </th>
+                         
+                         
+                        </tr>
+                      </thead>
+                      </Table>
+                       
+                      
+                    </div>
+                    ))}
+                </div>
+                </div>
+                );
+
+            }
+            
+            // else {
+            //    orderlist = ( 
+            //     <div>
+            //         <h1> No Orders </h1>
+            //     </div>
+            //    )
+
+            // }
      
     return (
         <div className="container" >
           <div>
            <form >
 						 Order Type :
-            	<select  name="ordertype"   value={this.state.ordertype} onChange={this.handleChangeOrderType} >
-              	<option value="">All</option> 
+            	<select  name="ordermodetype"   value={this.state.ordermodetype} onChange={this.handleChangeOrder}>
+              	<option value="All">All</option> 
               	<option value="New Order" >New Order</option>
               	<option value="Delivered Order"  >Delivered Order</option>
             	</select>
