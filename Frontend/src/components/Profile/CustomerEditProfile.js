@@ -69,20 +69,13 @@ class CustomerEditProfile extends Component {
       this.setState({ country: val });
     }
 
-     nullOrEmpty(str) {
+    nullOrEmpty(str) {
         return str === null || str === "" || str === "Add"
-      }
+    }
     validateProfile = () => {
-         console.log("*****")
+         
            let isValid = true;
-              // console.log(this.state.email);
-              // console.log(this.nullOrEmpty(this.state.about));
-              // console.log(this.nullOrEmpty(this.state.username));
-              // console.log(this.nullOrEmpty(this.state.phone));
-              // console.log(this.nullOrEmpty(this.state.dob));
-
-
-            if(this.state.email === null ||
+           if(this.state.email === null ||
                 this.nullOrEmpty(this.state.about) ||
                 this.nullOrEmpty(this.state.username) ||  this.nullOrEmpty(this.state.phone)
                 ||  this.nullOrEmpty(this.state.dob) ||  this.nullOrEmpty(this.state.nickname) 
@@ -97,6 +90,10 @@ class CustomerEditProfile extends Component {
                 if (!validator.isEmail(this.state.email)) {
                 alert('Enter valid Email!')
                 isValid = false;
+                }
+                if(this.state.phone.match(/\d/g).length !==10){
+                  alert('Phone number should only be 10 numbers!')
+                  isValid = false;
                 }
             } 
         
@@ -202,7 +199,7 @@ class CustomerEditProfile extends Component {
               Email:<Input type="text" className="form-control" name="email" value= {this.state.email} onChange={this.handleChange} />
               </div>
               <div className="form-group">
-              Phone: <Input type="text" className="form-control" name="phone" defaultValue={this.state.phone} onChange={this.handleChange} ></Input>
+              Phone: <Input type="number" className="form-control" name="phone" defaultValue={this.state.phone} onChange={this.handleChange} ></Input>
               </div>
               <div className="form-group">
               DoB: <input type="date" className="form-date" name="dob" defaultValue={this.state.dob} onChange={this.handleChange} />

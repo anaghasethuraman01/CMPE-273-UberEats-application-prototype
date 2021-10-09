@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Button ,Input} from 'reactstrap';
 import backendServer from "../../webConfig";
@@ -15,7 +16,9 @@ class Register extends Component {
             //restaurantname: null,
             zipcode: null,
             owner: false,
-            message: ''
+            message: '',
+            registerStatus:null
+            
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -31,15 +34,25 @@ class Register extends Component {
 
     //send registration data to server for processing
     sendRestAPI = (data) => {
-      // console.log("data"+data)
         axios.post(`${backendServer}/register`, data)
             .then(res => {
                 if(res.data.message){
                     this.setState({message:res.data.message})
+                    this.setState({registerStatus:"failed"})
 
                 }else{
                     this.setState({ message: res.data.username }) 
                     this.setState({ username: res.data.username })
+                    this.setState({registerStatus:""})
+                }
+
+                console.log(this.state.message)
+                if(this.state.registerStatus !== "failed"){
+                    const {history} = this.props;
+                    history.push('/login'); 
+                }else{
+                    const {history} = this.props;
+                    history.push('/register'); 
                 }
                 
             }).catch(
@@ -47,27 +60,57 @@ class Register extends Component {
                   console.log(error);
                 }
             );
-            const {history} = this.props;
-            history.push('/login'); 
+            
+            
           
     }
 
-     validateCustRegister = () => {
-           let isValid = true;
-        
-        if(this.state.name === null ||this.state.email === null ||this.state.password === null  ){
+    nullOrEmpty(str) {
+        return str === null || str === "" 
+    }
+    validateCustRegister = () => {
+        let isValid = true;
+        if(this.nullOrEmpty(this.state.username)  || this.nullOrEmpty(this.state.email) ||  this.nullOrEmpty(this.state.password)){
         alert("Fields cannot be empty");
            isValid = false;
-        }else
-        {if (!validator.isEmail(this.state.email)) {
-        alert('Enter valid Email!')
-        isValid = false;
         }
+        else{
+            if (!validator.isEmail(this.state.email)) {
+                alert('Enter valid Email!')
+                isValid = false;
+            }
+            
+            if(!this.state.username.match(/^[a-zA-Z ]+$/)){
+                alert("Name can contain only alphabets")
+                isValid = false;
+            }
         } 
-        
         return isValid;
      }
+     validateOwnerRegister = () => {
+        let isValid = true;
+        if(this.nullOrEmpty(this.state.username)  || this.nullOrEmpty(this.state.email) ||  this.nullOrEmpty(this.state.password)
+            ||this.nullOrEmpty(this.state.zipcode)) {
+        alert("Fields cannot be empty");
+           isValid = false;
+        }
+        else{
+            if (!validator.isEmail(this.state.email)) {
+                alert('Enter valid Email!')
+                isValid = false;
+            }
+            if(!this.state.username.match(/^[a-zA-Z ]+$/)){
+                alert("Name can contain only alphabets")
+                isValid = false;
+            }
+            if(!this.state.zipcode.match(/^[0-9]+$/)){
+                alert("Zipcode can only contain numbers")
+                isValid = false;
+            }
 
+        } 
+        return isValid;
+     }
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -90,13 +133,14 @@ class Register extends Component {
         }
         console.log(ownerData);
         if (!this.state.owner) {
-
-
-             if (this.validateCustRegister() === true) {           
-            this.sendRestAPI(buyerData);
-             }
+            if (this.validateCustRegister() === true) {           
+                this.sendRestAPI(buyerData);
+            }
         } else {
-            this.sendRestAPI(ownerData);
+            if (this.validateOwnerRegister() === true) {           
+                this.sendRestAPI(ownerData);
+            }
+            
         }
 
     }
@@ -107,9 +151,20 @@ class Register extends Component {
     }
 
     render() {
+        let redirectHome = null;
         var ownerForm = null;
         var userForm = null;
         var accountType = "Owner";
+        // if(this.state.registerStatus != "failed"){
+        //     redirectHome = <Redirect to="/Login" />
+        // }
+        // else{
+        //     redirectHome = <Redirect to="/Register" />
+        // }
+        
+        // if(this.state.message == "User email already registered"){
+        //     alert("Email already exists");
+        // }
         if (this.state.owner) {
             ownerForm =
             <div className="form-group">
@@ -131,6 +186,7 @@ class Register extends Component {
 
 
             <div>
+                {redirectHome}
            
             <div className="container">
               <div className="login-form">
@@ -165,27 +221,8 @@ class Register extends Component {
        
 
 
-
-
-
-            // <div class="container">
-            //     <form onSubmit={this.handleSubmit}>
-            //     <h1>Let's get started</h1>
-            //     <div className='form-control'>
-            //         {userForm}
-            //         {ownerForm}
-            //         Email: <input type="email" name="email" placeholder="example@gmail.com" value={this.state.email} onChange={this.handleChange} required></input><br />
-            //         Password: <input type="password" name="password" placeholder="At least 6 characters" minlength="6" maxlength="16" id="password" value={this.state.password} onChange={this.handleChange} required></input><br />
-                   
-            //         <div>
-            //         <Button>Register</Button> &nbsp;
-            //         <Button onClick={this.switchForm}>Sign Up as {accountType}</Button>
-            //         </div><br />
-            //         <div>Already have an account? <Link to="/login">Login</Link></div><br />
-            //         <div> {this.state.message} </div>
-            //         </div>
-            //     </form>
-            // </div>
+           
+          
         )
     }
 }

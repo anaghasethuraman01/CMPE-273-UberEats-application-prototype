@@ -6,7 +6,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import { Button,Input } from 'reactstrap';
 import backendServer from "../../webConfig";
-
+import validator from 'validator';
 class RestaurantEditProfile extends Component {
     
     constructor(props){
@@ -63,15 +63,48 @@ class RestaurantEditProfile extends Component {
                 }
             );
     }
+    nullOrEmpty(str) {
+      return str === null || str === "" || str === "Add"
+    }
+    validateProfile = () => {
+         
+      let isValid = true;
+      if(this.state.email === null ||
+           this.nullOrEmpty(this.state.restaurantname) ||
+           this.nullOrEmpty(this.state.zipcode) ||  this.nullOrEmpty(this.state.phone)
+           ||  this.nullOrEmpty(this.state.description) ||  this.nullOrEmpty(this.state.timing) 
+           ||  this.nullOrEmpty(this.state.deliverytype) 
+           ||  this.nullOrEmpty(this.state.city) ||  this.nullOrEmpty(this.state.days)){
+
+         alert("Fields cannot be empty");
+         isValid = false;
+       }
+       else
+              {
+                if (!validator.isEmail(this.state.email)) {
+                alert('Enter valid Email!')
+                isValid = false;
+                }
+                if(this.state.phone.match(/\d/g).length !==10){
+                  alert('Phone number should only be 10 numbers!')
+                  isValid = false;
+                }
+                if(this.state.zipcode.match(/\d/g).length !== 5){
+                  alert('ZipCode should be 5 digits!')
+                  isValid = false;
+                }
+            } 
+        
+        return isValid;
+     }
       handleSubmit = (e) => {
         e.preventDefault();
+        if (this.validateProfile() === true){
 
-        const restuarantData = {
-
+          const restuarantData = {
             restaurantid: localStorage.getItem("restaurantid"),
             restaurantname: this.state.restaurantname,
             email: this.state.email,
-            password: this.state.password,
             zipcode: this.state.zipcode,
             phone:this.state.phone,
             description:this.state.description,
@@ -81,9 +114,10 @@ class RestaurantEditProfile extends Component {
             foodtype:this.state.foodtype,
             days:this.state.days,
             restprofilepic:localStorage.getItem("restprofilepic"),
-        }
-       
+        }     
         this.sendRestAPI(restuarantData);
+        }
+        
       }
       handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
@@ -103,11 +137,14 @@ class RestaurantEditProfile extends Component {
  uploadFile = (e) => {
           e.preventDefault();
           const formData = new FormData();
-          formData.append("file", this.state.file,this.state.fileName);
-          formData.append("restaurantid", this.state.restaurantid);
-          
-         // console.log(customerData);
-         this.sendImageAPI(formData);        
+          if(this.state.file != undefined && this.state.fileName !==undefined){
+            formData.append("file", this.state.file,this.state.fileName);
+            formData.append("restaurantid", this.state.restaurantid);
+          }
+          else{
+            alert("No Image inserted");
+          }
+          this.sendImageAPI(formData);        
         }
      sendImageAPI = (data) => {
           axios.post( `${backendServer}/restimageupload`, data)
@@ -150,7 +187,7 @@ class RestaurantEditProfile extends Component {
           Email:<Input type="text" className="form-control" name="email" value= {this.state.email} onChange={this.handleChange} />
           </div>
           <div className="form-group">
-          Phone: <Input type="text" className="form-control" name="phone" defaultValue={this.state.phone} onChange={this.handleChange} ></Input>
+          Phone: <Input type="number" className="form-control"  maxlength="10"  name="phone" defaultValue={this.state.phone} onChange={this.handleChange} ></Input>
           </div>
           <div className="form-group">
 
@@ -183,7 +220,7 @@ class RestaurantEditProfile extends Component {
           City: <Input type="text"  className="form-control" name="city" defaultValue={this.state.city} onChange={this.handleChange} ></Input>
           </div>
           <div className="form-group">
-          Location Zip Code: <Input type="text" name="zipcode" defaultValue={this.state.zipcode} onChange={this.handleChange} ></Input>
+          Location Zip Code: <Input type="number" name="zipcode" defaultValue={this.state.zipcode} onChange={this.handleChange} ></Input>
           </div>
          
           <Button onClick = {this.handleSubmit}>Update Profile</Button>

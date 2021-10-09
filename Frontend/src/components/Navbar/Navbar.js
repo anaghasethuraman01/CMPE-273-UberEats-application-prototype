@@ -51,9 +51,9 @@ class Navbar extends Component {
       );
     }
     let redirectVar = null;
-    if (!cookie.load("cookie")) {
-      redirectVar = <Redirect to="/login" />;
-    }
+    // if (!cookie.load("cookie")) {
+    //   redirectVar = <Redirect to="/login" />;
+    // }
     return (
       <div>
         {redirectVar}
