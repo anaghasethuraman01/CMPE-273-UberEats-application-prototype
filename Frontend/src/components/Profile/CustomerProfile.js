@@ -16,6 +16,7 @@ class CustomerProfile extends Component {
           email:localStorage.getItem("email"),
           phone: localStorage.getItem("phone"),
           dob:localStorage.getItem("dob"),
+          address:localStorage.getItem("address"),
           state:localStorage.getItem("state"),
           city:localStorage.getItem("city"),
           country:localStorage.getItem("country"),
@@ -93,7 +94,10 @@ class CustomerProfile extends Component {
             <h4>  DoB: {this.state.dob}</h4>
           
           </div>
+          <div className="form-group">
+            <h4> Apt and Street No: {this.state.address}</h4>
           
+          </div>
           <div className="form-group">
             <h4> City: {this.state.city}</h4>
           

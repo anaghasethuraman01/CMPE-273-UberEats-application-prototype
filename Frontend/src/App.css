@@ -79,12 +79,23 @@ input[type=radio] {
 
 .cartleft {
   position: absolute;
-  right: 25px;
+  right: 125px;
   top: 6px;
   margin-bottom: 6rem;
   margin-top: 1rem;
   padding-top: 0rem;
   
+}
+.btn-logout{
+  color: black;
+  background-color: white;
+  position: absolute;
+  right: 20px;
+  top: 4px;
+  height: 2rem;
+  margin-bottom: 4rem;
+  margin-top: 1rem;
+  padding-top: 0rem;
 }
 .cardbtn1{
   text-align: center;
@@ -161,6 +172,16 @@ select{
   width: 50%;
   margin: 2 auto;
   margin-bottom: 2rem;
+}
+.form-control-order{
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 2 auto;
+  margin-bottom: 2rem;
+  border: 1px solid #d4d4d4;
+  border-radius: 4px;
+  
 }
 input {
   margin-bottom: 0.5rem;

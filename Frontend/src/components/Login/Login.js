@@ -29,6 +29,7 @@ class Login extends Component {
             restaurantid:null,
             status:null,
             city:null,
+            address:null,
             deliverytype:null,
             foodtype:null,
             days:null,
@@ -92,12 +93,13 @@ class Login extends Component {
         axios.defaults.withCredentials = true;
         axios.post(`${backendServer}/custlogin`, data)
             .then(res => {   
-                console.log("in login")
-                 console.log(res.data)
+                // console.log("in login")
+                //  console.log(res.data)
                  if(res.data.message){
+                    //  console.log("mess")
                     this.setState({ message: res.data.message })
                 }else{
-                    
+                    //   console.log("here")
                     var data1 = res.data['result'];
                     console.log(data1);
                     this.setState({username:data1['username']});
@@ -106,6 +108,7 @@ class Login extends Component {
                     this.setState({phone:data1['phone']});
                     this.setState({ state: data1['state']})
                     this.setState({ city: data1['city']})
+                    this.setState({ address: data1['address']})
                     this.setState({ country: data1['country']})
                     this.setState({ about:data1['about']})
                     this.setState({ owner:data1['owner']})
@@ -113,8 +116,8 @@ class Login extends Component {
                     this.setState({ userid:res.data['userid']});
                     this.setState({status:res.data['status']});
                     
-                    console.log(this.state.restaurantid)
-                    console.log(this.state.status)
+                    // console.log(this.state.restaurantid)
+                    // console.log(this.state.status)
                 }
                 
                 console.log("Status Code : ", res.status);
@@ -150,9 +153,10 @@ class Login extends Component {
         }
       
         if(credential.usertype === 'customer'){
+            console.log("herte")
            this.sendCustomerAPI(credential);
         }else if(credential.usertype === 'restaurant'){
-          
+          console.log("res")
             this.sendRestaurantAPI(credential);
         }else{
             alert("Provide valid user type");
@@ -189,13 +193,14 @@ class Login extends Component {
         }
 
         if( this.state.status==="notfound" && this.state.usertype === 'customer'){
-            localStorage.setItem("userid",this.state.userid);
+        localStorage.setItem("userid",this.state.userid);
         localStorage.setItem("email",this.state.email);
         localStorage.setItem("username",this.state.username);
         localStorage.setItem("phone","Add");
         localStorage.setItem("dob","Add");
         localStorage.setItem("about","Add");
         localStorage.setItem("nickname","Add");
+        localStorage.setItem("address","Add");
         localStorage.setItem("city","Add");
         localStorage.setItem("state","Add");
         localStorage.setItem("country","Add");
@@ -242,9 +247,7 @@ class Login extends Component {
        }
 
         return (
-            // <Container fluid="md">
-            // <Row>
-            // <Col>
+            
             
             <div >{redirectHome}
                 {redirectVar}

@@ -30,6 +30,13 @@ class Navbar extends Component {
   // handleLogout = () => {
   //   cookie.remove("cookie", { path: "/" });
   // };
+  logout = e => {
+        e.preventDefault();
+        localStorage.setItem("userid","");
+        window.localStorage.clear();
+        const {history} = this.props;
+        history.push('/login'); 
+      }
   render() {
     //if Cookie is set render Logout Button
     
@@ -39,7 +46,7 @@ class Navbar extends Component {
       sessionAvail = (
         <div className = "cartitems">
           <AddToCart />
-         
+           <Button className="btn-logout" onClick={this.logout}>Logout</Button>
         </div>
       );
     }

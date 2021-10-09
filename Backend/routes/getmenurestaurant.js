@@ -8,7 +8,7 @@ const connection = require('../connection.js');
 router.post('/', function(req,res){
     const restaurantid = req.body.restaurantid;
    
-    console.log("View dishes");    
+   // console.log("View dishes");    
     res.writeHead(200,{
         'Content-Type' : 'application/json'
     });

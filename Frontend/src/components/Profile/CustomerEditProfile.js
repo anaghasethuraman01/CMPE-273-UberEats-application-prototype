@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Button,Input } from 'reactstrap';
 import backendServer from "../../webConfig";
 import { CountryDropdown } from 'react-country-region-selector';
-
+import validator from 'validator';
 class CustomerEditProfile extends Component {
     
     constructor(props){
@@ -25,6 +25,7 @@ class CustomerEditProfile extends Component {
             state:localStorage.getItem("state"),
             city:localStorage.getItem("city"),
             country:localStorage.getItem("country"),
+            address:localStorage.getItem("address"),
             profilepic:null,
             loading: false,
             output: null
@@ -36,17 +37,17 @@ class CustomerEditProfile extends Component {
       sendRestAPI = (data) => {
         axios.post(`${backendServer}/editcustomer`, data)
             .then(res => {
-                console.log("edit details");
-              console.log(res.data);
+              // console.log("edit details");
+              // console.log(res.data);
                 if(res.data.message){
                     this.setState({message:res.data.message})
 
                 }else{
-
                     localStorage.setItem("username",res.data.username);
                     localStorage.setItem("about",res.data.about);
                     localStorage.setItem("dob",res.data.dob);
                     localStorage.setItem("state",res.data.state);
+                    localStorage.setItem("address",res.data.address);
                     localStorage.setItem("city",res.data.city);
                     localStorage.setItem("country",res.data.country);
                     localStorage.setItem("nickname",res.data.nickname);
@@ -67,26 +68,62 @@ class CustomerEditProfile extends Component {
     selectCountry (val) {
       this.setState({ country: val });
     }
+
+     nullOrEmpty(str) {
+        return str === null || str === "" || str === "Add"
+      }
+    validateProfile = () => {
+         console.log("*****")
+           let isValid = true;
+              // console.log(this.state.email);
+              // console.log(this.nullOrEmpty(this.state.about));
+              // console.log(this.nullOrEmpty(this.state.username));
+              // console.log(this.nullOrEmpty(this.state.phone));
+              // console.log(this.nullOrEmpty(this.state.dob));
+
+
+            if(this.state.email === null ||
+                this.nullOrEmpty(this.state.about) ||
+                this.nullOrEmpty(this.state.username) ||  this.nullOrEmpty(this.state.phone)
+                ||  this.nullOrEmpty(this.state.dob) ||  this.nullOrEmpty(this.state.nickname) 
+                ||  this.nullOrEmpty(this.state.address) ||  this.nullOrEmpty(this.state.state)
+                ||  this.nullOrEmpty(this.state.city) ||  this.nullOrEmpty(this.state.country)){
+
+              alert("Fields cannot be empty");
+              isValid = false;
+            }
+            else
+              {
+                if (!validator.isEmail(this.state.email)) {
+                alert('Enter valid Email!')
+                isValid = false;
+                }
+            } 
+        
+        return isValid;
+     }
       handleSubmit = (e) => {
         e.preventDefault();
-        const customerData = {
-            userid:localStorage.getItem("userid"),
-            username: this.state.username,
-            email:this.state.email ,
-            password: this.state.password,
-            about: this.state.about,
-            phone:this.state.phone,
-            nickname:this.state.nickname,
-            dob:this.state.dob,
-            state:this.state.state,
-            city:this.state.city,
-            country:this.state.country,
-            profilepic:localStorage.getItem("profilepic")
-        }
-       
-       // console.log(customerData);
-       this.sendRestAPI(customerData);        
+        
+        if (this.validateProfile() === true){
+              const customerData = {
+              userid:localStorage.getItem("userid"),
+              username: this.state.username,
+              email:this.state.email ,
+              about: this.state.about,
+              phone:this.state.phone,
+              nickname:this.state.nickname,
+              dob:this.state.dob,
+              state:this.state.state,
+              city:this.state.city,
+              address:this.state.address,
+              country:this.state.country,
+              profilepic:localStorage.getItem("profilepic")
+          }
+        this.sendRestAPI(customerData);        
       }
+    }
+ 
       // goback = (e) =>{
       //   e.preventDefault();
       //   const {history} = this.props;
@@ -110,10 +147,14 @@ class CustomerEditProfile extends Component {
         uploadFile = (e) => {
           e.preventDefault();
           const formData = new FormData();
-          formData.append("file", this.state.file,this.state.fileName);
-          formData.append("userid", this.state.userid);
-          
-         // console.log(customerData);
+          if(this.state.file != undefined && this.state.fileName !==undefined){
+            formData.append("file", this.state.file,this.state.fileName);
+            formData.append("userid", this.state.userid);
+          }
+          else{
+            alert("No Image inserted");
+          }
+         
          this.sendImageAPI(formData);        
         }
         sendImageAPI = (data) => {
@@ -167,13 +208,17 @@ class CustomerEditProfile extends Component {
               DoB: <input type="date" className="form-date" name="dob" defaultValue={this.state.dob} onChange={this.handleChange} />
               </div>
               <div className="form-group">
-              State: <Input type="text" className="form-control" name="state" defaultValue={this.state.state} onChange={this.handleChange} ></Input>
+              Apt and Street No: <Input type="text" className="form-control" name="address" defaultValue={this.state.address} onChange={this.handleChange} ></Input>
               </div>
               <div className="form-group">
               City: <Input type="text" className="form-control" name="city" defaultValue={this.state.city} onChange={this.handleChange} ></Input>
               </div>
               <div className="form-group">
-
+              State: <Input type="text" className="form-control" name="state" defaultValue={this.state.state} onChange={this.handleChange} ></Input>
+              </div>
+             
+              <div className="form-group">
+              Country :
               <CountryDropdown className="form-control"
                     value={this.state.country}
                     onChange={(val) => this.selectCountry(val)} 

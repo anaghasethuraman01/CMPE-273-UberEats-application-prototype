@@ -21,6 +21,7 @@ var upload = multer({
 
 
 router.post("/", upload.single('file'), (req, res) => {
+    console.log("image")
 	const img = req.file.filename;
 	const userid = req.body.userid;
 	console.log(img);

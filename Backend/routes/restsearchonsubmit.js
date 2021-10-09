@@ -66,7 +66,7 @@ router.post('/', function(req,res){
     // console.log(sqldishname);
     
     // console.log(sqlrestaurant);
-    console.log(sqlquery);
+  //  console.log(sqlquery);
     
    connection.query(sqlquery, (error, result) => {
 	

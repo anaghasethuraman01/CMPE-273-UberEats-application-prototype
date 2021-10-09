@@ -8,7 +8,6 @@ const custlogin = require("./routes/custlogin");
 const register = require("./routes/register");
 const editrestaurant = require("./routes/editrestaurant");
 const restsearch = require("./routes/restsearch");
-const restdishsearch = require("./routes/restdishsearch");
 const getrestaurant = require("./routes/getrestaurant");
 const getrestaurantwithcity = require("./routes/getrestaurantwithcity");
 const getmenurestaurant = require("./routes/getmenurestaurant");
@@ -27,12 +26,16 @@ const getcartitem = require("./routes/getcartitem");
 const handleneworder = require("./routes/handleneworder");
 const getorderaddress = require("./routes/getorderaddress");
 const placeorder = require("./routes/placeorder");
+const getitemsfromorders = require("./routes/getitemsfromorders");
+const getrestaurantorders = require("./routes/getrestaurantorders");
+const getorderreceipt= require("./routes/getorderreceipt");
+const updateordertype = require("./routes/updateordertype");
+
 app.use("/restlogin", restlogin);
 app.use("/custlogin", custlogin);
 app.use("/register", register);
 app.use("/editrestaurant", editrestaurant);
 app.use("/restsearch", restsearch);
-app.use("/restdishsearch", restdishsearch);
 app.use("/getrestaurant", getrestaurant);
 app.use("/getrestaurantwithcity", getrestaurantwithcity);
 app.use("/getmenurestaurant", getmenurestaurant);
@@ -51,6 +54,12 @@ app.use("/getcartitem",getcartitem);
 app.use("/handleneworder",handleneworder);
 app.use("/getorderaddress",getorderaddress);
 app.use("/placeorder",placeorder);
+app.use("/getitemsfromorders",getitemsfromorders);
+app.use("/getrestaurantorders",getrestaurantorders);
+app.use("/getorderreceipt",getorderreceipt);
+app.use("/updateordertype",updateordertype)
+
+
 const port = process.env.PORT || 5000;
 var server = app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

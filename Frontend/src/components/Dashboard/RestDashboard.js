@@ -92,13 +92,12 @@ class RestDashboard extends Component {
 	// 		city: this.state.city,
 	// 	};
 
-	// 	this.searchRestaurantAPI(credential);
-	// };
 
-	navigatetorestaurant = (val) => {
-	 	console.log(val);
-	// 	//  window.location.href='/SingleRestDashboard';
-		localStorage.setItem("restid", val);
+	navigatetorestaurant = (id,name) => {
+	 	
+	
+		localStorage.setItem("restid", id);
+		localStorage.setItem("restname",name);
 		const { history } = this.props;
 		console.log(history);
 		history.push("/singlerestdashboard");
@@ -207,7 +206,7 @@ class RestDashboard extends Component {
 									<div className="btngrp">
 										<Button data-tip="Explore" className="cardbtn"
 											onClick={() => {
-												this.navigatetorestaurant(restaurant.restaurantid);
+												this.navigatetorestaurant(restaurant.restaurantid,restaurant.username);
 											}}
 										>
 										<IoIosRestaurant/>
@@ -216,7 +215,7 @@ class RestDashboard extends Component {
 										
                       					<Button className="cardbtn" data-tip="Add To Favourites"
 										  onClick={() => {
-												this.addToFavourites(restaurant.restaurantid);
+												this.addToFavourites(restaurant.restaurantid,restaurant.username);
 											}}
 											>
 											<MdFavoriteBorder/></Button>
@@ -250,7 +249,7 @@ class RestDashboard extends Component {
 										<div className="btngrp">
 										<Button data-tip="Explore" className="cardbtn"
 											onClick={() => {
-												this.navigatetorestaurant(restaurant.restaurantid);
+												this.navigatetorestaurant(restaurant.restaurantid,restaurant.username);
 											}}
 										>
 										<IoIosRestaurant/>

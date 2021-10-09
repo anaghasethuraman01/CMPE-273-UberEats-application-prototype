@@ -3,12 +3,15 @@ const express = require("express");
 const router = express.Router();
 var mysql = require("mysql");
 const connection = require('../connection.js');
+const bcrypt = require("bcryptjs");
+
 
 router.post("/", (req, res) => {
 	//console.log(req.body);
 	const username = req.body.name;
 	const email = req.body.email;
-	const password = req.body.password;
+	const password = bcrypt.hashSync(req.body.password, 10);
+	// const password = req.body.password;
 	//const restaurantname = req.body.restaurantname;
 	const zipcode = req.body.zipcode;
 	const owner = req.body.owner;

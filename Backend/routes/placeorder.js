@@ -8,20 +8,35 @@ router.post("/", (req, res) => {
     console.log(req.body);
     const customerid = req.body.customerid;
     const restaurantid = req.body.restaurantid;
+    const restaurantname = req.body.restaurantname;
+    const customername = req.body.customername;
     const datetime = req.body.datetime;
+    const address = req.body.street;
     const city = req.body.city;
     const state = req.body.state;
     const country = req.body.country;
     const orderDetails = req.body.orderDetails;
+    const ordertype = req.body.ordertype;
+    const totalorderprice = req.body.totalorderprice;
+    const totalorderquantity = req.body.totalorderquantity;
+
     let post = {
         customerid:customerid,
         restaurantid:restaurantid,
+        restaurantname:restaurantname,
+        customername:customername,
         datetime:datetime,
+        address:address,
         city:city,
         state:state,
-        country:country
+        country:country,
+        orderstatus: "Order Received",
+        ordertype:ordertype,
+        ordermodetype:"New Order",
+        totalorderprice:totalorderprice,
+        totalorderquantity:totalorderquantity
     }
-     let sql = "INSERT INTO orders SET ?";
+    let sql = "INSERT INTO orders SET ?";
      connection.query(sql, post, (error, result) => {
      if (error) {
         console.log(error.message);
@@ -35,8 +50,8 @@ router.post("/", (req, res) => {
           orderDetails.forEach((element, index) => {
             records.push([orderid, element.dishid, element.quantity]);
           });
-          console.log("****")
-        console.log(records);
+        //   console.log("****")
+        // console.log(records);
             connection.query(sqlDet, [records], (error, resultdetails) => {
                 if(error){
                     console.log(error.message)

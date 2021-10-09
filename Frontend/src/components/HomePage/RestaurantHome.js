@@ -44,7 +44,7 @@ class RestaurantHome extends Component {
       orders = e => {
         e.preventDefault();
         const {history} = this.props;
-        history.push('/restaurantprofile'); 
+        history.push('/orderspage'); 
       }
       addnewdish = e => {
         e.preventDefault();
@@ -53,6 +53,7 @@ class RestaurantHome extends Component {
       }
       logout = e => {
         e.preventDefault();
+        window.localStorage.clear();
         const {history} = this.props;
         history.push('/login'); 
       }
@@ -73,7 +74,7 @@ class RestaurantHome extends Component {
             <Button className="btn" onClick={this.addnewdish}>Add New Dish</Button>
 
             <Button className="btn" onClick={this.orders}>Orders</Button>
-            <Button className="btn" onClick={this.logout}>Logout</Button>
+            <Button className="btn-logout" onClick={this.logout}>Logout</Button>
             </div>
             </form>
         </div>

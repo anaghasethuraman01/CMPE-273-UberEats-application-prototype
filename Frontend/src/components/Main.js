@@ -17,6 +17,8 @@ import SingleRestDashboard from './Dashboard/SingleRestDashboard';
 import AddToCart from './Dashboard/AddToCart';
 import Favourites from './Dashboard/Favourites';
 import CheckOut from './Dashboard/Checkout';
+import OrdersPage from './Dashboard/OrdersPage';
+import CustomerOrder from './Dashboard/CustomerOrder';
 //import 'bootstrap/dist/css/bootstrap.css';
 class Main extends Component {
     render() {
@@ -39,6 +41,9 @@ class Main extends Component {
                     <Route path="/addtocart" component={AddToCart} />
                     <Route path="/favourites" component={Favourites} />
                     <Route path="/checkout" component={CheckOut}/>
+                    <Route path="/orderspage" component={OrdersPage}/>
+                    <Route path="/customerorder" component={CustomerOrder}/>
+
                 </div>    
             </Router>
             

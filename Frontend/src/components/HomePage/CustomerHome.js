@@ -23,6 +23,7 @@ class CustomerHome extends Component {
             email:localStorage.getItem("email"),
             phone: localStorage.getItem("phone"),
             dob:localStorage.getItem("dob"),
+            address:localStorage.getItem("address"),
             state:localStorage.getItem("state"),
             city:localStorage.getItem("city"),
             country:localStorage.getItem("country"),
@@ -40,25 +41,25 @@ class CustomerHome extends Component {
     const city = this.state.city;
     const customerid = this.state.customerid;
 
-    if(customerid){
-      const val = {
-        customerid:customerid
-      }
+    // if(customerid){
+    //   const val = {
+    //     customerid:customerid
+    //   }
      
-      axios.post(`${backendServer}/getfavouriterestaurant`,val).then((response) => {
-        //this.setState({ status: "notdone" });
+    //   axios.post(`${backendServer}/getfavouriterestaurant`,val).then((response) => {
+    //     //this.setState({ status: "notdone" });
         
-        console.log(response.data.length);
-        if(response.data.length > 0){
-          this.setState({ favourites: "found" });
-        }
-        //update the state with the response data
-        this.setState({
-          favrestaurants: this.state.favrestaurants.concat(response.data),
-        });
-      });
+    //     console.log(response.data.length);
+    //     if(response.data.length > 0){
+    //       this.setState({ favourites: "found" });
+    //     }
+    //     //update the state with the response data
+    //     this.setState({
+    //       favrestaurants: this.state.favrestaurants.concat(response.data),
+    //     });
+    //   });
 
-    }
+    // }
     //console.log(city);
     if(city!="null" && city != "Add" ){
       const data = {
@@ -71,8 +72,10 @@ class CustomerHome extends Component {
         this.setState({
           restaurants: this.state.restaurants.concat(response.data),
         });
+       
       });
-    }else if(city == "null" || city == "Add" ) {
+    } if(city == "null" || city == "Add" || this.state.restaurants.length == 0) {
+      
       axios.get(`${backendServer}/getrestaurant`).then((response) => {
 			//this.setState({ status: "notdone" });
 			//console.log(response.data);
@@ -122,7 +125,7 @@ class CustomerHome extends Component {
       orders = e => {
         e.preventDefault();
         const {history} = this.props;
-        history.push('/restaurantprofile'); 
+        history.push('/customerorder'); 
       }
       navigatetorestaurant = (val1,val2) => {
         console.log(val1);
@@ -134,20 +137,23 @@ class CustomerHome extends Component {
         console.log(history);
         history.push("/singlerestdashboard");
 	    };
-      logout = e => {
+      
+       addtocart = e => {
         e.preventDefault();
-        localStorage.setItem("userid","");
+       // localStorage.setItem("userid","");
+      //window.localStorage.clear();
         const {history} = this.props;
-        history.push('/login'); 
+        history.push('/addtocart'); 
       }
     render(){
       var beforeSearch = null;
       var afterSearch = null;
       var favouriterest = null;
       //console.log("city",this.state.city)
-      if(this.state.city == "null" || this.state.city == "Add"){
+      if(this.state.city == "null" || this.state.city == "Add" || this.state.restaurants.length == 0){
           beforeSearch = ( 
           <div>
+            <br/>
           <h1>All Restaurants</h1>
           <div className="card-list">
           
@@ -280,14 +286,10 @@ class CustomerHome extends Component {
         );
       }
      
-     
-
     return (
       
-      
-
         <div className="container">
-            <AddToCart/>
+            {/* <Button className="btn-logout" onClick={this.addtocart}>Cart</Button> */}
             <form >
             <h1>Welcome {this.state.username} !</h1>
             <>
@@ -302,7 +304,7 @@ class CustomerHome extends Component {
 
             <Button className="btn" onClick={this.showfavourites}>Favourites</Button>
 
-            <Button className="btn" onClick={this.logout}>Logout</Button>
+            
             </div>
             </form>
               

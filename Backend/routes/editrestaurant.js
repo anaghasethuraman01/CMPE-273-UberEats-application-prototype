@@ -33,7 +33,7 @@ router.post("/", (req, res) => {
                    console.log("row deleted")
                }
            });
-       }
+       
    let post = {
            restaurantid:restaurantid,
            username: restaurantname,
@@ -72,6 +72,7 @@ router.post("/", (req, res) => {
                });	
            }
        });
+       }
            //console.log(restaurantid);
             let sql2 = "UPDATE users SET USERNAME = "+mysql.escape(restaurantname) +
              ", EMAIL = "+mysql.escape(email) + 

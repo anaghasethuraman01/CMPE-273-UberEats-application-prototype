@@ -33,6 +33,8 @@ class SingleRestDashboard extends Component {
           dishname:null,
           dishprice:null,
           quantity:1,
+          deliverytype:null,
+          quantityprice:null,
           
         }
       
@@ -65,6 +67,10 @@ class SingleRestDashboard extends Component {
             this.setState({
               restaurantname : response.data[0].username
             });
+            this.setState({
+              deliverytype : response.data[0].deliverytype
+            });
+            localStorage.setItem("DeliveryType",this.state.deliverytype);
             
         });    
 
@@ -80,6 +86,12 @@ class SingleRestDashboard extends Component {
         const {history} = this.props;
         history.push('/restdashboard'); 
       }
+
+      gobackFav = (e) =>{
+        e.preventDefault();
+        const {history} = this.props;
+        history.push('/favourites'); 
+      }
     
      addtocart = (restid,dishid,dishname,dishprice) =>{
        const cartvalue = {
@@ -88,8 +100,10 @@ class SingleRestDashboard extends Component {
          dishid:dishid,
          dishname:dishname,
          dishprice:dishprice,
-         quantity:this.state.quantity   
+         quantity:this.state.quantity,
+         quantityprice : (dishprice*this.state.quantity) 
        }
+       //console.log(cartvalue)
        this.addToCart(cartvalue);
      }
         handleModalClose(){
@@ -217,8 +231,8 @@ class SingleRestDashboard extends Component {
           {messagebox}
             {restaurantdetails}
             <form>
-            <Button onClick = {this.goback}>Go To Restaurants Page</Button>
-        
+            <Button onClick = {this.goback}>Search Restaurants</Button>
+            <Button onClick = {this.gobackFav}>Favourites</Button>
             </form>
             {searchresults}
 

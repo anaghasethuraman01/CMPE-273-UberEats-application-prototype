@@ -41,9 +41,9 @@ class Favourites extends Component {
             const val = {
                 customerid:customerid
             }
-     
+      
             axios.post(`${backendServer}/getfavouriterestaurant`,val).then((response) => {
-                console.log(response.data.length);
+               
                 if(response.data.length > 0){
                     this.setState({ favourites: "found" });
                 }
