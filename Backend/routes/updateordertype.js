@@ -11,12 +11,22 @@ router.post('/', function(req,res){
     res.writeHead(200,{
         'Content-Type' : 'application/json'
     });
+    let sql1 = null;
     console.log(ordertype);  
-    let sql1 = "UPDATE orders SET orderstatus = " + mysql.escape(ordertype)
-    + " WHERE orderid = " +mysql.escape(orderid);
+    if (ordertype == "Pick up Ready" || ordertype == "Delievered" ){
+        sql1 = "UPDATE orders SET orderstatus = " + mysql.escape(ordertype)
+        +" , ordermodetype = 'Delivered Order' "
+        + " WHERE orderid = " +mysql.escape(orderid);
+    }
+    else {
+            sql1 = "UPDATE orders SET orderstatus = " + mysql.escape(ordertype)
+             + " WHERE orderid = " +mysql.escape(orderid);
+    }
+    
     let query = connection.query(sql1, (error, result) => {
     if (error) {
-                res.send({ error: error });
+        console.log(error.message)
+                // res.send({ error: error });
         }
 		console.log("Order status updated");
 	});

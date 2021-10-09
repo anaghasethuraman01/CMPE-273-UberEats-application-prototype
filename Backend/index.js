@@ -30,6 +30,10 @@ const getitemsfromorders = require("./routes/getitemsfromorders");
 const getrestaurantorders = require("./routes/getrestaurantorders");
 const getorderreceipt= require("./routes/getorderreceipt");
 const updateordertype = require("./routes/updateordertype");
+const handleordersearch = require("./routes/handleordersearch");
+const handleordermodesearch = require("./routes/handleordermodesearch");
+const getrestaurantwithid = require("./routes/getrestaurantwithid")
+
 
 app.use("/restlogin", restlogin);
 app.use("/custlogin", custlogin);
@@ -57,7 +61,10 @@ app.use("/placeorder",placeorder);
 app.use("/getitemsfromorders",getitemsfromorders);
 app.use("/getrestaurantorders",getrestaurantorders);
 app.use("/getorderreceipt",getorderreceipt);
-app.use("/updateordertype",updateordertype)
+app.use("/updateordertype",updateordertype);
+app.use("/handleordersearch",handleordersearch);
+app.use("/handleordermodesearch",handleordermodesearch);
+app.use("/getrestaurantwithid",getrestaurantwithid);
 
 
 const port = process.env.PORT || 5000;

@@ -18,6 +18,7 @@ router.post("/", (req, res) => {
 	//console.log(req.body);
 	let sql = "SELECT * FROM users  WHERE EMAIL = " + mysql.escape(email);
 	let query = connection.query(sql, (error, result) => {
+		
 		if (error) {
 			console.log("Connection Error!");
 		}
