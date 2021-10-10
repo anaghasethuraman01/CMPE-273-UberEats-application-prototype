@@ -33,7 +33,9 @@ const updateordertype = require("./routes/updateordertype");
 const handleordersearch = require("./routes/handleordersearch");
 const handleordermodesearch = require("./routes/handleordermodesearch");
 const getrestaurantwithid = require("./routes/getrestaurantwithid")
-
+const editrestaurantdishes = require("./routes/editrestaurantdishes")
+const getcustomerprofile = require("./routes/getcustomerprofile")
+const getrestaurantprofile = require("./routes/getrestaurantprofile")
 
 app.use("/restlogin", restlogin);
 app.use("/custlogin", custlogin);
@@ -65,7 +67,9 @@ app.use("/updateordertype",updateordertype);
 app.use("/handleordersearch",handleordersearch);
 app.use("/handleordermodesearch",handleordermodesearch);
 app.use("/getrestaurantwithid",getrestaurantwithid);
-
+app.use("/editrestaurantdishes",editrestaurantdishes);
+app.use("/getcustomerprofile",getcustomerprofile);
+app.use("/getrestaurantprofile",getrestaurantprofile);
 
 const port = process.env.PORT || 5000;
 var server = app.listen(port, () => {
