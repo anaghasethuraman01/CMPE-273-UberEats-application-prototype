@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import axios from "axios";
 // import cookie from 'react-cookies';
 import { Button} from 'reactstrap';
 import backendServer from "../../webConfig";
@@ -9,6 +9,7 @@ class RestaurantProfile extends Component {
         super(props);
   
         this.state = {
+          restaurantid:localStorage.getItem("restaurantid"),
           restaurantname: localStorage.getItem("restaurantname"),
           zipcode:localStorage.getItem("zipcode"),
           description:localStorage.getItem("description"),
@@ -23,14 +24,60 @@ class RestaurantProfile extends Component {
           loading: false,
           output: null,
           file:null,
-          fileName:null
+          fileName:null,
+          restaurantdetails:[]
         }
       }
-      handleSubmit = (e) => {
-        e.preventDefault();
+
+
+      componentDidMount() {
+        const restaurantid = {
+          restaurantid: this.state.restaurantid
+        };
+        axios.post(`${backendServer}/getrestaurantprofile`,restaurantid).then((response) => {
+          console.log(response.data);
+          //update the state with the response data
+          this.setState({
+            restaurantdetails: this.state.restaurantdetails.concat(response.data),
+          });
+          console.log(this.restaurantdetails)
+          this.setState({
+            username: this.state.restaurantdetails[0]['username'],
+          });
+          this.setState({
+            city: this.state.restaurantdetails[0]['city'],
+          });
+          this.setState({
+            phone: this.state.restaurantdetails[0]['phone'],
+          });
+          this.setState({
+            email: this.state.restaurantdetails[0]['email'],
+          });
+          this.setState({
+            days: this.state.restaurantdetails[0]['days'],
+          });
+          this.setState({
+            deliverytype: this.state.restaurantdetails[0]['deliverytype'],
+          });
+          this.setState({
+            description: this.state.restaurantdetails[0]['description'],
+          });
+          this.setState({
+            timing: this.state.restaurantdetails[0]['timing'],
+          });
+          this.setState({
+            zipcode: this.state.restaurantdetails[0]['zipcode'],
+          });
+         
+        });
+      }
+      handleSubmit = (restaurantObj) => {
+        localStorage.setItem("RestaurantDetails",JSON.stringify(restaurantObj));
         const {history} = this.props;
         history.push('/restauranteditprofile'); 
       }
+
+      
       goback = (e) =>{
         e.preventDefault();
         const {history} = this.props;
@@ -38,8 +85,8 @@ class RestaurantProfile extends Component {
       }
       render(){
       const imgLink = `${backendServer}/${localStorage.getItem("restprofilepic")}`;
-      console.log("***"); 
-      console.log(localStorage.getItem("restprofilepic"));
+      // console.log("***"); 
+      // console.log(localStorage.getItem("restprofilepic"));
     return (
       
 
@@ -92,7 +139,11 @@ class RestaurantProfile extends Component {
           
           </div>
          
-          <Button onClick = {this.handleSubmit} >Update Profile</Button>
+          <Button
+          onClick={() => {
+            this.handleSubmit(this.state.restaurantdetails[0]);
+            }}
+            >Update Profile</Button>
 
           <Button onClick = {this.goback}>Back</Button>
         </div>

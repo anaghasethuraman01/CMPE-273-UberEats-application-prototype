@@ -42,88 +42,30 @@ class RestDashboard extends Component {
 			});
 		});
 	}
-	// searchRestaurantAPI = (data) => {
-	// 	this.setState({ status: "done" });
-	// 	axios.defaults.withCredentials = true;
-	// 	axios.post(`${backendServer}/restsearch`, data).then((res) => {
-	// 		if (res.data.message) {
-	// 			this.setState({ message: res.data.message });
-	// 		} else {
-	// 			this.setState({
-	// 				restaurants1: res.data,
-	// 			});
-	// 		}
-
-	// 		console.log("Status Code : ", res.status);
-	// 		if (res.status === 200) {
-	// 			this.setState({ authFlag: true });
-	// 		} else {
-	// 			this.setState({ authFlag: false });
-	// 		}
-	// 	});
-	// };
-
-	// searchDishAPI = (data) => {
-	// 	this.setState({ status: "done" });
-	// 	axios.defaults.withCredentials = true;
-	// 	axios.post(`${backendServer}/restdishsearch`, data).then((res) => {
-	// 		// console.log("in rest search");
-	// 		// console.log(res.data);
-	// 		if (res.data.message) {
-	// 			this.setState({ message: res.data.message });
-	// 		} else {
-	// 			this.setState({
-	// 				restaurants1: res.data,
-	// 			});
-	// 		}
-
-	// 		console.log("Status Code : ", res.status);
-	// 		if (res.status === 200) {
-	// 			this.setState({ authFlag: true });
-	// 		} else {
-	// 			this.setState({ authFlag: false });
-	// 		}
-	// 	});
-	// };
-	// handleSubmit = (e) => {
-	// 	e.preventDefault();
-	// 	console.log(this.state.city);
-	// 	const credential = {
-	// 		city: this.state.city,
-	// 	};
-
-
-	navigatetorestaurant = (id,name) => {
-	 	
 	
+	navigatetorestaurant = (id,name) => {
 		localStorage.setItem("restid", id);
 		localStorage.setItem("restname",name);
 		const { history } = this.props;
 		console.log(history);
 		history.push("/singlerestdashboard");
 	};
-	// handleDishSubmit = (e) => {
-	// 	e.preventDefault();
-	// 	const credential = {
-	// 		dish: this.state.dish,
-	// 	};
-	// 	console.log(credential);
-	// 	this.searchDishAPI(credential);
-	// };
+
 	searchRestaurantOnSubmit = (data) => {
 		console.log("here")
 		this.setState({ status: "done" });
 		axios.defaults.withCredentials = true;
 		axios.post(`${backendServer}/restsearchonsubmit`, data).then((res) => {
 			console.log("in rest search");
-			//console.log(res.data);
-			if (res.data.message) {
-				this.setState({ message: res.data.message });
-			} else {
-				this.setState({
-					restaurants1: res.data,
-				});
-			}
+			
+				if (res.data.message) {
+					this.setState({ message: res.data.message });
+				} else {
+					this.setState({
+						restaurants1: res.data,
+					});
+				}
+			
 
 			console.log("Status Code : ", res.status);
 			if (res.status === 200) {

@@ -1,7 +1,6 @@
 
-
 import React, {Component} from 'react';
-
+import axios from "axios";
 import { Button } from 'reactstrap';
 import backendServer from "../../webConfig";
  //import axios from 'axios';
@@ -25,14 +24,55 @@ class CustomerProfile extends Component {
           profilepic:localStorage.getItem("profilepic"),
           favourites:null,
           loading: false,
-          output: null
+          output: null,
+          customerdetails:[]
         }
         this.handleChange = this.handleChange.bind(this);
       }
-
+      componentDidMount() {
+        const customerid = {
+          userid: this.state.userid
+        };
+        axios.post(`${backendServer}/getcustomerprofile`,customerid).then((response) => {
+          console.log(response.data);
+          //update the state with the response data
+          this.setState({
+            customerdetails: this.state.customerdetails.concat(response.data),
+          });
+          console.log(this.customerdetails)
+          this.setState({
+            username: this.state.customerdetails[0]['username'],
+          });
+          this.setState({
+            about: this.state.customerdetails[0]['about'],
+          });
+          this.setState({
+            address: this.state.customerdetails[0]['address'],
+          });
+          this.setState({
+            phone: this.state.customerdetails[0]['phone'],
+          });
+          this.setState({
+            email: this.state.customerdetails[0]['email'],
+          });
+          this.setState({
+            city: this.state.customerdetails[0]['city'],
+          });
+          this.setState({
+            dob: this.state.customerdetails[0]['dob'],
+          });
+          this.setState({
+            state: this.state.customerdetails[0]['state'],
+          });
+          this.setState({
+            country: this.state.customerdetails[0]['country'],
+          });
+         
+        });
+      }
      
-      handleSubmit = (e) => {
-        e.preventDefault();
+      handleSubmit = (customerObj) => {
+        localStorage.setItem("CustomerDetails",JSON.stringify(customerObj));
         const {history} = this.props;
         history.push('/customereditprofile'); 
       }
@@ -61,8 +101,8 @@ class CustomerProfile extends Component {
           
     render(){
       const imgLink = `${backendServer}/${localStorage.getItem("profilepic")}`;
-      console.log("***"); 
-      console.log(localStorage.getItem("profilepic"));
+      // console.log("***"); 
+      // console.log(localStorage.getItem("profilepic"));
     return (
 
 
@@ -111,7 +151,12 @@ class CustomerProfile extends Component {
           
           </div>
          
-          <Button onClick = {this.handleSubmit} >Update Profile</Button>
+          <Button 
+          onClick={() => {
+            this.handleSubmit(this.state.customerdetails[0]);
+            }}
+          // onClick = {this.handleSubmit} 
+          >Update Profile</Button>
 
           <Button onClick = {this.goback}>Back</Button>
         </div>

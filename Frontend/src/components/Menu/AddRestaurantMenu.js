@@ -15,55 +15,68 @@ class AddRestaurantMenu extends Component {
           ingrediants:null,
           price:null,
           description:null,
-          category:null
+          category:null,
+          foodtype:null
         }
       }
 
       sendDishAPI = (data) => {
-        // console.log("data"+data)
         localStorage.setItem("dishname",data.dishname);
           axios.post(`${backendServer}/restaurantdish`, data)
               .then(res => {
                   if(res.data.message){
                       this.setState({message:res.data.message})
-  
-                  }else{
-                   
                   }
-                  
               }).catch(
                   (error) => {
                     console.log(error);
                   }
                   );
-    }
+       }
     handleChange = (e) => {
       e.preventDefault();
       this.setState({ [e.target.name]: e.target.value });
       console.log(this.state);
   } 
+  nullOrEmpty(str) {
+    return str === null || str === "" 
+  }
+  validateDish = () => {
+         
+    let isValid = true;
+    if(this.nullOrEmpty(this.state.dishname) ||
+         this.nullOrEmpty(this.state.ingrediants) ||  this.nullOrEmpty(this.state.price)
+         ||  this.nullOrEmpty(this.state.description) ||  this.nullOrEmpty(this.state.category) 
+         ||  this.nullOrEmpty(this.state.foodtype)){
+
+       alert("Fields cannot be empty");
+       isValid = false;
+     }
+  
+    return isValid;
+  }
       handleSubmit = (e) => {
         e.preventDefault();
-        const dishData = {
-            restaurantid:localStorage.getItem("restaurantid"),
-            dishname:this.state.dishname,
-            ingrediants:this.state.ingrediants,
-            price:this.state.price,
-            description:this.state.description,
-            category:this.state.category
+        if (this.validateDish() === true){
+          const dishData = {
+              restaurantid:localStorage.getItem("restaurantid"),
+              dishname:this.state.dishname,
+              ingrediants:this.state.ingrediants,
+              price:this.state.price,
+              description:this.state.description,
+              category:this.state.category,
+              foodtype:this.state.foodtype
+          }
+          this.sendDishAPI(dishData);
         }
-    
-        this.sendDishAPI(dishData);
+        
       }
       goback = (e) =>{
         e.preventDefault();
         const {history} = this.props;
         history.push('/restauranthome'); 
       }
-      // showMenu = (e) =>{
-      //   e.preventDefault();
-      //   window.location.href='/AddRestaurantMenu';
-      // }
+      
 
       saveFile = (e) => {
         e.preventDefault();
@@ -75,9 +88,14 @@ class AddRestaurantMenu extends Component {
         e.preventDefault();
         console.log(localStorage.getItem("restaurantid"));
         const formData = new FormData();
-        formData.append("file", this.state.file,this.state.fileName);
-        formData.append("restaurantid", localStorage.getItem("restaurantid"));
-        formData.append("dishname",localStorage.getItem("dishname"))
+        if(this.state.file != undefined && this.state.fileName !==undefined){
+          formData.append("file", this.state.file,this.state.fileName);
+          formData.append("restaurantid", localStorage.getItem("restaurantid"));
+          formData.append("dishname",localStorage.getItem("dishname"))
+        } else{
+          alert("No Image inserted");
+          return;
+        } 
        // console.log(customerData);
        this.sendImageAPI(formData);        
       }
@@ -114,7 +132,7 @@ class AddRestaurantMenu extends Component {
           </div>
           <div className="form-group">
           
-          Price: <Input className="form-control" type="text" name="price" defaultValue={this.state.price} onChange={this.handleChange} required/>
+          Price: <Input className="form-control" type="number" name="price" defaultValue={this.state.price} onChange={this.handleChange} required/>
        
           </div>
           <div className="form-group">
@@ -123,12 +141,21 @@ class AddRestaurantMenu extends Component {
           <div className="form-group">
           Category: 
              <select className="form-control" name="category" value={this.state.value} onChange={this.handleChange}>
-                         <option value="">Category</option>
-                       <option value="Appetizer">Appetizer</option>
+                      <option value="">Category</option>
+                      <option value="Appetizer">Appetizer</option>
                       <option value="salads">Salads</option>
-                        <option value="Main Course">Main Course</option>
-                  <option value="Desserts">Desserts</option>
-                        <option value="Beverages">Beverages</option>
+                      <option value="Main Course">Main Course</option>
+                      <option value="Desserts">Desserts</option>
+                      <option value="Beverages">Beverages</option>
+            </select>
+          </div>
+          <div className="form-group">
+              Food Type :
+              <select className="form-control" name="foodtype" name="foodtype"  value={this.state.foodtype} onChange={this.handleChange} >
+              <option value="">Select food type</option> 
+              <option value="Veg" >Veg</option>
+              <option value="Non-veg"  >Non-veg</option>
+              <option value="Vegan" >Vegan</option>
             </select>
           </div>
           <div className="form-group">

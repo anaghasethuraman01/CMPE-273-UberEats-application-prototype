@@ -35,10 +35,16 @@ class SingleRestDashboard extends Component {
           quantity:1,
           deliverytype:null,
           quantityprice:null,
+          show:false
           
         }
       
       }
+      handleModalClose(){
+        this.setState({show:!this.state.show}) 
+        const {history} = this.props;
+        history.push('/singlerestdashboard'); 
+    }
 
       componentDidMount(){
         const restaurantid = {
@@ -105,6 +111,9 @@ class SingleRestDashboard extends Component {
        }
        //console.log(cartvalue)
        this.addToCart(cartvalue);
+       this.setState({
+        show : true 
+      });
      }
         handleModalClose(){
         this.setState({show:!this.state.show}) 
@@ -237,7 +246,17 @@ class SingleRestDashboard extends Component {
             {searchresults}
 
 
-
+            <div>
+               <Modal size="md-down"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                    show={this.state.show} onHide={()=>this.handleModalClose()}>
+                        <Modal.Header closeButton></Modal.Header>
+                        <Modal.Body>
+                            <p>Item Added To Cart!</p>
+                        </Modal.Body>
+                    </Modal>
+                </div>
 
         </div>
     )

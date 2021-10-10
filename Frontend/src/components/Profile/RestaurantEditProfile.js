@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 // import { Redirect } from 'react-router';
 // import cookie from 'react-cookies';
 import axios from 'axios';
+import {Modal} from 'react-bootstrap';
 import { Button,Input } from 'reactstrap';
 import backendServer from "../../webConfig";
 import validator from 'validator';
@@ -12,49 +13,25 @@ class RestaurantEditProfile extends Component {
     constructor(props){
         super(props);
   
-        this.state = {
-          restaurantid: localStorage.getItem("restaurantid"),
-          restaurantname: localStorage.getItem("restaurantname"),
-          zipcode:localStorage.getItem("zipcode"),
-          description:localStorage.getItem("description"),
-          email:localStorage.getItem("email"),
-          phone: localStorage.getItem("phone"),
-          deliverytype: localStorage.getItem("deliverytype"),
-          foodtype:localStorage.getItem("foodtype"),
-          days: localStorage.getItem("days"),
-          city: localStorage.getItem("city"),
-          dishes:null,
-          timing:localStorage.getItem("timing"),
-          loading: false,
-          output: null,
-          selectedFile : null,
-          restprofilepic:null,
-          
+       
+       this.state = {
+        restaurantDetails:JSON.parse(localStorage.getItem("RestaurantDetails")) ,
+        restaurantid:null,
+        profilepic:null,
+        loading: false,
+        output: null
         }
     
-        this.handleChange = this.handleChange.bind(this);
+        // this.handleChange = this.handleChange.bind(this);
       }
       sendRestAPI = (data) => {
+        
         axios.post(`${backendServer}/editrestaurant`, data)
             .then(res => {
-              // console.log("here");
+               console.log("edit details");
               // console.log(res.data);
                 if(res.data.message){
                     this.setState({message:res.data.message})
-
-                }else{
-                  localStorage.setItem("restaurantname",res.data.username);
-                  localStorage.setItem("zipcode",res.data.zipcode);
-                  localStorage.setItem("email",res.data.email);
-                  localStorage.setItem("phone",res.data.phone);
-                  localStorage.setItem("timing",res.data.timing);
-                  localStorage.setItem("description",res.data.description);
-                  localStorage.setItem("deliverytype",res.data.deliverytype);
-                  localStorage.setItem("foodtype",res.data.foodtype);
-                  localStorage.setItem("city",res.data.city);
-                  localStorage.setItem("days",res.data.days);
-                  const {history} = this.props;
-                  history.push('/restaurantprofile'); 
                 }
                 
             }).catch(
@@ -62,34 +39,39 @@ class RestaurantEditProfile extends Component {
                   console.log(error);
                 }
             );
+            // const {history} = this.props;
+            // history.push('/customerprofile'); 
     }
+
+
+    
     nullOrEmpty(str) {
       return str === null || str === "" || str === "Add"
     }
     validateProfile = () => {
          
       let isValid = true;
-      if(this.state.email === null ||
-           this.nullOrEmpty(this.state.restaurantname) ||
-           this.nullOrEmpty(this.state.zipcode) ||  this.nullOrEmpty(this.state.phone)
-           ||  this.nullOrEmpty(this.state.description) ||  this.nullOrEmpty(this.state.timing) 
-           ||  this.nullOrEmpty(this.state.deliverytype) 
-           ||  this.nullOrEmpty(this.state.city) ||  this.nullOrEmpty(this.state.days)){
+      if(this.state.restaurantDetails.email === null ||
+           this.nullOrEmpty(this.state.restaurantDetails.restaurantname) ||
+           this.nullOrEmpty(this.state.restaurantDetails.zipcode) ||  this.nullOrEmpty(this.state.restaurantDetails.phone)
+           ||  this.nullOrEmpty(this.state.restaurantDetails.description) ||  this.nullOrEmpty(this.state.restaurantDetails.timing) 
+           ||  this.nullOrEmpty(this.state.restaurantDetails.deliverytype) 
+           ||  this.nullOrEmpty(this.state.restaurantDetails.city) ||  this.nullOrEmpty(this.state.restaurantDetails.days)){
 
          alert("Fields cannot be empty");
          isValid = false;
        }
        else
               {
-                if (!validator.isEmail(this.state.email)) {
+                if (!validator.isEmail(this.state.restaurantDetails.email)) {
                 alert('Enter valid Email!')
                 isValid = false;
                 }
-                if(this.state.phone.match(/\d/g).length !==10){
+                if(this.state.restaurantDetails.phone.match(/\d/g).length !==10){
                   alert('Phone number should only be 10 numbers!')
                   isValid = false;
                 }
-                if(this.state.zipcode.match(/\d/g).length !== 5){
+                if(this.state.restaurantDetails.zipcode.match(/\d/g).length !== 5){
                   alert('ZipCode should be 5 digits!')
                   isValid = false;
                 }
@@ -97,31 +79,91 @@ class RestaurantEditProfile extends Component {
         
         return isValid;
      }
+
+
+
+     handleChangeName = (e) =>{
+      const { restaurantDetails }= this.state;
+      restaurantDetails.username = e.target.value;
+      this.setState({restaurantDetails});
+      
+    } 
+    handleChangedescription = (e) =>{
+      const { restaurantDetails }= this.state;
+      restaurantDetails.description = e.target.value;
+      this.setState({restaurantDetails});
+      
+    } 
+    handleChangetiming = (e) =>{
+      const { restaurantDetails }= this.state;
+      restaurantDetails.timing = e.target.value;
+      this.setState({restaurantDetails});
+      
+    } 
+    handleChangeemail = (e) =>{
+      const { restaurantDetails }= this.state;
+      restaurantDetails.email = e.target.value;
+      this.setState({restaurantDetails});
+      
+    } 
+    handleChangephone = (e) =>{
+      const { restaurantDetails }= this.state;
+      restaurantDetails.phone = e.target.value;
+      this.setState({restaurantDetails});
+      
+    } 
+    handleChangedays = (e) =>{
+      const { restaurantDetails }= this.state;
+      restaurantDetails.days = e.target.value;
+      this.setState({restaurantDetails}); 
+    } 
+    handleChangedeliverytype = (e) =>{
+      const { restaurantDetails }= this.state;
+      restaurantDetails.deliverytype = e.target.value;
+      this.setState({restaurantDetails}); 
+    } 
+    handleChangecity = (e) =>{
+      const { restaurantDetails }= this.state;
+      restaurantDetails.city = e.target.value;
+      this.setState({restaurantDetails}); 
+    } 
+    handleChangezipcode = (e) =>{
+      const { restaurantDetails }= this.state;
+      restaurantDetails.zipcode = e.target.value;
+      this.setState({restaurantDetails}); 
+    } 
+    handleChangefoodtype = (e) =>{
+      const { restaurantDetails }= this.state;
+      restaurantDetails.foodtype = e.target.value;
+      this.setState({restaurantDetails}); 
+    } 
       handleSubmit = (e) => {
         e.preventDefault();
         if (this.validateProfile() === true){
-
           const restuarantData = {
-            restaurantid: localStorage.getItem("restaurantid"),
-            restaurantname: this.state.restaurantname,
-            email: this.state.email,
-            zipcode: this.state.zipcode,
-            phone:this.state.phone,
-            description:this.state.description,
-            timing:this.state.timing,
-            city:this.state.city,
-            deliverytype:this.state.deliverytype,
-            foodtype:this.state.foodtype,
-            days:this.state.days,
-            restprofilepic:localStorage.getItem("restprofilepic"),
+            restaurantid: this.state.restaurantDetails.restaurantid,
+            restaurantname: this.state.restaurantDetails.restaurantname,
+            email: this.state.restaurantDetails.email,
+            zipcode: this.state.restaurantDetails.zipcode,
+            phone:this.state.restaurantDetails.phone,
+            description:this.state.restaurantDetails.description,
+            timing:this.state.restaurantDetails.timing,
+            city:this.state.restaurantDetails.city,
+            deliverytype:this.state.restaurantDetails.deliverytype,
+            foodtype:this.state.restaurantDetails.foodtype,
+            days:this.state.restaurantDetails.days,
+            
         }     
         this.sendRestAPI(restuarantData);
+        this.setState({
+          show : true 
+        });
         }
         
       }
-      handleChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
-        }
+      // handleChange = (e) => {
+      //   this.setState({ [e.target.name]: e.target.value });
+      //   }
         goback = (e) =>{
           e.preventDefault();
           const {history} = this.props;
@@ -133,16 +175,22 @@ class RestaurantEditProfile extends Component {
           this.setState({fileName:e.target.files[0].name});
           
         };
+        handleModalClose(){
+          this.setState({show:!this.state.show}) 
+          const {history} = this.props;
+          history.push('/restaurantprofile'); 
+      }
    
- uploadFile = (e) => {
+    uploadFile = (e) => {
           e.preventDefault();
           const formData = new FormData();
           if(this.state.file != undefined && this.state.fileName !==undefined){
             formData.append("file", this.state.file,this.state.fileName);
-            formData.append("restaurantid", this.state.restaurantid);
+            formData.append("restaurantid", this.state.restaurantDetails.restaurantid);
           }
           else{
             alert("No Image inserted");
+            return;
           }
           this.sendImageAPI(formData);        
         }
@@ -175,32 +223,32 @@ class RestaurantEditProfile extends Component {
         
               </div>
           <div className="form-group">
-          Restaurant Name: <Input className="form-control" type="text" name="restaurantname" value={this.state.restaurantname} onChange={this.handleChange} ></Input>
+          Restaurant Name: <Input className="form-control" type="text" name="restaurantname" value={this.state.restaurantDetails.username} onChange={(e) => { this.handleChangeName(e)}} ></Input>
           
           </div>
           <div className="form-group">
-          Description : <textarea className="form-control" type="text" name="description" defaultValue={this.state.description} onChange={this.handleChange}/>
+          Description : <textarea className="form-control" type="text" name="description" defaultValue={this.state.restaurantDetails.description} onChange={(e) => { this.handleChangedescription(e)}}/>
          
           </div>
          
           <div className="form-group">
-          Email:<Input type="text" className="form-control" name="email" value= {this.state.email} onChange={this.handleChange} />
+          Email:<Input type="text" className="form-control" name="email" value= {this.state.restaurantDetails.email} onChange={(e) => { this.handleChangeemail(e)}} />
           </div>
           <div className="form-group">
-          Phone: <Input type="number" className="form-control"  maxlength="10"  name="phone" defaultValue={this.state.phone} onChange={this.handleChange} ></Input>
+          Phone: <Input type="number" className="form-control"  maxlength="10"  name="phone" defaultValue={this.state.restaurantDetails.phone} onChange={(e) => { this.handleChangephone(e)}} ></Input>
           </div>
           <div className="form-group">
 
           Timings : 
-             <textarea className="form-control" type="text" name="timing" defaultValue={this.state.timing} onChange={this.handleChange}  />
+             <textarea className="form-control" type="text" name="timing" defaultValue={this.state.restaurantDetails.timing} onChange={(e) => { this.handleChangetiming(e)}}  />
           </div>
           <div className="form-group">
           Days :  
-             <textarea className="form-control" type="text" name="days" defaultValue={this.state.days} onChange={this.handleChange}  />
+             <textarea className="form-control" type="text" name="days" defaultValue={this.state.restaurantDetails.days} onChange={(e) => { this.handleChangedays(e)}} />
           </div>
           <div className="form-group">
               Mode of Delivery :
-            <select className="form-control" name="deliverytype" value={this.state.deliverytype} onChange={this.handleChange}>
+            <select className="form-control" name="deliverytype" value={this.state.restaurantDetails.deliverytype} onChange={(e) => { this.handleChangedeliverytype(e)}}>
               <option value="">Select delivery type</option> 
               {/* <option value="Pick Up and Delivery">Pick Up and Delivery</option> */}
               <option value="Pick Up">Pick Up</option>
@@ -209,7 +257,7 @@ class RestaurantEditProfile extends Component {
           </div>
            <div className="form-group">
               Food Type :
-            <select className="form-control" name="foodtype" name="foodtype"  value={this.state.foodtype} onChange={this.handleChange} >
+            <select className="form-control" name="foodtype" name="foodtype"  value={this.state.restaurantDetails.foodtype} onChange={(e) => { this.handleChangefoodtype(e)}}>
               <option value="">Select food type</option> 
               <option value="Veg" >Veg</option>
               <option value="Non-veg"  >Non-veg</option>
@@ -217,15 +265,26 @@ class RestaurantEditProfile extends Component {
             </select>
           </div>
           <div className="form-group">
-          City: <Input type="text"  className="form-control" name="city" defaultValue={this.state.city} onChange={this.handleChange} ></Input>
+          City: <Input type="text"  className="form-control" name="city" defaultValue={this.state.restaurantDetails.city} onChange={(e) => { this.handleChangecity(e)}} ></Input>
           </div>
           <div className="form-group">
-          Location Zip Code: <Input type="number" name="zipcode" defaultValue={this.state.zipcode} onChange={this.handleChange} ></Input>
+          Location Zip Code: <Input type="number" name="zipcode" defaultValue={this.state.restaurantDetails.zipcode} onChange={(e) => { this.handleChangezipcode(e)}} ></Input>
           </div>
          
           <Button onClick = {this.handleSubmit}>Update Profile</Button>
 
           <Button onClick = {this.goback}>Back</Button>
+          <div>
+               <Modal size="md-down"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                    show={this.state.show} onHide={()=>this.handleModalClose()}>
+                        <Modal.Header closeButton></Modal.Header>
+                        <Modal.Body>
+                            <h1>Profile Updated Successfully!</h1>
+                        </Modal.Body>
+                    </Modal>
+                </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Card, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {Card, ListGroup, ListGroupItem,Modal} from 'react-bootstrap';
 // import cookie from 'react-cookies';
-import { Button } from 'reactstrap';
+import { Button ,Input} from 'reactstrap';
 import axios from 'axios';
 import backendServer from "../../webConfig";
 //import 'bootstrap/dist/css/bootstrap.css';
@@ -24,17 +24,14 @@ class RestaurantHome extends Component {
           loading: false,
           output: null,
           restaurantdishes:[],
-          statusmsg:null
+          statusmsg:null,
+          show:false,
+          selectedDish:[]
         }
       }
-      // handleSubmit = (e) => {
-      //   e.preventDefault();
-      //   window.location.href='/RestaurantProfile';
-      // }
-      // showMenu = (e) =>{
-      //     e.preventDefault();
-      //   window.location.href='/RestaurantProfile';
-      // }
+      handleModalClose(){
+        this.setState({show:!this.state.show}) 
+      }
       profile = e => {
         e.preventDefault();
         const {history} = this.props;
@@ -61,6 +58,7 @@ class RestaurantHome extends Component {
         const {history} = this.props;
         history.push('/login'); 
       }
+      
       componentDidMount(){
         const data = {
           restaurantid : this.state.restaurantid
@@ -75,20 +73,23 @@ class RestaurantHome extends Component {
            this.setState({
           restaurantdishes: this.state.restaurantdishes.concat(response.data),
             });   
-            // console.log(this.state.statusmsg)
-            // console.log(this.state.restaurantdishes)
-         })
           
-        // 
+         })
 
       }
+      editdish = (dishObj) => {
+        localStorage.setItem("SelectedDish",JSON.stringify(dishObj));
+        const {history} = this.props;
+        history.push('/editdishpage'); 
+      }
     render(){
+
       var disheslist = null;
       if(this.state.statusmsg == "dishesfound"){
         
         disheslist = (
         <div className='card-list'>
-        {this.state.restaurantdishes.filter(dish => dish.dishname).map(dish=>
+        {this.state.restaurantdishes.map(dish=>
         
           <div >
           <Card >
@@ -98,8 +99,12 @@ class RestaurantHome extends Component {
           <ListGroup className="list-group-flush">
             <ListGroupItem> ${dish.price} </ListGroupItem>
             <ListGroupItem> {dish.category}</ListGroupItem>
-          </ListGroup>
-          
+          </ListGroup> 
+          <Button
+          onClick={() => {
+            this.editdish(dish);
+            }}>Edit Dish
+            </Button>
           </Card.Body>
           </Card>                           
         </div>
@@ -120,7 +125,7 @@ class RestaurantHome extends Component {
           
             <Button className="btn" onClick={this.profile}>Profile</Button>
 
-            <Button className="btn" onClick={this.menu}>Menu</Button>
+            {/* <Button className="btn" onClick={this.menu}>Menu</Button> */}
 
             <Button className="btn" onClick={this.addnewdish}>Add New Dish</Button>
 
@@ -129,7 +134,9 @@ class RestaurantHome extends Component {
             </div>
             {disheslist}
             </form>
+           
         </div>
+        
     )
     }
    

@@ -209,8 +209,6 @@ class CheckOut extends Component {
                     value={this.state.country}
                     onChange={(val) => this.selectCountry(val)} 
                   />
-
-             
               </div>
            </div>
          )
@@ -275,9 +273,7 @@ class CheckOut extends Component {
              <Modal.Body>
               <h1>Order Successfully Placed ! Thank you</h1>
              </Modal.Body>
-             <Modal.Footer>
-              
-             </Modal.Footer>
+            
            </Modal>
       </div>
       </div>

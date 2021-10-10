@@ -3,6 +3,7 @@
 import React, {Component} from 'react';
 // import { Redirect } from 'react-router';
 // import cookie from 'react-cookies';
+import {Modal} from 'react-bootstrap';
 import axios from 'axios';
 import { Button,Input } from 'reactstrap';
 import backendServer from "../../webConfig";
@@ -14,49 +15,24 @@ class CustomerEditProfile extends Component {
         super(props);
   
         this.state = {
-            userid:localStorage.getItem("userid"),
-            username:localStorage.getItem("username"),
-            email: localStorage.getItem("email"),
-            password: null,
-            about: localStorage.getItem("about"),
-            phone:localStorage.getItem("phone"),
-            nickname:localStorage.getItem("nickname"),
-            dob:localStorage.getItem("dob"),
-            state:localStorage.getItem("state"),
-            city:localStorage.getItem("city"),
-            country:localStorage.getItem("country"),
-            address:localStorage.getItem("address"),
+            customerDetails:JSON.parse(localStorage.getItem("CustomerDetails")) ,
+            userid:null,
             profilepic:null,
             loading: false,
             output: null
         }
         // this.state.email = localStorage.getItem("email");
         // this.state.username = localStorage.getItem("username");
-        this.handleChange = this.handleChange.bind(this);
+        
       }
       sendRestAPI = (data) => {
+        console.log("here")
         axios.post(`${backendServer}/editcustomer`, data)
             .then(res => {
-              // console.log("edit details");
+               console.log("edit details");
               // console.log(res.data);
                 if(res.data.message){
                     this.setState({message:res.data.message})
-
-                }else{
-                    localStorage.setItem("username",res.data.username);
-                    localStorage.setItem("about",res.data.about);
-                    localStorage.setItem("dob",res.data.dob);
-                    localStorage.setItem("state",res.data.state);
-                    localStorage.setItem("address",res.data.address);
-                    localStorage.setItem("city",res.data.city);
-                    localStorage.setItem("country",res.data.country);
-                    localStorage.setItem("nickname",res.data.nickname);
-                    localStorage.setItem("email",res.data.email);
-                    localStorage.setItem("phone",res.data.phone);
-                   console.log(res.data.dob)
-                   const {history} = this.props;
-                   history.push('/customerprofile'); 
-                   //  window.location.href='/CustomerProfile';
                 }
                 
             }).catch(
@@ -64,34 +40,35 @@ class CustomerEditProfile extends Component {
                   console.log(error);
                 }
             );
+            // const {history} = this.props;
+            // history.push('/customerprofile'); 
     }
-    selectCountry (val) {
-      this.setState({ country: val });
-    }
+  
 
     nullOrEmpty(str) {
         return str === null || str === "" || str === "Add"
     }
-    validateProfile = () => {
-         
-           let isValid = true;
-           if(this.state.email === null ||
-                this.nullOrEmpty(this.state.about) ||
-                this.nullOrEmpty(this.state.username) ||  this.nullOrEmpty(this.state.phone)
-                ||  this.nullOrEmpty(this.state.dob) ||  this.nullOrEmpty(this.state.nickname) 
-                ||  this.nullOrEmpty(this.state.address) ||  this.nullOrEmpty(this.state.state)
-                ||  this.nullOrEmpty(this.state.city) ||  this.nullOrEmpty(this.state.country)){
 
+
+    validateProfile = () => {
+           let isValid = true;
+           if(this.state.customerDetails.email === null ||
+                this.nullOrEmpty(this.state.customerDetails.about) ||
+                this.nullOrEmpty(this.state.customerDetails.username) ||  this.nullOrEmpty(this.state.customerDetails.phone)
+                ||  this.nullOrEmpty(this.state.customerDetails.dob) ||  this.nullOrEmpty(this.state.customerDetails.nickname) 
+                ||  this.nullOrEmpty(this.state.customerDetails.address) ||  this.nullOrEmpty(this.state.customerDetails.state)
+                ||  this.nullOrEmpty(this.state.customerDetails.city) ||  this.nullOrEmpty(this.state.customerDetails.country))
+            {
               alert("Fields cannot be empty");
               isValid = false;
             }
             else
               {
-                if (!validator.isEmail(this.state.email)) {
+                if (!validator.isEmail(this.state.customerDetails.email)) {
                 alert('Enter valid Email!')
                 isValid = false;
                 }
-                if(this.state.phone.match(/\d/g).length !==10){
+                if(this.state.customerDetails.phone.match(/\d/g).length !==10){
                   alert('Phone number should only be 10 numbers!')
                   isValid = false;
                 }
@@ -99,26 +76,89 @@ class CustomerEditProfile extends Component {
         
         return isValid;
      }
+     handleChangeName = (e) =>{
+      const { customerDetails }= this.state;
+      customerDetails.username = e.target.value;
+      this.setState({customerDetails});
+      
+    } 
+    handleChangenickame = (e) =>{
+      const { customerDetails }= this.state;
+      customerDetails.nickname = e.target.value;
+      this.setState({customerDetails});
+      
+    } 
+    handleChangeabout = (e) =>{
+      const { customerDetails }= this.state;
+      customerDetails.about = e.target.value;
+      this.setState({customerDetails});
+      
+    } 
+    handleChangeemail = (e) =>{
+      const { customerDetails }= this.state;
+      customerDetails.email = e.target.value;
+      this.setState({customerDetails});
+      
+    } 
+    handleChangephone = (e) =>{
+      const { customerDetails }= this.state;
+      customerDetails.phone = e.target.value;
+      this.setState({customerDetails});
+      
+    } 
+    handleChangedob = (e) =>{
+      const { customerDetails }= this.state;
+      customerDetails.dob = e.target.value;
+      this.setState({customerDetails}); 
+    } 
+    handleChangeaddress = (e) =>{
+      const { customerDetails }= this.state;
+      customerDetails.address = e.target.value;
+      this.setState({customerDetails}); 
+    } 
+    handleChangecity = (e) =>{
+      const { customerDetails }= this.state;
+      customerDetails.city = e.target.value;
+      this.setState({customerDetails}); 
+    } 
+    handleChangestate = (e) =>{
+      const { customerDetails }= this.state;
+      customerDetails.state = e.target.value;
+      this.setState({customerDetails}); 
+    } 
+    handleChangeCountry = (val) =>{
+      const { customerDetails }= this.state;
+      customerDetails.country = val;
+      this.setState({customerDetails}); 
+    } 
+
       handleSubmit = (e) => {
         e.preventDefault();
         
-        if (this.validateProfile() === true){
+        
+         if (this.validateProfile() === true){
               const customerData = {
-              userid:localStorage.getItem("userid"),
-              username: this.state.username,
-              email:this.state.email ,
-              about: this.state.about,
-              phone:this.state.phone,
-              nickname:this.state.nickname,
-              dob:this.state.dob,
-              state:this.state.state,
-              city:this.state.city,
-              address:this.state.address,
-              country:this.state.country,
-              profilepic:localStorage.getItem("profilepic")
+              userid:this.state.customerDetails.userid,
+              username: this.state.customerDetails.username,
+              email:this.state.customerDetails.email ,
+              about: this.state.customerDetails.about,
+              phone:this.state.customerDetails.phone,
+              nickname:this.state.customerDetails.nickname,
+              dob:this.state.customerDetails.dob,
+              state:this.state.customerDetails.state,
+              city:this.state.customerDetails.city,
+              address:this.state.customerDetails.address,
+              country:this.state.customerDetails.country,
+              
           }
-        this.sendRestAPI(customerData);        
-      }
+          
+
+        this.sendRestAPI(customerData);
+        this.setState({
+          show : true 
+        });
+         }        
+      
     }
  
       // goback = (e) =>{
@@ -126,9 +166,9 @@ class CustomerEditProfile extends Component {
       //   const {history} = this.props;
       //   history.push('/customerprofile'); 
       // }
-      handleChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
-        }
+      // handleChange = (e) => {
+      //   this.setState({ [e.target.name]: e.target.value });
+      //   }
         goback = (e) =>{
           
           e.preventDefault();
@@ -141,15 +181,21 @@ class CustomerEditProfile extends Component {
           this.setState({fileName:e.target.files[0].name});
           
         };
+        handleModalClose(){
+          this.setState({show:!this.state.show}) 
+          const {history} = this.props;
+          history.push('/customerprofile'); 
+      }
         uploadFile = (e) => {
           e.preventDefault();
           const formData = new FormData();
           if(this.state.file != undefined && this.state.fileName !==undefined){
             formData.append("file", this.state.file,this.state.fileName);
-            formData.append("userid", this.state.userid);
+            formData.append("userid", this.state.customerDetails.userid);
           }
           else{
             alert("No Image inserted");
+            return;
           }
          
          this.sendImageAPI(formData);        
@@ -186,39 +232,40 @@ class CustomerEditProfile extends Component {
               </div>
               <div className="form-group">
 
-              Customer Name: <Input className="form-control" type="text" name="username" value={this.state.username} onChange={this.handleChange} ></Input>
+              Customer Name: <Input className="form-control" type="text" name="username" value={this.state.customerDetails.username} onChange={(e) => { this.handleChangeName(e)}} ></Input>
                
               </div>
               <div className="form-group">
-              Nick Name: <Input type="text" className="form-control" name="nickname" value={this.state.nickname} onChange={this.handleChange} ></Input>
+              Nick Name: <Input type="text" className="form-control" name="nickname" value={this.state.customerDetails.nickname} onChange={(e) => { this.handleChangenickame(e)}} ></Input>
               </div>
               <div className="form-group">
-              About : <textarea type="text" className="form-control" name="about" defaultValue={this.state.about} onChange={this.handleChange}/>
+              About : <textarea type="text" className="form-control" name="about" defaultValue={this.state.customerDetails.about} onChange={(e) => { this.handleChangeabout(e)}}/>
               </div>
               <div className="form-group">
-              Email:<Input type="text" className="form-control" name="email" value= {this.state.email} onChange={this.handleChange} />
+              Email:<Input type="text" className="form-control" name="email" value= {this.state.customerDetails.email} onChange={(e) => { this.handleChangeemail(e)}} />
               </div>
               <div className="form-group">
-              Phone: <Input type="number" className="form-control" name="phone" defaultValue={this.state.phone} onChange={this.handleChange} ></Input>
+              Phone: <Input type="number" className="form-control" name="phone" defaultValue={this.state.customerDetails.phone} onChange={(e) => { this.handleChangephone(e)}} ></Input>
               </div>
               <div className="form-group">
-              DoB: <input type="date" className="form-date" name="dob" defaultValue={this.state.dob} onChange={this.handleChange} />
+              DoB: <input type="date" className="form-date" name="dob" defaultValue={this.state.customerDetails.dob} onChange={(e) => { this.handleChangedob(e)}} />
               </div>
               <div className="form-group">
-              Apt and Street No: <Input type="text" className="form-control" name="address" defaultValue={this.state.address} onChange={this.handleChange} ></Input>
+              Apt and Street No: <Input type="text" className="form-control" name="address" defaultValue={this.state.customerDetails.address} onChange={(e) => { this.handleChangeaddress(e)}} ></Input>
               </div>
               <div className="form-group">
-              City: <Input type="text" className="form-control" name="city" defaultValue={this.state.city} onChange={this.handleChange} ></Input>
+              City: <Input type="text" className="form-control" name="city" defaultValue={this.state.customerDetails.city} onChange={(e) => { this.handleChangecity(e)}} ></Input>
               </div>
               <div className="form-group">
-              State: <Input type="text" className="form-control" name="state" defaultValue={this.state.state} onChange={this.handleChange} ></Input>
+              State: <Input type="text" className="form-control" name="state" defaultValue={this.state.customerDetails.state} onChange={(e) => { this.handleChangestate(e)}} ></Input>
               </div>
              
               <div className="form-group">
               Country :
               <CountryDropdown className="form-control"
-                    value={this.state.country}
-                    onChange={(val) => this.selectCountry(val)} 
+                    value={this.state.customerDetails.country}
+                    onChange={(val) => { this.handleChangeCountry(val)}}
+                     
                   />
 
              
@@ -227,6 +274,17 @@ class CustomerEditProfile extends Component {
               <Button onClick = {this.handleSubmit}>Update Profile</Button>
 
               <Button onClick = {this.goback}>Back</Button>
+              <div>
+               <Modal size="md-down"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                    show={this.state.show} onHide={()=>this.handleModalClose()}>
+                        <Modal.Header closeButton></Modal.Header>
+                        <Modal.Body>
+                            <h1>Profile Updated Successfully!</h1>
+                        </Modal.Body>
+                    </Modal>
+                </div>
             </div>
           </div>
         </div>

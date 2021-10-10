@@ -19,6 +19,7 @@ import Favourites from './Dashboard/Favourites';
 import CheckOut from './Dashboard/Checkout';
 import OrdersPage from './Dashboard/OrdersPage';
 import CustomerOrder from './Dashboard/CustomerOrder';
+import EditDishPage from './Menu/EditDishPage';
 //import 'bootstrap/dist/css/bootstrap.css';
 class Main extends Component {
     render() {
@@ -43,6 +44,7 @@ class Main extends Component {
                     <Route path="/checkout" component={CheckOut}/>
                     <Route path="/orderspage" component={OrdersPage}/>
                     <Route path="/customerorder" component={CustomerOrder}/>
+                    <Route path="/editdishpage" component={EditDishPage}/>
 
                 </div>    
             </Router>
