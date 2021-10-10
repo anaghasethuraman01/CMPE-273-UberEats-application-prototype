@@ -5,7 +5,6 @@ var mysql = require("mysql");
 const connection = require('../connection.js');
 
 router.post("/", (req, res) => {
-    console.log(req.body);
    const restaurantid = req.body.restaurantid
    const restaurantname = req.body.restaurantname;
    const email = req.body.email;
@@ -18,61 +17,26 @@ router.post("/", (req, res) => {
    const deliverytype =  req.body.deliverytype;
    const foodtype =  req.body.foodtype;
    const profilepic = req.body.restprofilepic;
-   let sql1 = "SELECT * FROM restaurant  WHERE RESTAURANTID = " + mysql.escape(restaurantid);
-   connection.query(sql1, (error, result1) => {
-       if (error) {
-           console.log("Connection Error!");
-       }
-       if(result1.length > 0){
-           let sql3 = "DELETE  FROM restaurant WHERE RESTAURANTID = " + mysql.escape(restaurantid);
-           //console.log(sql3)
-           connection.query(sql3, (error, result2) => {
-               if(error){
-                   console.log(error.message);
-               }else{
-                   console.log("row deleted")
-               }
-           });
-       
-   let post = {
-           restaurantid:restaurantid,
-           username: restaurantname,
-           email: email,
-           zipcode: zipcode,
-           phone : phone,
-           description : description,
-           timing :timing,
-           city:city,
-           deliverytype:deliverytype,
-           days:days,
-           foodtype:foodtype,
-           profilepic:profilepic	
-       };
-       
-         console.log(post);
-       let sql = "INSERT INTO restaurant SET ?";
-       let q = connection.query(sql, post, (error, result3) => {
-       if (error) {
-           console.log(error.message);
-                   //res.send({message:"Invalid credentials"})
-       } else {
-               console.log("USER ADDED");
-               
-               let sql = "SELECT * FROM restaurant  WHERE RESTAURANTID = " + mysql.escape(restaurantid);
-                   connection.query(sql, (error, result5) => {
-                       //console.log(sql);
-                       //console.log(result5[0]);
-                   if (error) {
-                       console.log("Connection Error!");
-                   }else{
-                   
-                       console.log(result5[0]);
-                       res.send(result5[0]);
-                   }
-               });	
-           }
-       });
-       }
+
+
+    let sql1 = "UPDATE restaurant SET username = " +mysql.escape(restaurantname)
+    +" ,email =  "+mysql.escape(email)+ " ,phone = "+mysql.escape(phone)
+    +",zipcode = "+mysql.escape(zipcode)
+    +",description = "+mysql.escape(description)
+    +",timing = "+mysql.escape(timing)
+    +",deliverytype = "+mysql.escape(deliverytype)
+    +",foodtype = "+mysql.escape(foodtype)+
+    ",city = "+mysql.escape(city)+
+    ",days = "+mysql.escape(days) + "WHERE restaurantid = "+mysql.escape(restaurantid);
+    
+            
+    let query = connection.query(sql1, (error, result) => {
+        if (error) {
+            console.log(error.message)
+                    // res.send({ error: error });
+            }
+            console.log("Restaurant profile updated");
+        
            //console.log(restaurantid);
             let sql2 = "UPDATE users SET USERNAME = "+mysql.escape(restaurantname) +
              ", EMAIL = "+mysql.escape(email) + 
@@ -84,11 +48,12 @@ router.post("/", (req, res) => {
                    console.log(error.message);
                }else{
                    
-                   console.log("column updated")
+                   console.log("column updated in users")
                }
            });
+        });
        
-    });
+    
    
 });
 module.exports = router;

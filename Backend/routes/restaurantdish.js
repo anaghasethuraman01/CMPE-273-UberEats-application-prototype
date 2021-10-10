@@ -14,6 +14,7 @@ router.post("/", (req, res) => {
 	const description = req.body.description;
 	const category = req.body.category;
 	const restaurantid = req.body.restaurantid;
+	const foodtype = req.body.foodtype;
 
 	let post = {
         dishname: dishname,
@@ -21,7 +22,8 @@ router.post("/", (req, res) => {
         price: price,
         description: description,
         category: category,
-        restaurantid:restaurantid
+        restaurantid:restaurantid,
+		foodtype:foodtype
 		};
 			let sql = "INSERT INTO restaurantdishes SET ?";
 			connection.query(sql, post, (error, result) => {
@@ -29,7 +31,7 @@ router.post("/", (req, res) => {
 					//console.log("Error");
 					//res.send({message:"Invalid credentials"})
 				} else {
-					console.log("USER ADDED");
+					console.log("Dish ADDED");
 					//res.send("Row added");
 				}
 			});
