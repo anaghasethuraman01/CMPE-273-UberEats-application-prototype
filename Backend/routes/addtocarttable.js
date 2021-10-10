@@ -28,7 +28,7 @@ router.post("/", (req, res) => {
      console.log("in add to cart");
 	 connection.query(sql,(error, result) => {
          if(result.length > 0 ){
-             //console.log("Cant place order");
+             console.log("Cant place order");
              res.send("Delete previous order")
          }else{
 
@@ -43,18 +43,21 @@ router.post("/", (req, res) => {
                  else if(result1.length > 0){
                     //  console.log("sfbnbfdns z")
                     // //result1 = JSON.stringify(result1);
-                            console.log(result1)
+                          
                             quantity = result1[0].quantity + 1;
-                            quantityprice = result1[0].quantityprice + quantityprice;
+                            quantityprice = quantity * dishprice;
+                            console.log(quantity)
+                            console.log(dishprice)
+                            console.log(quantityprice)
                             let sql3 = "UPDATE placeorder SET quantity = " +mysql.escape(quantity)+ " , quantityprice = " 
                             +mysql.escape(quantityprice) + " WHERE dishid = "
                             + mysql.escape(dishid) + " AND customerid = "+ mysql.escape(customerid);
-                        console.log(sql3);
+                        //console.log(sql3);
                             connection.query(sql3, (error, result3) => {
                             if(error){
                                 console.log(error.message);
                             }else{
-                                console.log("Quantity updated")
+                                res.send("Quantity updated")
                             }
                             });    
                 }

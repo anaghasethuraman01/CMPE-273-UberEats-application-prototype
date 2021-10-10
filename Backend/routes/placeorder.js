@@ -43,12 +43,12 @@ router.post("/", (req, res) => {
 
       } else {
          
-          let sqlDet = 'INSERT INTO orderdetails(orderid,dishid,quantity) VALUES ?';
+          let sqlDet = 'INSERT INTO orderdetails(orderid,dishid,quantity,price,dishname) VALUES ?';
           let orderid = result.insertId;
           
           let records =[];
           orderDetails.forEach((element, index) => {
-            records.push([orderid, element.dishid, element.quantity]);
+            records.push([orderid, element.dishid, element.quantity,element.price,element.dishname]);
           });
         //   console.log("****")
         // console.log(records);

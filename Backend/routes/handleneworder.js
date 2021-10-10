@@ -15,7 +15,8 @@ router.post("/", (req, res) => {
         restaurantid:restaurantid,
         dishid:dishid,
         dishname:dishname,
-        dishprice:dishprice
+        dishprice:dishprice,
+        quantityprice :dishprice
     };
     console.log(customerid)
     

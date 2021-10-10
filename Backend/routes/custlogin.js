@@ -83,7 +83,7 @@ router.post("/", (request, res) => {
         }
 
     }else{
-       res.send({ message: "Invalid credentials" });
+       res.send({ message: "Invalid User" });
     }
     //response.json(output)
 
