@@ -133,12 +133,13 @@ class SingleRestDashboard extends Component {
        localStorage.setItem("quantity",data.quantity);
       axios.defaults.withCredentials = true;
       axios.post(`${backendServer}/addtocarttable`, data).then((res) => {
+        console.log("res.data")
         console.log(res.data)
           if(res.data == "Delete previous order"){
             this.setState({show:"true"})
-          }else if(res.data == "Quantity updated"){
+          }
+          if(res.data == "Quantity updated"){
             this.setState({showfav:"true"})
-
           }
         
           console.log("Status Code : ", res.status);
@@ -275,7 +276,7 @@ class SingleRestDashboard extends Component {
           aria-labelledby="contained-modal-title-vcenter"
           centered
            show={this.state.showfav} onHide={()=>this.handleModalCloseFav()} >
-             <Modal.Header closeButton>Create New Order</Modal.Header>
+             <Modal.Header closeButton></Modal.Header>
              <Modal.Body>
              Item added to cart!
              </Modal.Body>

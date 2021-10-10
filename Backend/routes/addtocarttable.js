@@ -23,17 +23,23 @@ router.post("/", (req, res) => {
         quantity:quantity,
         quantityprice:quantityprice
     };
-    console.log(cartvalues);
-	 let sql = "SELECT * FROM placeorder WHERE restaurantid != " +mysql.escape(restaurantid) + "AND customerid = "+mysql.escape(customerid) ;
-     console.log("in add to cart");
+    //console.log(cartvalues);
+	 let sql = "SELECT * FROM placeorder WHERE restaurantid != " +mysql.escape(restaurantid) + " AND customerid = "+mysql.escape(customerid) ;
+    
 	 connection.query(sql,(error, result) => {
+       
          if(result.length > 0 ){
              console.log("Cant place order");
              res.send("Delete previous order")
          }else{
 
-             sql1 = "SELECT * FROM placeorder WHERE dishid = "+mysql.escape(dishid);
+             sql1 = "SELECT * FROM placeorder WHERE dishid = "+mysql.escape(dishid)
+             +" AND customerid = "+mysql.escape(customerid);
+             //console.log(sql1)
              connection.query(sql1,(error, result1) => {
+                if(error){
+                    console.log(error.message)
+                }
                  if(result1.length == 0){
                      sql2 = "INSERT INTO placeorder  SET ?";
                     connection.query(sql2,cartvalues,(error, result) => {
