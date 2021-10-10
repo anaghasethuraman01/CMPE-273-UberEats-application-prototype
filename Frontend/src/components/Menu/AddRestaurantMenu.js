@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 // import cookie from 'react-cookies';
 import { Button, Input } from 'reactstrap';
+import {Modal} from 'react-bootstrap';
 import backendServer from "../../webConfig";
 
 class AddRestaurantMenu extends Component {
@@ -16,7 +17,9 @@ class AddRestaurantMenu extends Component {
           price:null,
           description:null,
           category:null,
-          foodtype:null
+          foodtype:null,
+          show:false,
+          showdish:false
         }
       }
 
@@ -68,6 +71,9 @@ class AddRestaurantMenu extends Component {
               foodtype:this.state.foodtype
           }
           this.sendDishAPI(dishData);
+          this.setState({
+            show : true 
+          });
         }
         
       }
@@ -97,7 +103,10 @@ class AddRestaurantMenu extends Component {
           return;
         } 
        // console.log(customerData);
-       this.sendImageAPI(formData);        
+       this.sendImageAPI(formData);   
+       this.setState({
+        showdish : true 
+      });     
       }
 
       sendImageAPI = (data) => {
@@ -109,6 +118,13 @@ class AddRestaurantMenu extends Component {
              // console.log(this.state.profilepic);
             })
           }
+
+          handleModalClose(){
+            this.setState({show:!this.state.show}) 
+        }
+        handleModalCloseDish(){
+          this.setState({showdish:!this.state.showdish}) 
+      }
     render(){
 
     return (
@@ -166,6 +182,28 @@ class AddRestaurantMenu extends Component {
             <Button onClick={this.uploadFile}>Upload Dish Image</Button>
           </div>
           <Button onClick = {this.goback}>Back</Button>
+          <div>
+               <Modal size="md-down"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                    show={this.state.show} onHide={()=>this.handleModalClose()}>
+                        <Modal.Header closeButton></Modal.Header>
+                        <Modal.Body>
+                            <h1>Dish Added Successfully!</h1>
+                        </Modal.Body>
+                </Modal>
+            </div>
+            <div>
+               <Modal size="md-down"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                    show={this.state.showdish} onHide={()=>this.handleModalCloseDish()}>
+                        <Modal.Header closeButton></Modal.Header>
+                        <Modal.Body>
+                            <h1>Dish Image Added Successfully!</h1>
+                        </Modal.Body>
+                </Modal>
+            </div>
         </div>
       </div>
     </div>

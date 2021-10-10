@@ -10,7 +10,8 @@ class RestaurantProfile extends Component {
   
         this.state = {
           restaurantid:localStorage.getItem("restaurantid"),
-          restaurantname: localStorage.getItem("restaurantname"),
+          username: localStorage.getItem("restaurantname"),
+          foodtype:null,
           zipcode:localStorage.getItem("zipcode"),
           description:localStorage.getItem("description"),
           email:localStorage.getItem("email"),
@@ -40,9 +41,12 @@ class RestaurantProfile extends Component {
           this.setState({
             restaurantdetails: this.state.restaurantdetails.concat(response.data),
           });
-          console.log(this.restaurantdetails)
+          //console.log(this.restaurantdetails)
           this.setState({
             username: this.state.restaurantdetails[0]['username'],
+          });
+          this.setState({
+            foodtype: this.state.restaurantdetails[0]['foodtype'],
           });
           this.setState({
             city: this.state.restaurantdetails[0]['city'],
@@ -94,7 +98,7 @@ class RestaurantProfile extends Component {
       <div className="login-form">
         <div className="main-div">
           <div className="panel">
-          <h1>Welcome to {this.state.restaurantname}</h1>
+          <h1>Welcome to {this.state.username}</h1>
           </div>
           <div className="form-group">
 

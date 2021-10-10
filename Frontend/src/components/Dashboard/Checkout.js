@@ -70,6 +70,10 @@ class CheckOut extends Component {
                   dishes : this.state.dishes.concat(response.data) 
                 });
                 this.state.dishes.forEach((element) => {
+                  // console.log("**************");
+                  // console.log(element.quantity);
+                  // console.log(element.quantityprice);
+
                   this.state.totalorderquantity = this.state.totalorderquantity + element.quantity;
                   this.state.totalorderprice = this.state.totalorderprice + element.quantityprice;
                 });
@@ -131,8 +135,7 @@ class CheckOut extends Component {
         }
         const orderDetails = []; 
         this.state.dishes.forEach((element) => {
-          orderDetails.push({ dishid: element.dishid, quantity: element.quantity });
-         
+          orderDetails.push({ dishid: element.dishid, quantity: element.quantity,price : element.dishprice,dishname:element.dishname });  
         });
         
        

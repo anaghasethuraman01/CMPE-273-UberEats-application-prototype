@@ -44,6 +44,9 @@ class CustomerProfile extends Component {
             username: this.state.customerdetails[0]['username'],
           });
           this.setState({
+            nickname: this.state.customerdetails[0]['nickname'],
+          });
+          this.setState({
             about: this.state.customerdetails[0]['about'],
           });
           this.setState({

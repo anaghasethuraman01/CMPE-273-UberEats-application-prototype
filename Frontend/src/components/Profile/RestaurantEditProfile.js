@@ -142,7 +142,7 @@ class RestaurantEditProfile extends Component {
         if (this.validateProfile() === true){
           const restuarantData = {
             restaurantid: this.state.restaurantDetails.restaurantid,
-            restaurantname: this.state.restaurantDetails.restaurantname,
+            restaurantname: this.state.restaurantDetails.username,
             email: this.state.restaurantDetails.email,
             zipcode: this.state.restaurantDetails.zipcode,
             phone:this.state.restaurantDetails.phone,
@@ -251,6 +251,7 @@ class RestaurantEditProfile extends Component {
             <select className="form-control" name="deliverytype" value={this.state.restaurantDetails.deliverytype} onChange={(e) => { this.handleChangedeliverytype(e)}}>
               <option value="">Select delivery type</option> 
               {/* <option value="Pick Up and Delivery">Pick Up and Delivery</option> */}
+              <option value="Delivery">Both</option>
               <option value="Pick Up">Pick Up</option>
               <option value="Delivery">Delivery</option>
             </select>

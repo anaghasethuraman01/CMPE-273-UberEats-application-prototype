@@ -67,13 +67,14 @@ class CustomerOrder extends Component {
               
                 if(response.data.length > 0){
                     this.setState({ orderstatusmsg: "found" });
-                }
+               
                 // //update the state with the response data
                 this.setState({
                 customerorders: this.state.customerorders.concat(response.data),
                 });
-                console.log(this.state.customerorders)
-                console.log(this.state.orderstatusmsg)
+              }
+                // console.log(this.state.customerorders)
+                // console.log(this.state.orderstatusmsg)
             });
 
         }
@@ -160,7 +161,7 @@ handleChange = (e) => {
                           <th>{customerorder1.totalorderquantity} items for ${customerorder1.totalorderprice} . {customerorder1.datetime}.</th>
                           <th><Button 
                            onClick={() => {
-                                this.viewreceipt(customerorder.orderid);
+                                this.viewreceipt(customerorder1.orderid);
                                 }}>View Receipt</Button></th>   
                         </tr>
                       </thead>
@@ -214,12 +215,15 @@ handleChange = (e) => {
           aria-labelledby="contained-modal-title-vcenter"
           centered
            show={this.state.show} onHide={()=>this.handleModalClose()}>
-             <Modal.Header closeButton> Receipt</Modal.Header>
+             <Modal.Header closeButton><h4> Receipt</h4></Modal.Header>
              <Modal.Body>
                <div>
               {this.state.receiptdetails.map(receiptdetail=>
-              <div>
-                {receiptdetail.dishname}. ${receiptdetail.price}. Qty :{receiptdetail.quantity}
+              <div >
+                <th className="receipt"> {receiptdetail.dishname}</th>
+                <th className="receipt"> ${receiptdetail.price}</th>
+                <th className="receipt"> Qty :{receiptdetail.quantity}</th>
+                
               </div>)}
               </div>
 

@@ -35,7 +35,8 @@ class SingleRestDashboard extends Component {
           quantity:1,
           deliverytype:null,
           quantityprice:null,
-          show:false
+          show:false,
+          showfav:false,
           
         }
       
@@ -46,6 +47,11 @@ class SingleRestDashboard extends Component {
         history.push('/singlerestdashboard'); 
     }
 
+    handleModalCloseFav(){
+      this.setState({showfav:!this.state.showfav}) 
+      // const {history} = this.props;
+      // history.push('/singlerestdashboard'); 
+  }
       componentDidMount(){
         const restaurantid = {
           restaurantid: this.state.restaurantid
@@ -62,14 +68,11 @@ class SingleRestDashboard extends Component {
 
             axios.post(`${backendServer}/getrestaurantdetails`,restaurantid)
             .then((response) => { 
-            //update the state with the response data
-            //console.log(response.data);
+          
             this.setState({
               restaurants : this.state.restaurants.concat(response.data) 
             });
-            //  console.log("***");
-            //console.log(typeof(this.state.restaurants));
-            //   console.log("***");
+           
             this.setState({
               restaurantname : response.data[0].username
             });
@@ -100,26 +103,28 @@ class SingleRestDashboard extends Component {
       }
     
      addtocart = (restid,dishid,dishname,dishprice) =>{
+      
        const cartvalue = {
          customerid : localStorage.getItem("userid"),
+        //  restaurantname :localStorage.getItem("restname"),
          restaurantid : restid,
          dishid:dishid,
          dishname:dishname,
          dishprice:dishprice,
          quantity:this.state.quantity,
-         quantityprice : (dishprice*this.state.quantity) 
+         quantityprice :(dishprice * this.state.quantity) 
        }
-       //console.log(cartvalue)
+       console.log(cartvalue)
        this.addToCart(cartvalue);
-       this.setState({
-        show : true 
-      });
+      //  this.setState({
+      //   show : true 
+      // });
      }
         handleModalClose(){
         this.setState({show:!this.state.show}) 
          }
     addToCart = (data) => {
-       
+      //  localStorage.setItem("oldrest",data.restaurantname)
        localStorage.setItem("newrestid",data.restaurantid);
        localStorage.setItem("customerid",data.customerid);
        localStorage.setItem("dishid",data.dishid);
@@ -128,10 +133,14 @@ class SingleRestDashboard extends Component {
        localStorage.setItem("quantity",data.quantity);
       axios.defaults.withCredentials = true;
       axios.post(`${backendServer}/addtocarttable`, data).then((res) => {
-          console.log("in add to cart");
-          console.log(res.data);
-          this.setState({ message: res.data});
-          this.setState({show:"true"})
+        console.log(res.data)
+          if(res.data == "Delete previous order"){
+            this.setState({show:"true"})
+          }else if(res.data == "Quantity updated"){
+            this.setState({showfav:"true"})
+
+          }
+        
           console.log("Status Code : ", res.status);
           if (res.status === 200) {
             this.setState({ authFlag: true });
@@ -151,11 +160,7 @@ class SingleRestDashboard extends Component {
     localStorage.setItem("restname",this.state.restaurantname);
       axios.defaults.withCredentials = true;
       axios.post(`${backendServer}/handleneworder`, data).then((res) => {
-          // console.log("in add to cart");
-          // console.log(res.data);
-          // this.setState({ message: res.data});
-          // this.setState({show:"true"})
-          // console.log("Status Code : ", res.status);
+        
           if (res.status === 200) {
             this.setState({ authFlag: true });
           } else {
@@ -171,28 +176,28 @@ class SingleRestDashboard extends Component {
       var messagebox = null;
       if(this.state.message){
       
-        messagebox= (
-          <div>
+      //   messagebox= (
+      //     <div>
   
-      <Modal size="md-down"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-           show={this.state.show} onHide={()=>this.handleModalClose()} >
-             <Modal.Header closeButton>Create New Order</Modal.Header>
-             <Modal.Body>
-             Your Order contain items from another restaurant.Create a new
-             order to add items from {this.state.restaurantname}
-             </Modal.Body>
-             <Modal.Footer>
-               <Button 
-               onClick={() => {
-												this.handleNewOrder();
-											}}>
-              New Order</Button>
-             </Modal.Footer>
-           </Modal>
-          </div>
-        )
+      // <Modal size="md-down"
+      //     aria-labelledby="contained-modal-title-vcenter"
+      //     centered
+      //      show={this.state.show} onHide={()=>this.handleModalClose()} >
+      //        <Modal.Header closeButton>Create New Order</Modal.Header>
+      //        <Modal.Body>
+      //        Your Order contain items from another restaurant.Create a new
+      //        order to add items from {this.state.restaurantname}
+      //        </Modal.Body>
+      //        <Modal.Footer>
+      //          <Button 
+      //          onClick={() => {
+			// 									this.handleNewOrder();
+			// 								}}>
+      //         New Order</Button>
+      //        </Modal.Footer>
+      //      </Modal>
+      //     </div>
+      //   )
       }
         searchresults = 
         <div className='card-list'>
@@ -237,26 +242,46 @@ class SingleRestDashboard extends Component {
           
             <h1>{this.state.restaurantname}</h1>
             
-          {messagebox}
+          {/* {messagebox} */}
             {restaurantdetails}
             <form>
             <Button onClick = {this.goback}>Search Restaurants</Button>
             <Button onClick = {this.gobackFav}>Favourites</Button>
             </form>
             {searchresults}
-
-
             <div>
-               <Modal size="md-down"
-                    aria-labelledby="contained-modal-title-vcenter"
-                    centered
-                    show={this.state.show} onHide={()=>this.handleModalClose()}>
-                        <Modal.Header closeButton></Modal.Header>
-                        <Modal.Body>
-                            <p>Item Added To Cart!</p>
-                        </Modal.Body>
-                    </Modal>
-                </div>
+            <Modal size="md-down"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+           show={this.state.show} onHide={()=>this.handleModalClose()} >
+             <Modal.Header closeButton>Create New Order</Modal.Header>
+             <Modal.Body>
+             Your Order contain items from another restaurant.Create a new
+             order to add items from {this.state.restaurantname}
+             </Modal.Body>
+             <Modal.Footer>
+               <Button 
+               onClick={() => {
+												this.handleNewOrder();
+											}}>
+              New Order</Button>
+             </Modal.Footer>
+           </Modal>
+           </div>
+
+
+           <div>
+            <Modal size="md-down"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+           show={this.state.showfav} onHide={()=>this.handleModalCloseFav()} >
+             <Modal.Header closeButton>Create New Order</Modal.Header>
+             <Modal.Body>
+             Item added to cart!
+             </Modal.Body>
+             
+           </Modal>
+           </div>
 
         </div>
     )
