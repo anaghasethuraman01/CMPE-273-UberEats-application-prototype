@@ -176,6 +176,14 @@ select{
   margin: 2 auto;
   margin-bottom: 2rem;
 }
+.form-control-add{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height:2rem;
+  margin: 2 auto;
+  margin-bottom: 2rem;
+}
 .form-control-order{
   display: flex;
   flex-direction: column;
