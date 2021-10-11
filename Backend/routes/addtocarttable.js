@@ -44,7 +44,9 @@ router.post("/", (req, res) => {
                      sql2 = "INSERT INTO placeorder  SET ?";
                     connection.query(sql2,cartvalues,(error, result) => {
                         console.log("Values added to Cart");
+                        res.send("Quantity updated")
                     });
+
                  }
                  else if(result1.length > 0){
                     //  console.log("sfbnbfdns z")

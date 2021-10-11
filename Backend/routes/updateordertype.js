@@ -13,7 +13,7 @@ router.post('/', function(req,res){
     });
     let sql1 = null;
     console.log(ordertype);  
-    if (ordertype == "Picked up" || ordertype == "Delievered" ){
+    if (ordertype == "Picked up" || ordertype == "Delivered" ){
         sql1 = "UPDATE orders SET orderstatus = " + mysql.escape(ordertype)
         +" , ordermodetype = 'Delivered Order' "
         + " WHERE orderid = " +mysql.escape(orderid);

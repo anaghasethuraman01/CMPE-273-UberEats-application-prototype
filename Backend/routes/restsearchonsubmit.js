@@ -24,7 +24,7 @@ router.post('/', function(req,res){
             sqlrestaurant = sqlrestaurant + "CITY = "+mysql.escape(city) + " AND " ;
         } 
         if(notNullOrEmpty(deliverytype) && deliverytype != "All" ){
-            sqlrestaurant = sqlrestaurant + "DELIVERYTYPE = "+mysql.escape(deliverytype);
+            sqlrestaurant = sqlrestaurant + "DELIVERYTYPE like "+mysql.escape("%"+deliverytype+"%");
         }  
         if(sqlrestaurant.endsWith(" AND ")){ 
             sqlrestaurant = sqlrestaurant.substring(0,sqlrestaurant.length-5);
@@ -69,7 +69,7 @@ router.post('/', function(req,res){
         }
 
         if (notNullOrEmpty(deliverytype) && deliverytype != "All") {
-            sqlquery = sqlquery + "r.deliverytype = " + mysql.escape(deliverytype)
+            sqlquery = sqlquery + "r.deliverytype like " + mysql.escape("%"+deliverytype+"%")
         }
 
         if (sqlquery.endsWith(" AND ")){ 
