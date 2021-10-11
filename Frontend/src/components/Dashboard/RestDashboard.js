@@ -46,8 +46,8 @@ class RestDashboard extends Component {
 	}
 	handleModalClose(){
 		this.setState({show:!this.state.show}) 
-		const {history} = this.props;
-	    history.push('/customerhome'); 
+		// const {history} = this.props;
+	    // history.push('/customerhome'); 
 	}
 	navigatetorestaurant = (id,name) => {
 		localStorage.setItem("restid", id);
@@ -298,7 +298,7 @@ class RestDashboard extends Component {
 				show={this.state.show} onHide={()=>this.handleModalClose()}>
 					<Modal.Header closeButton></Modal.Header>
 					<Modal.Body>
-					<h1>Added to Favourites!</h1>
+					<p>Added to Favourites!</p>
 					</Modal.Body>
 					
 				</Modal>
