@@ -35,6 +35,7 @@ class CustomerHome extends Component {
             restaurants: [],
             restaurants1: [],
             favrestaurants: [],
+            show:false
           }
       }
     componentDidMount() {
@@ -87,7 +88,15 @@ class CustomerHome extends Component {
     }
 
 	}
+  handleModalClose(){
+		this.setState({show:!this.state.show}) 
+		// const {history} = this.props;
+	    // history.push('/customerhome'); 
+	}
   addToFavourites = (restid) =>{
+    this.setState({
+			show : true 
+		  });
 		const customerid = localStorage.getItem("userid");	
 		const favourites = {
 			customerid : customerid,
@@ -166,7 +175,7 @@ class CustomerHome extends Component {
                     src={`${backendServer}/${restaurant.profilepic}`}
                   />
                   <Card.Body>
-                    <Card.Title className = "detailsincard">{restaurant.username}</Card.Title>
+                    <Card.Title className = "detailsincard">{restaurant.username}   ({restaurant.city})</Card.Title>
                     <ListGroup className="list-group-flush">
                       <ListGroupItem className = "detailsincard"><RiPhoneFill/>: {restaurant.phone} </ListGroupItem>
                       <ListGroupItem className = "detailsincard"><IoMail/>{restaurant.email}</ListGroupItem>
@@ -213,7 +222,7 @@ class CustomerHome extends Component {
                       src={`${backendServer}/${restaurant.profilepic}`}
                     />
                     <Card.Body>
-                    <Card.Title className = "detailsincard">{restaurant.username}</Card.Title>
+                    <Card.Title className = "detailsincard">{restaurant.username} ({restaurant.city})</Card.Title>
                     <ListGroup className="list-group-flush">
                        <ListGroupItem className = "detailsincard"><RiPhoneFill/>: {restaurant.phone} </ListGroupItem>
                       <ListGroupItem className = "detailsincard"><IoMail/>{restaurant.email}</ListGroupItem>
@@ -306,6 +315,18 @@ class CustomerHome extends Component {
 
             
             </div>
+            <div>
+              <Modal size="md-down"
+              aria-labelledby="contained-modal-title-vcenter"
+              centered
+              show={this.state.show} onHide={()=>this.handleModalClose()}>
+                <Modal.Header closeButton></Modal.Header>
+                <Modal.Body>
+                <p>Added to Favourites!</p>
+                </Modal.Body>
+                
+              </Modal>
+      			</div>
             </form>
               
               {beforeSearch}

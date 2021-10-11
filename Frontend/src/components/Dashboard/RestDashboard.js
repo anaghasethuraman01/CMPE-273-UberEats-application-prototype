@@ -304,7 +304,6 @@ class RestDashboard extends Component {
 				</Modal>
       			</div>
 			</div>
-			
 		);
 	}
 }
