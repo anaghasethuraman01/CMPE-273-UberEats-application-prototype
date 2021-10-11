@@ -149,7 +149,7 @@ class RestDashboard extends Component {
 									src={`${backendServer}/${restaurant.profilepic}`}
 								/>
 								<Card.Body>
-									<Card.Title className = "detailsincard">{restaurant.username}</Card.Title>
+									<Card.Title className = "detailsincard">{restaurant.username} ({restaurant.city})</Card.Title>
 									<ListGroup className="list-group-flush">
 										  <ListGroupItem className = "detailsincard"><RiPhoneFill/>: {restaurant.phone} </ListGroupItem>
                       					  <ListGroupItem className = "detailsincard"><IoMail/>{restaurant.email}</ListGroupItem>
@@ -194,7 +194,7 @@ class RestDashboard extends Component {
 									src={`${backendServer}/${restaurant.profilepic}`}
 								/>
 								<Card.Body>
-									<Card.Title className = "detailsincard">{restaurant.username}</Card.Title>
+									<Card.Title className = "detailsincard">{restaurant.username} ({restaurant.city})</Card.Title>
 									<ListGroup className="list-group-flush">
 									  <ListGroupItem className = "detailsincard"><RiPhoneFill/>: {restaurant.phone} </ListGroupItem>
                       				  <ListGroupItem className = "detailsincard"><IoMail/>{restaurant.email}</ListGroupItem>
