@@ -3,7 +3,7 @@ import ReactTooltip from 'react-tooltip';
 // import cookie from 'react-cookies';
 import { Button } from 'reactstrap';
 import axios from "axios";
-import { Card, ListGroup, ListGroupItem, Form ,Offcanvas} from "react-bootstrap";
+import { Modal,Card, ListGroup, ListGroupItem, Form ,Offcanvas} from "react-bootstrap";
 import backendServer from "../../webConfig";
 import {BiCartAlt} from 'react-icons/bi';
 import {IoIosRestaurant} from 'react-icons/io';
