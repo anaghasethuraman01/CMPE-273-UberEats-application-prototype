@@ -1,7 +1,8 @@
 import { Button } from "reactstrap";
 import axios from "axios";
 import React, { Component } from "react";
-import { Card, ListGroup, ListGroupItem, Col} from "react-bootstrap";
+
+import {Modal, Card, ListGroup, ListGroupItem, Col} from "react-bootstrap";
 //import { Link } from 'react-router-dom';
 import {BiCartAlt} from 'react-icons/bi';
 import {MdFavoriteBorder} from 'react-icons/md';
@@ -25,6 +26,7 @@ class RestDashboard extends Component {
 			deliverytype: null,
 			restaurants: [],
 			restaurants1: [],
+			show:false
 			//favourites : []
 		};
 		this.handleChange = this.handleChange.bind(this);
@@ -42,7 +44,11 @@ class RestDashboard extends Component {
 			});
 		});
 	}
-	
+	handleModalClose(){
+		this.setState({show:!this.state.show}) 
+		const {history} = this.props;
+	    history.push('/customerhome'); 
+	}
 	navigatetorestaurant = (id,name) => {
 		localStorage.setItem("restid", id);
 		localStorage.setItem("restname",name);
@@ -103,6 +109,9 @@ class RestDashboard extends Component {
 		this.setState({ [e.target.name]: e.target.value });
 	};
 	addToFavourites = (restid) =>{
+		this.setState({
+			show : true 
+		  });
 		const customerid = localStorage.getItem("userid");	
 		const favourites = {
 			customerid : customerid,
@@ -111,6 +120,7 @@ class RestDashboard extends Component {
 		this.addToFavouritesTable(favourites);	
 	}
 	addToFavouritesTable = (data) => {
+
 		axios.defaults.withCredentials = true;
 		axios.post(`${backendServer}/addtofavourites`, data).then((res) => {
 			console.log("Status Code : ", res.status);
@@ -134,7 +144,7 @@ class RestDashboard extends Component {
 						<div>
 							<Card style={{ width: "18rem" }}>
 							<Card.Img 
-									style={{ width: "18rem" }}
+									style={{ width: "18rem",height: "13rem" }}
 									variant="bottom"
 									src={`${backendServer}/${restaurant.profilepic}`}
 								/>
@@ -179,7 +189,7 @@ class RestDashboard extends Component {
 							<Card  style={{ width: "18rem" }}>
 								
 								<Card.Img
-									style={{ width: "18rem" }}
+									style={{ width: "18rem" ,height:"13rem"}}
 									variant="top"
 									src={`${backendServer}/${restaurant.profilepic}`}
 								/>
@@ -280,6 +290,19 @@ class RestDashboard extends Component {
 				{beforeSearch}
 				{afterSearch}
 				</div>
+
+				<div>
+				<Modal size="md-down"
+				aria-labelledby="contained-modal-title-vcenter"
+				centered
+				show={this.state.show} onHide={()=>this.handleModalClose()}>
+					<Modal.Header closeButton></Modal.Header>
+					<Modal.Body>
+					<h1>Added to Favourites!</h1>
+					</Modal.Body>
+					
+				</Modal>
+      			</div>
 			</div>
 			
 		);

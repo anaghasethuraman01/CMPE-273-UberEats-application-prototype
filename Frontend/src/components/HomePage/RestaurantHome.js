@@ -92,8 +92,8 @@ class RestaurantHome extends Component {
         {this.state.restaurantdishes.map(dish=>
         
           <div >
-          <Card style={{ width: '18rem' }}>
-          <Card.Img style={{ width: '18rem',height:'13rem' }} variant="top" src={`${backendServer}/${dish.dishimage}`} />
+          <Card style={{ width: "18rem" }}>
+          <Card.Img style={{ width: "18rem",height:"13rem" }} variant="top" src={`${backendServer}/${dish.dishimage}`} />
           <Card.Body>
           <Card.Title>{dish.dishname}</Card.Title>
           <ListGroup className="list-group-flush">
