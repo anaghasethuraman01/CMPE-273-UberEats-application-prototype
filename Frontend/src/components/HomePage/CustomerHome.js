@@ -161,7 +161,7 @@ class CustomerHome extends Component {
               <div>
                 <Card style={{ width: "18rem" }}>
                   <Card.Img
-                    style={{ width: "18rem" }}
+                    style={{ width: "18rem" ,height:'13rem'}}
                     variant="top"
                     src={`${backendServer}/${restaurant.profilepic}`}
                   />
@@ -206,9 +206,9 @@ class CustomerHome extends Component {
             
               {this.state.restaurants.map((restaurant) => (
                 <div >
-                  <Card >
+                  <Card style= {{ width: "18rem" }} >
                     <Card.Img
-                      style={{ width: "18rem" }}
+                      style={{ width: "18rem" ,height : "13rem"}}
                       variant="top"
                       src={`${backendServer}/${restaurant.profilepic}`}
                     />

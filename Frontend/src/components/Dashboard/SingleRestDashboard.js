@@ -175,37 +175,12 @@ class SingleRestDashboard extends Component {
       var restaurantdetails = null;
         var searchresults = null;
       var messagebox = null;
-      if(this.state.message){
-      
-      //   messagebox= (
-      //     <div>
-  
-      // <Modal size="md-down"
-      //     aria-labelledby="contained-modal-title-vcenter"
-      //     centered
-      //      show={this.state.show} onHide={()=>this.handleModalClose()} >
-      //        <Modal.Header closeButton>Create New Order</Modal.Header>
-      //        <Modal.Body>
-      //        Your Order contain items from another restaurant.Create a new
-      //        order to add items from {this.state.restaurantname}
-      //        </Modal.Body>
-      //        <Modal.Footer>
-      //          <Button 
-      //          onClick={() => {
-			// 									this.handleNewOrder();
-			// 								}}>
-      //         New Order</Button>
-      //        </Modal.Footer>
-      //      </Modal>
-      //     </div>
-      //   )
-      }
         searchresults = 
         <div className='card-list'>
         {this.state.dishes.map(dish=>
          <div >
           <Card style={{ width: '18rem' }}>
-          <Card.Img style={{ width: '18rem' }} variant="top" src={`${backendServer}/${dish.dishimage}`} />
+          <Card.Img style={{ width: '18rem',height:'13rem' }} variant="top" src={`${backendServer}/${dish.dishimage}`} />
           <Card.Body>
           <Card.Title>{dish.dishname}</Card.Title>
           </Card.Body>

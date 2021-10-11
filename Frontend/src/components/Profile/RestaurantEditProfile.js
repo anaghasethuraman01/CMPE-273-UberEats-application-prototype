@@ -19,7 +19,8 @@ class RestaurantEditProfile extends Component {
         restaurantid:null,
         profilepic:null,
         loading: false,
-        output: null
+        output: null,
+        deliverytypeb : null
         }
     
         // this.handleChange = this.handleChange.bind(this);
@@ -139,7 +140,8 @@ class RestaurantEditProfile extends Component {
     } 
       handleSubmit = (e) => {
         e.preventDefault();
-        if (this.validateProfile() === true){
+        // if (this.validateProfile() === true){
+          
           const restuarantData = {
             restaurantid: this.state.restaurantDetails.restaurantid,
             restaurantname: this.state.restaurantDetails.username,
@@ -153,14 +155,15 @@ class RestaurantEditProfile extends Component {
             foodtype:this.state.restaurantDetails.foodtype,
             days:this.state.restaurantDetails.days,
             
-        }     
+          }     
+        console.log(restuarantData)
         this.sendRestAPI(restuarantData);
         this.setState({
           show : true 
         });
         }
         
-      }
+      //}
       // handleChange = (e) => {
       //   this.setState({ [e.target.name]: e.target.value });
       //   }
@@ -251,7 +254,7 @@ class RestaurantEditProfile extends Component {
             <select className="form-control" name="deliverytype" value={this.state.restaurantDetails.deliverytype} onChange={(e) => { this.handleChangedeliverytype(e)}}>
               <option value="">Select delivery type</option> 
               {/* <option value="Pick Up and Delivery">Pick Up and Delivery</option> */}
-              <option value="Delivery">Both</option>
+              <option value="Pick Up and Delivery">Pick up and Delivery</option>
               <option value="Pick Up">Pick Up</option>
               <option value="Delivery">Delivery</option>
             </select>

@@ -77,8 +77,8 @@ class AddRestaurantMenu extends Component {
         }
         
       }
-      goback = (e) =>{
-        e.preventDefault();
+      goback = () =>{
+        // e.preventDefault();
         const {history} = this.props;
         history.push('/restauranthome'); 
       }
@@ -143,7 +143,7 @@ class AddRestaurantMenu extends Component {
           </div>
           <div className="form-group">
 
-          Ingrediants: <Input className="form-control" type="text" name="ingrediants" defaultValue={this.state.ingrediants} onChange={this.handleChange} required/>
+          Ingredients: <Input className="form-control" type="text" name="ingrediants" defaultValue={this.state.ingrediants} onChange={this.handleChange} required/>
            
           </div>
           <div className="form-group">

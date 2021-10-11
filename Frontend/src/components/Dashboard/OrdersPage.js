@@ -111,12 +111,16 @@ handleordersearch = (e) => {
  
     if(this.state.ordermodetype === "All"){
       this.componentDidMount();
+    }else
+    {
+      this.searchOrder(ordersearch);
     }
-    this.searchOrder(ordersearch);
+    
 
 }
 
 searchOrder = (ordersearch) => {
+    console.log(ordersearch);
     axios.post(`${backendServer}/handleordermodesearch`,ordersearch).then((response) => {
                     if(response.data.length > 0){
                         this.setState({ ordermsg: "searchdone" });
@@ -151,7 +155,7 @@ searchOrder = (ordersearch) => {
                       <Table>
                         <thead>
                         <tr className="form-control-order">
-                          <th>Customer Name : {customerorder.customername} </th>
+                          <th>Customer Name : {customerorder.customername}   <Button>View Profile</Button> </th>
         
                           <th>Date : {customerorder.datetime} . <br/> Total Items : {customerorder.totalorderquantity} item(s).<br/> Total Price : ${customerorder.totalorderprice}</th>
                           <th>Order Status : {customerorder.orderstatus} </th>
@@ -185,6 +189,28 @@ searchOrder = (ordersearch) => {
                                   <option value="On the way" >On the way</option>
                                   <option value="Delivered" >Delivered</option>
                                  
+                                </select>
+                                 <Button 
+                               type="submit" 
+                                onClick={() => {
+                                this.updatestatusfn(customerorder.orderid,customerorder.orderstatus);
+                                }}>
+                                Update
+                              </Button>
+                            </form>
+                            )
+                            }  
+                            {
+                            customerorder.ordertype == "Pick Up and Delivery" && (
+                              <form >
+                              Status Type :
+                                <select  name="orderstatus"   value={this.state.orderstatus} onChange={(e) => { this.handleChange(e, customerorder.orderid)}} >
+                                  <option value="Order Received" >Order Received</option>
+                                  <option value="Preparing"  >Preparing</option>
+                                  <option value="On the way" >On the way</option>
+                                  <option value="Delivered" >Delivered</option>
+                                  <option value="Pick up Ready" >Pick up Ready</option>
+                                  <option value="Picked up" >Picked up</option>
                                 </select>
                                  <Button 
                                type="submit" 
@@ -224,7 +250,7 @@ searchOrder = (ordersearch) => {
                       <Table>
                         <thead>
                         <tr className="form-control-order">
-                          <th>Customer Name : {customerorder.customername} </th>
+                          <th>Customer Name : {customerorder.customername} <Button>View Profile</Button> </th>
         
                           <th>Date : {customerorder.datetime} . <br/> Total Items : {customerorder.totalorderquantity} item(s).<br/> Total Price : ${customerorder.totalorderprice}</th>
                           <th>Order Status : {customerorder.orderstatus} </th>
@@ -257,7 +283,28 @@ searchOrder = (ordersearch) => {
                                   <option value="Preparing"  >Preparing</option>
                                   <option value="On the way" >On the way</option>
                                   <option value="Delivered" >Delivered</option>
-                                 
+                                </select>
+                                 <Button 
+                               type="submit" 
+                                onClick={() => {
+                                this.updatestatusfn(customerorder.orderid,customerorder.orderstatus);
+                                }}>
+                                Update
+                              </Button>
+                            </form>
+                            )
+                            }  
+                            {
+                            customerorder.ordertype == "Pick Up and Delivery" && (
+                              <form >
+                              Status Type :
+                                <select  name="orderstatus"   value={this.state.orderstatus} onChange={(e) => { this.handleChange(e, customerorder.orderid)}} >
+                                  <option value="Order Received" >Order Received</option>
+                                  <option value="Preparing"  >Preparing</option>
+                                  <option value="On the way" >On the way</option>
+                                  <option value="Delivered" >Delivered</option>
+                                  <option value="Pick up Ready" >Pick up Ready</option>
+                                  <option value="Picked up" >Picked up</option>
                                 </select>
                                  <Button 
                                type="submit" 
@@ -270,13 +317,9 @@ searchOrder = (ordersearch) => {
                             )
                             }  
                           </th>
-                         
-                         
                         </tr>
                       </thead>
                       </Table>
-                       
-                      
                     </div>
                     ))}
                 </div>
