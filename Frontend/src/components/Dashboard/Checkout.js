@@ -198,14 +198,15 @@ class CheckOut extends Component {
          addnewaddress = (
            <div>
              <div className="form-group">
-              Apt and Street No: <Input type="text" className="form-control" name="street" defaultValue={this.state.street} onChange={this.handleChange} ></Input>
-              </div>
-             <div className="form-group">
-              State: <Input type="text" className="form-control" name="state" defaultValue={this.state.state} onChange={this.handleChange} ></Input>
+              Apt and Street No: <Input type="text" className="form-control-add" name="street" defaultValue={this.state.street} onChange={this.handleChange} ></Input>
               </div>
               <div className="form-group">
-              City: <Input type="text" className="form-control" name="city" defaultValue={this.state.city} onChange={this.handleChange} ></Input>
+              City: <Input type="text" className="form-control-add" name="city" defaultValue={this.state.city} onChange={this.handleChange} ></Input>
               </div>
+             <div className="form-group">
+              State: <Input type="text" className="form-control-add" name="state" defaultValue={this.state.state} onChange={this.handleChange} ></Input>
+              </div>
+             
               <div className="form-group">
 
               <CountryDropdown className="form-control"
