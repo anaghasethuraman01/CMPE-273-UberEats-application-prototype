@@ -81,7 +81,7 @@ class CheckOut extends Component {
                   totalorderquantity : this.state.totalorderquantity 
                 });
                 this.setState({
-                  totalorderprice : this.state.totalorderprice 
+                  totalorderprice : this.state.totalorderprice.toFixed(2) 
                 });
                 });
       }
